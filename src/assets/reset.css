@@ -1,0 +1,27 @@
+html,body,#app{
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	min-width: 1366px;
+}
+::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+		border-radius: 2px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		height: 40px;
+		background-color: #ccc;
+		border-radius: 16px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		height: 5px;
+		border: 1px solid transparent;
+		border-top: none;
+		border-bottom: none;
+		-webkit-border-radius: 6px;
+		background-color: rgba(0, 0, 0, .3);
+		background-clip: padding-box;
+	}
