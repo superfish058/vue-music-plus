@@ -35,17 +35,19 @@
 				})
 			},
 			//获取皇子音乐歌单
-			setHzPlayListIds() {
+			getHzPlayList() {
 				let id = this.$store.state.hzId
+				if (!id||this.$store.state.userId ==8023474819) return
 				this.$http.get('/playlist/track/all', {
 					params: {
-						id
+						id:this.$store.state.hzId,
+						time: new Date().valueOf(),
+						limit:50,
+						offset:this.offset
 					}
+			
 				}).then(res => {
-					let hzPlayList = res.data.songs
-					hzPlayList.forEach(item => {
-						this.$store.state.hzPLayListIds.push(item.id)
-					})
+					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
 				})
 			},
 			//寻找专用歌单
@@ -54,23 +56,27 @@
 			},
 			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
 			getUserPlayList() {
+				if(this.$store.state.userId==''||this.$store.state.userId ==8023474819){
+					this.$message('请先登录哦')
+					return
+				}
+				if(this.find) return
 				this.$http.get('/user/playlist', {
 					params: {
 						uid: this.$store.state.userId
 					}
 				}).then(res => {
 					let userPlayList = res.data.playlist
-					let find = false
 					let hzId = ''
 					userPlayList.forEach(item => {
 						if (item.name == '皇子音乐') {
-							find = true
+							this.find = true
 							hzId = item.id
 						}
 					})
-					if (find) {
+					if (this.find) {
 						this.$store.state.hzId = hzId
-						this.setHzPlayListIds()
+						this.getHzPlayList()
 						return
 					}
 					this.createPlayList()
@@ -78,12 +84,17 @@
 			},
 			//生成专用歌单
 			createPlayList() {
+				if(this.created) return
 				this.$http.get('/playlist/create', {
 					params: {
 						name: '皇子音乐'
 					}
 				})
+				this.created = true
+				this.find = true
 				this.getUserPlayList()
+				this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
+				
 			},
 		}
 	}

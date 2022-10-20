@@ -31,7 +31,7 @@
 					<div v-if="playListInfo.creator"
 						style="display: flex;align-items: center;margin-bottom: 10px;transition: 0.4s ease;"
 						ref="creator">
-						<el-image :src="playListInfo.creator.avatarUrl" fit="cover" style="width: 35px; aspect-ratio: 1;
+						<el-image :src="playListInfo.creator.avatarUrl+'?param=100y100'" fit="cover" style="width: 35px; aspect-ratio: 1;
 							border-radius: 50%;margin-right: 5px;"></el-image>
 						<span ref="creatorName">{{playListInfo.creator.nickname}}</span>
 					</div>
@@ -53,7 +53,7 @@
 					</el-table-column>
 					<el-table-column label="标题" width="75">
 						<template slot-scope="scope">
-							<el-image :src="scope.row.al.picUrl" style="width:100%;aspect-ratio: 1;cursor: pointer;"
+							<el-image :src="scope.row.al.picUrl+'?param=200y200'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
 								fit="cover" @click="playMusic(scope.row.id)">
 							</el-image>
 						</template>

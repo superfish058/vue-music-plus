@@ -11,7 +11,7 @@
 				</el-row>
 				<!-- 作者头像 -->
 				<el-row style="display: flex;align-items: center;margin-top: 15px;">
-					<el-image :src="avatarUrl" v-if="videoInfo" fit="cover" style="width: 46px;aspect-ratio: 1;border-radius: 50%;"></el-image>
+					<el-image :src="avatarUrl+'?param=200y200'" v-if="videoInfo" fit="cover" style="width: 46px;aspect-ratio: 1;border-radius: 50%;"></el-image>
 					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;" v-if="creatorId == 0">{{creatorName}}</span>
 					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;" class="hover"  v-if="creatorId != 0"
 						@click="turnSingerPage(creatorId)">
@@ -52,7 +52,7 @@
 					class="personalized-image">
 					<el-col :span="12">
 						<div style="position: relative;">
-							<el-image :src="item.coverUrl" fit="cover" @click="turnVideoPage(item)"
+							<el-image :src="item.coverUrl+'?param=340y190'" fit="cover" @click="turnVideoPage(item)"
 								style="width: 95%;aspect-ratio: 16/9;border-radius: 3px;">
 							</el-image>
 							<span class="count"><i

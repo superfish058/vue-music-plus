@@ -60,9 +60,10 @@ const actions = {
 		axios.get('/song/url/v1', {
 			params: {
 				id,
-				level:exhigh
+				level:'exhigh'
 			}
 		}).then(res => {
+			console.log(res);
 			url = res.data.data[0].url
 			commit('SetUrl', url)
 		})
@@ -112,7 +113,7 @@ const actions = {
 		axios.get('/song/url/v1', {
 			params: {
 				id: ids,
-				level:exhigh
+				level:'exhigh'
 			}
 		}).then(res => {
 			let urls = []

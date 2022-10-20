@@ -17,7 +17,7 @@
 				<el-row style="position: absolute;bottom: 18px;">
 					<!-- 歌手 -->
 					<div v-if="albumInfo.artist" style="display: flex;align-items: center;margin-bottom: 10px;cursor: pointer;">
-						<el-image :src="albumInfo.artist.img1v1Url" fit="cover" style="width: 35px; aspect-ratio: 1;
+						<el-image :src="albumInfo.artist.img1v1Url+'?param=100y100'" fit="cover" style="width: 35px; aspect-ratio: 1;
 							border-radius: 50%;margin-right: 5px;"></el-image>
 							<div class="hover" @click="turnSingerPage(albumInfo.artist.id)">
 								<span v-if="albumInfo" >{{albumInfo.artist.name}}</span>
@@ -42,7 +42,7 @@
 					</el-table-column>
 					<el-table-column label="标题" width="75">
 						<template slot-scope="scope">
-							<el-image :src="scope.row.al.picUrl" style="width:100%;aspect-ratio: 1;cursor: pointer;"
+							<el-image :src="scope.row.al.picUrl+'?param=200y200'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
 								fit="cover" @click="playMusic(scope.row.id)">
 							</el-image>
 						</template>

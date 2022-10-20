@@ -20,25 +20,27 @@
 					</div>
 				</el-row>
 				<el-row :gutter="30" style="margin-top: 20px;">
-					<el-col :span="8" v-for="item,index in videoList" :key="index" class="personalized-image">
-						<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.data.coverUrl" fit="cover"
-							@click="turnVideoPage(item.data)">
-						</el-image>
-						<div style="height: 64px;font-size: 16px;">
-							<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;
-								font-size: 18px; width: 100%;margin-bottom: 5px;margin-top: 5px;">
-								<span v-if="item.data.title">{{item.data.title}}</span>
-								<span v-if="item.data.name">{{item.data.name}}</span>
-							</p>
-							<p v-if="item.type==2" class="main-p">
-								<span v-for="it,ind in item.data.artists" :key="ind" @click="turnSingerPage(it.id)"
-									class="hover">
-									{{it.name}}
-								</span>
-							</p>
-							<p v-if="item.type==1" style="text-align: justify;word-break: break-all;" class="main-p">
-								by&nbsp;{{item.data.creator.nickname}}
-							</p>
+					<el-col :span="8" v-for="item,index in videoList" :key="index" class="personalized-image" >
+						<div v-if="item.data">
+							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.data.coverUrl+'?param=570y320'" fit="cover"
+								@click="turnVideoPage(item.data)">
+							</el-image>
+							<div style="height: 64px;font-size: 16px;">
+								<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;
+									font-size: 18px; width: 100%;margin-bottom: 5px;margin-top: 5px;">
+									<span v-if="item.data.title">{{item.data.title}}</span>
+									<span v-if="item.data.name">{{item.data.name}}</span>
+								</p>
+								<p v-if="item.type==2" class="main-p">
+									<span v-for="it,ind in item.data.artists" :key="ind" @click="turnSingerPage(it.id)"
+										class="hover">
+										{{it.name}}
+									</span>
+								</p>
+								<p v-if="item.type==1" style="text-align: justify;word-break: break-all;" class="main-p">
+									by&nbsp;{{item.data.creator.nickname}}
+								</p>
+							</div>
 						</div>
 					</el-col>
 				</el-row>

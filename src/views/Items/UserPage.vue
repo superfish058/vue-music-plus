@@ -3,7 +3,7 @@
 		infinite-scroll-distance="50" ref="userPage">
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
 			<el-col :span="6" v-if="hzPlayList!==undefined && hzPlayList.length > 0 ">
-				<el-image :src="hzPlayList[0].al.picUrl" fit="cover" style="width: 90%;aspect-ratio: 1;">
+				<el-image :src="hzPlayList[0].al.picUrl+'?param=500y500'" fit="cover" style="width: 90%;aspect-ratio: 1;">
 				</el-image>
 			</el-col>
 			<el-col :span="18" style="position: relative;height: 100%;">
@@ -28,7 +28,7 @@
 					<el-table-column label="标题" width="75">
 						<template slot-scope="scope">
 							<div v-if="scope.row">
-								<el-image :src="scope.row.al.picUrl" style="width:100%;aspect-ratio: 1;cursor: pointer;"
+								<el-image :src="scope.row.al.picUrl+'?param=150y150'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
 									fit="cover" @click="playMusic(scope.row.id)">
 								</el-image>
 							</div>
@@ -75,7 +75,9 @@
 		data() {
 			return {
 				hzPlayList: [], //皇子音乐歌单
-				offset:0
+				offset:0,
+				created:false,
+				find:false,
 			}
 		},
 		mounted() {
@@ -106,13 +108,13 @@
 			//获取皇子音乐歌单
 			getHzPlayList() {
 				let id = this.$store.state.hzId
-				if (!id) {
-					setTimeout(() => {
-						id = this.$store.state.hzId
-						if (id) this.getHzPlayList()
-					}, 200)
-				}
-				if (!id) return
+				// if (!id) {
+				// 	setTimeout(() => {
+				// 		id = this.$store.state.hzId
+				// 		if (id) this.getHzPlayList()
+				// 	}, 200)
+				// }
+				if (!id||this.$store.state.userId ==8023474819) return
 				this.$http.get('/playlist/track/all', {
 					params: {
 						id:this.$store.state.hzId,
@@ -187,25 +189,25 @@
 			},
 			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
 			getUserPlayList() {
-				if(this.$store.state.hzId=='' || this.$store.state.userId==''){
+				if(this.$store.state.userId==''||this.$store.state.userId ==8023474819){
 					this.$message('请先登录哦')
 					return
 				}
+				if(this.find) return
 				this.$http.get('/user/playlist', {
 					params: {
 						uid: this.$store.state.userId
 					}
 				}).then(res => {
 					let userPlayList = res.data.playlist
-					let find = false
 					let hzId = ''
 					userPlayList.forEach(item => {
 						if (item.name == '皇子音乐') {
-							find = true
+							this.find = true
 							hzId = item.id
 						}
 					})
-					if (find) {
+					if (this.find) {
 						this.$store.state.hzId = hzId
 						this.getHzPlayList()
 						return
@@ -215,13 +217,17 @@
 			},
 			//生成专用歌单
 			createPlayList() {
+				if(this.created) return
 				this.$http.get('/playlist/create', {
 					params: {
 						name: '皇子音乐'
 					}
 				})
+				this.created = true
+				this.find = true
 				this.getUserPlayList()
 				this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
+				
 			},
 
 		}

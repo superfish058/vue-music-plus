@@ -4,7 +4,7 @@
 			<el-col :span="12">
 				<!-- 专辑图片 -->
 				<el-row style="display: flex;justify-content: center;margin-top: 60px;">
-					<el-image style="width: 320px; height: 320px;border-radius: 10px;" :src="currentMusicInfo.cover"
+					<el-image style="width: 320px; height: 320px;border-radius: 10px;" :src="currentMusicInfo.cover+'?param=700y700'"
 						fit="cover"></el-image>
 				</el-row>
 				<el-row style="display: flex;justify-content: center;">

@@ -212,7 +212,10 @@
 						this.$message.error('登陆失败')
 					} else {
 						this.$message.success('登陆成功')
-						this.getLoginStatus()
+						setTimeout(()=>{
+							this.getLoginStatus()
+						},200)
+						
 					}
 					this.dialogVisible = false
 				})
@@ -226,6 +229,7 @@
 					this.userId = res.data.data.account.id
 					this.$store.state.userId = this.userId 
 				})
+				console.log(this.userName,this.userId);
 			},
 			//搜索建议
 			querySearch(keyword, cb) {
