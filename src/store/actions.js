@@ -57,9 +57,10 @@ const actions = {
 		let songId = id
 		let mv = ''
 		let alId = ''
-		axios.get('/song/url', {
+		axios.get('/song/url/v1', {
 			params: {
-				id
+				id,
+				level:exhigh
 			}
 		}).then(res => {
 			url = res.data.data[0].url
@@ -108,9 +109,10 @@ const actions = {
 		state
 	}, ids) {
 		state.id = ''
-		axios.get('/song/url', {
+		axios.get('/song/url/v1', {
 			params: {
-				id: ids
+				id: ids,
+				level:exhigh
 			}
 		}).then(res => {
 			let urls = []
