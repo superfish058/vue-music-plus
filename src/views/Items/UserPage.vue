@@ -10,7 +10,7 @@
 				<el-row>
 					<span class="textIcon" style="position: absolute;top: 5px;" @click="getHzPlayList()">用户歌单</span>
 				</el-row>
-				<el-row style="font-weight: 700;position: absolute;top: 25px;left: -7px;width: 100%;">
+				<el-row style="font-weight: 700;position: absolute;top: 25px;left: -7px;width: 100%;" v-if="$store.state.userId">
 					<p style="font-size: 70px;width:100%;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
 						margin: 0;height: 115px;display: flex;align-items: center;">
 						皇子音乐专属歌单
@@ -187,7 +187,10 @@
 			},
 			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
 			getUserPlayList() {
-				if(this.$store.state.hzId || !this.$store.state.userId) return
+				if(this.$store.state.hzId=='' || this.$store.state.userId==''){
+					this.$message('请先登录哦')
+					return
+				}
 				this.$http.get('/user/playlist', {
 					params: {
 						uid: this.$store.state.userId

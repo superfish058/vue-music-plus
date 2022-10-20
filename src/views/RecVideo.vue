@@ -72,6 +72,7 @@
 		beforeRouteEnter(to, from, next) {
 			if (from.path != '/main/video') {
 				next(vc => {
+					if(!vc.$store.state.userId) return
 					vc.$nextTick(() => {
 						vc.$refs.recVideoPage.parentNode.scrollTop = 0
 					})
@@ -238,6 +239,10 @@
 				this.$refs.tagRowPlus.childNodes[0].style.border = "1px solid #121212"
 			},
 			getVideoLists() {
+				if(!this.$store.state.userId||!this.$store.state.hzId){
+					this.$message('请先登录哦')
+					return
+				}
 				this.setOk = false
 				this.getVideoList()
 				this.offset += 8

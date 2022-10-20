@@ -77,7 +77,7 @@
 										<span slot="title">私人FM</span>
 									</el-menu-item>
 								</router-link>
-								<router-link to="recvideo">
+								<router-link to="recvideo" >
 									<el-menu-item index="3">
 										<i class="el-icon-video-camera"></i>
 										<span slot="title">推荐视频</span>
@@ -208,7 +208,7 @@
 						password: this.loginForm.password
 					}
 				}).then(res => {
-					if (res.data.code == 400) {
+					if (res.data.code != 200) {
 						this.$message.error('登陆失败')
 					} else {
 						this.$message.success('登陆成功')
