@@ -4,11 +4,11 @@
 		</div>
 	</div>
 </template>
-
+<script src="node_modules/colorthief/dist/color-thief.umd.js"></script>
 <script>
 	import 'aplayer/dist/APlayer.min.css';
 	import APlayer from 'aplayer';
-	import ColorThief from 'colorthief'
+	// import ColorThief from 'colorthief'
 	import Vue from 'vue';
 	export default {
 		data() {
@@ -72,7 +72,7 @@
 					narrow: false,
 					autoplay: true,
 					lrcType: 1,
-					theme: '#',
+					theme: 'aqua',
 					preload: true,
 					mutex: true
 				});
@@ -108,7 +108,6 @@
 					}
 					this.$store.state.listIndex = index
 					this.$store.state.id = this.$store.state.musicInfo[index].songId
-
 					if (!ap.list.audios[index].theme) {
 						xhr.onload = function() {
 							let coverUrl = URL.createObjectURL(this.response);

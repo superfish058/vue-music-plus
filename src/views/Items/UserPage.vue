@@ -1,5 +1,6 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;">
+	<div style="padding: 20px 20px 20px 18px;" v-infinite-scroll="load" infinite-scroll-delay="300"
+		infinite-scroll-distance="50" ref="userPage">
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
 			<el-col :span="6" v-if="hzPlayList!==undefined && hzPlayList.length > 0 ">
 				<el-image :src="hzPlayList[0].al.picUrl" fit="cover" style="width: 90%;aspect-ratio: 1;">
@@ -74,14 +75,22 @@
 		data() {
 			return {
 				hzPlayList: [], //皇子音乐歌单
+				offset:0
 			}
 		},
 		mounted() {
 			this.getHzPlayList()
+			this.getUserPlayList()
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
+				vc.hzPlayList = []
+				vc.offset = 0
 				vc.getHzPlayList()
+				vc.getUserPlayList()
+				vc.$nextTick(()=>{
+					vc.$refs.userPage.parentNode.scrollTop = 0
+				})
 			})
 		},
 		methods: {
@@ -107,11 +116,13 @@
 				this.$http.get('/playlist/track/all', {
 					params: {
 						id:this.$store.state.hzId,
-						time: new Date().valueOf()
+						time: new Date().valueOf(),
+						limit:50,
+						offset:this.offset
 					}
 
 				}).then(res => {
-					this.hzPlayList = res.data.songs
+					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
 				})
 			},
 			//跳转歌手页面
@@ -131,6 +142,12 @@
 						albumId: id
 					}
 				})
+			},
+			load(){
+				if(this.$route.path!='/main/userpage') return
+				if (this.offset >= this.hzPlayList.length ||!this.hzPlayList.length%50) return
+				this.offset = this.hzPlayList.length
+				this.getHzPlayList()
 			},
 			//播放时间格式化
 			setDtime(dt) {
@@ -156,12 +173,52 @@
 			//设置播放列表
 			sendList() {
 				let ids = ''
+				let idsArr = ''
 				this.hzPlayList.forEach(item => {
 					ids += (item.id + ',')
 				})
 				ids = ids.slice(0, -1)
-				if (ids == this.$store.state.ids && ids != '') return
+				this.$store.state.musicInfo.forEach(item =>{
+					idsArr = (item.id + ',')
+				})
+				idsArr = idsArr.slice(0, -1)
+				if (ids == idsArr && ids != '') return
 				this.$store.dispatch('sendList', ids)
+			},
+			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
+			getUserPlayList() {
+				if(this.$store.state.hzId || !this.$store.state.userId) return
+				this.$http.get('/user/playlist', {
+					params: {
+						uid: this.$store.state.userId
+					}
+				}).then(res => {
+					let userPlayList = res.data.playlist
+					let find = false
+					let hzId = ''
+					userPlayList.forEach(item => {
+						if (item.name == '皇子音乐') {
+							find = true
+							hzId = item.id
+						}
+					})
+					if (find) {
+						this.$store.state.hzId = hzId
+						this.getHzPlayList()
+						return
+					}
+					this.createPlayList()
+				})
+			},
+			//生成专用歌单
+			createPlayList() {
+				this.$http.get('/playlist/create', {
+					params: {
+						name: '皇子音乐'
+					}
+				})
+				this.getUserPlayList()
+				this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
 			},
 
 		}

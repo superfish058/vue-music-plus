@@ -7,6 +7,8 @@ let pushLrc = ''
 let pushAlname = []
 let pushSongId = ''
 let pushSingerIds = []
+let pushmv = ''
+let pushAlId = ''
 
 let flags = 0
 let pushUrls = []
@@ -37,6 +39,8 @@ const mutations = {
 		pushAlname = info.alName
 		pushSongId = info.songId
 		pushSingerIds = info.singerIds
+		pushmv = info.mv
+		pushAlId = info.alId
 		flag++
 		this.commit('setInfo')
 	},
@@ -59,6 +63,8 @@ const mutations = {
 			info['alName'] = pushAlname
 			info['songId'] = pushSongId
 			info['singerIds'] = pushSingerIds
+			info['mv'] = pushmv
+			info['alId'] = pushAlId
 			
 			if (state.musicInfo[0].artist == '黑暗皇子') {
 				state.musicInfo = []

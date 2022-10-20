@@ -1,7 +1,4 @@
 import axios from 'axios'
-axios.defaults.baseURL = 'https://www.hzmusic.top/'
-axios.defaults.withCredentials = true
-
 
 const actions = {
 	//添加歌曲至歌单
@@ -38,11 +35,15 @@ const actions = {
 		commit,
 		state
 	}, id) {
-		let theIds = state.ids.split(',')
-		let index = theIds.indexOf(id.toString())
-		if (index === state.listIndex) return
-		if (index != -1) {
-			commit('SwitchUrl', index)
+		let switchIndex = -1
+		state.musicInfo.forEach((item,index) =>{
+			if(item.songId == id){
+				switchIndex = index
+			}
+		})
+		if (switchIndex === state.listIndex)return
+		if (switchIndex != -1) {
+			commit('SwitchUrl', switchIndex)
 			return
 		}
 		let url = ''
@@ -54,6 +55,8 @@ const actions = {
 		let alName = ''
 		let singerIds = []
 		let songId = id
+		let mv = ''
+		let alId = ''
 		axios.get('/song/url', {
 			params: {
 				id
@@ -71,6 +74,8 @@ const actions = {
 			artists = res.data.songs[0].ar
 			picUrl = res.data.songs[0].al.picUrl
 			alName = res.data.songs[0].al.name
+			mv = res.data.songs[0].mv
+			alId = res.data.songs[0].al.id
 			artists.forEach((item) => {
 				singers += (item.name + '/')
 				singerIds.push(item.id)
@@ -82,7 +87,9 @@ const actions = {
 				picUrl,
 				alName,
 				singerIds,
-				songId:songId
+				songId,
+				mv,
+				alId
 			}
 			commit('SetDetail', info)
 		})
@@ -100,7 +107,6 @@ const actions = {
 		commit,
 		state
 	}, ids) {
-		console.log(ids);
 		state.id = ''
 		axios.get('/song/url', {
 			params: {
@@ -116,7 +122,6 @@ const actions = {
 					}
 				})
 			})
-
 			commit('SetUrls', urls)
 		})
 
@@ -134,6 +139,8 @@ const actions = {
 				let singerIds = []
 				let singers = ''
 				let songIds = []
+				let mv = item.mv
+				let alId = item.al.id
 				artists.forEach((it) => {
 					singers += (it.name + '/')
 					singerIds.push(it.id)
@@ -146,7 +153,9 @@ const actions = {
 					cover: picUrl,
 					alName: alName,
 					singerIds:singerIds,
-					songId:songIds[index]
+					songId:songIds[index],
+					mv,
+					alId
 
 				})
 			})

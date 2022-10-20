@@ -331,7 +331,10 @@
 		},
 		beforeRouteUpdate(to,from,next){
 			this.$refs.searchRef.parentNode.scrollTop = 0
-			next()
+			if(to.path =='/main/search'){
+				next()
+			}
+			
 		},
 		watch: {
 			searchSignal: function() {
@@ -348,6 +351,16 @@
 					this.resetAll()
 				}
 			},
+			searchWords(){
+				if(this.$route.path != '/main/search') return
+				this.getRecommend()
+				this.searchSongs()
+				this.searchAlbums()
+				this.searchPlaylists()
+				this.searchvideoLists()
+				this.searchSingers()
+				this.resetAll()
+			}
 		},
 		methods: {
 			//跳转MV页面

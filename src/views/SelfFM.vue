@@ -38,7 +38,7 @@
 						<span style="margin-right: 5px;">{{currentMusicInfo.name}}</span>
 						<span class="iconfont icon-shipin"
 							style="color:aquamarine;opacity: 0.9;font-size: 24px;cursor: pointer;display: inline-block;transform: translateY(1px);"
-							v-if="musicDetail.mv" @click="turnMvPage(musicDetail.mv)"></span>
+							v-if="currentMusicInfo.mv" @click="turnMvPage(currentMusicInfo.mv)"></span>
 					</p>
 				</el-row>
 				<el-row style="font-size: 18px;display: flex;justify-content: center;">
@@ -49,7 +49,7 @@
 							{{item}}
 						</span>
 						<span style="cursor: default;"> - </span>
-						<span @click="turnAlbumPage(musicDetail.al.id)" style="cursor: pointer;" class="hover">
+						<span @click="turnAlbumPage(currentMusicInfo.alId)" style="cursor: pointer;" class="hover">
 							{{currentMusicInfo.alName}}
 						</span>
 					</p>
@@ -76,10 +76,6 @@
 				lrcArr: [], //歌词内容
 				offsetTop: [], //歌词卷积高度
 				setColor: true, //设置主题色
-				musicDetail: {
-					ar:[{name:'黑暗皇子'}],
-					al:{id:0}
-				}, //音乐详情
 				themeColor: 'rgba(255,255,255,0.9)',
 				currentIn:false
 			}
@@ -152,7 +148,7 @@
 			//判断是否在当前页
 			judgeCurrentIn(){
 				if(this.$route.path != '/main/selfFM') return
-				this.currentIn = this.inIds(this.musicDetail.id)
+				this.currentIn = this.inIds(this.currentMusicInfo.songId)
 			},
 			//判断是否被收藏
 			inIds(id){
@@ -177,7 +173,7 @@
 					return
 				}
 				this.$message.success('添加成功')
-				this.$store.dispatch('addSong',this.musicDetail.id)
+				this.$store.dispatch('addSong',this.currentMusicInfo.songId)
 				this.judgeCurrentIn()
 			},
 			removeSong() {
@@ -186,7 +182,7 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.$store.dispatch('removeSong',this.musicDetail.id)
+					this.$store.dispatch('removeSong',this.currentMusicInfo.songId)
 					this.judgeCurrentIn()
 					this.$message({
 						type: 'success',
@@ -225,19 +221,6 @@
 					}
 				})
 			},
-			//获取歌曲信息
-			getMusicDetail() {
-				this.$http.get('/song/detail', {
-					params: {
-						ids: this.currentId
-					}
-				}).then(res => {
-					if(res.data.songs){
-						this.musicDetail = res.data.songs[0]
-					}
-					this.judgeCurrentIn()
-				})
-			},
 			//重新加载界面
 			timeup() {
 				if (this.lrcArr != '') {
@@ -259,7 +242,7 @@
 						}
 						this.$refs.lyul.style.top = this.offsetTop[index] + 'px'
 						let ind = 0
-						if (!this.currentMusicInfo.theme) return
+						if (!this.currentMusicInfo.theme)return
 						this.themeColor = this.currentMusicInfo.theme
 						let numArr = this.currentMusicInfo.theme.match(/\d+/g)
 						let addFilter = numArr.every(item => {
@@ -299,10 +282,10 @@
 						lrcArr.push(tmp[2])
 					}
 				}
+				this.judgeCurrentIn()
 				this.timeArr = timeArr
 				this.lrcArr = lrcArr
 				this.offsetTop = []
-				this.getMusicDetail()
 			}, //设置歌词
 			lytime(value) {
 				let time, sec, min, timePro;

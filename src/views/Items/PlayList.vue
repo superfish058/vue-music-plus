@@ -1,8 +1,9 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;" ref="playListPage">
+	<div style="padding: 20px 20px 20px 18px;" v-infinite-scroll="load" infinite-scroll-delay="300"
+		infinite-scroll-distance="50" ref="playListPage">
 		<!-- 专辑信息区 -->
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
-			<el-col :span="6">
+			<el-col :span="6" v-if="playListInfo.coverImgUrl">
 				<el-image :src="playListInfo.coverImgUrl" fit="cover" style="width: 90%;aspect-ratio: 1;">
 				</el-image>
 			</el-col>
@@ -99,6 +100,7 @@
 				playListInfo: '', //歌单信息
 				playListSongs: [], //歌单歌曲
 				showDesc: false, //简介是否展示
+				offset:0
 			}
 		},
 		computed: {
@@ -108,9 +110,11 @@
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
+				vc.playListSongs = []
+				vc.offset = 0
 				vc.getPlayListInfo()
 				vc.getAllListSongs()
-				vc.showDesc = false
+				vc.showDesc = false				
 				vc.$nextTick(() => {
 					vc.$refs.playListPage.parentNode.scrollTop = 0
 				})
@@ -139,6 +143,12 @@
 						singerId: id
 					}
 				})
+			},
+			load(){
+				if(this.$route.path!='/main/playlist') return
+				if (this.offset >= this.playListSongs.length ||!this.playListSongs.length%50) return
+				this.offset = this.playListSongs.length
+				this.getAllListSongs()
 			},
 			//展示歌单简介
 			showDetail() {
@@ -175,10 +185,12 @@
 			getAllListSongs(id) {
 				this.$http.get('/playlist/track/all', {
 					params: {
-						id: this.listId
+						id: this.listId,
+						limit:50,
+						offset:this.offset
 					}
 				}).then(res => {
-					this.playListSongs = res.data.songs
+					this.playListSongs = this.playListSongs.concat(res.data.songs)  
 				})
 			},
 			//播放时间格式化

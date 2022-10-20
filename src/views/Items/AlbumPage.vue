@@ -2,7 +2,7 @@
 	<div style="padding: 20px 20px 20px 18px;" ref="albumPage">
 		<!-- 专辑信息区 -->
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
-			<el-col :span="6">
+			<el-col :span="6" v-if="albumInfo.picUrl">
 				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 90%;aspect-ratio: 1;">
 				</el-image>
 			</el-col>
