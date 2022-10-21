@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px" v-infinite-scroll="load" infinite-scroll-delay="300"
+	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
 		infinite-scroll-distance="50" ref="singerPage">
 		<!-- 歌手背景图 -->
 		<el-row v-if="singerInfo.artist">
@@ -180,7 +180,7 @@
 						vc.$refs.tags.childNodes[ind].style = 'none'
 					})
 					vc.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
-					vc.$refs.singerPage.parentNode.scrollTop = 0
+					vc.$refs.singerPage.scrollTop = 0
 				})
 			})
 		},
@@ -201,7 +201,7 @@
 					this.$refs.tags.childNodes[ind].style = 'none'
 				})
 				this.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
-				this.$refs.singerPage.parentNode.scrollTop = 0
+				this.$refs.singerPage.scrollTop = 0
 			})
 			next()
 		},

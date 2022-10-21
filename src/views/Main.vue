@@ -94,7 +94,7 @@
 					</el-row>
 				</el-aside>
 				<!-- 路由展示区 -->
-				<el-main class="border target" style="width: 1000px; height: 590px;padding: 0;overflow-y: scroll;">
+				<el-main class="border target" style="width: 1000px; height: 590px;padding: 0;overflow-y: hidden;">
 					<keep-alive>
 						<router-view></router-view>
 					</keep-alive>

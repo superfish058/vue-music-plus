@@ -7,12 +7,13 @@ import mutations from './mutations.js'
 const store = new Vuex.Store({
   state: {
 	musicInfo:[{
-		name:'无题',
+		name:'黑暗',
 		artist:'黑暗皇子',
 		url: "", // 音频文件url
 		cover: require('@/assets/logoImg.png'), // 演唱者封面
 		lrc: '[00:00.00] (,,•́ . •̀,,) 还没有加载任意音频喵', // 歌词或者歌词文件
 		theme:'rgb(0,0,0)',
+		singerIds:[0],
 		alName:'黑暗降临'
 	}],
 	currentTime:0,//当前播放时间

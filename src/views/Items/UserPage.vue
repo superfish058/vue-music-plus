@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;" v-infinite-scroll="load" infinite-scroll-delay="300"
+	<div style="padding: 20px 20px 20px 18px;height: 100%;overflow-y: scroll;box-sizing: border-box;" v-infinite-scroll="load" infinite-scroll-delay="300"
 		infinite-scroll-distance="50" ref="userPage">
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
 			<el-col :span="6" v-if="hzPlayList!==undefined && hzPlayList.length > 0 ">
@@ -32,7 +32,6 @@
 									fit="cover" @click="playMusic(scope.row.id)">
 								</el-image>
 							</div>
-
 						</template>
 					</el-table-column>
 					<el-table-column width="460">
@@ -81,8 +80,19 @@
 				setOffset:false
 			}
 		},
-		mounted() {
-			this.getHzPlayList()
+		computed:{
+			userId(){
+				return this.$store.state.userId
+			}
+		},
+		watch:{
+			userId(){
+				if(this.userId){
+					this.getUserPlayList()
+				}
+			}
+		},
+		mounted(){
 			this.getUserPlayList()
 		},
 		beforeRouteEnter(to, from, next) {
@@ -90,33 +100,17 @@
 				vc.hzPlayList = []
 				vc.offset = 0
 				vc.setOffset =false
+				vc.getUserPlayList
 				vc.getHzPlayList()
-				vc.getUserPlayList()
 				vc.$nextTick(()=>{
-					vc.$refs.userPage.parentNode.scrollTop = 0
+					vc.$refs.userPage.scrollTop = 0
 				})
 			})
 		},
 		methods: {
-			//跳转MV页面
-			turnMvPage(id) {
-				this.$router.push({
-					path: '/main/video',
-					query: {
-						mvId: id
-					}
-				})
-			},
 			//获取皇子音乐歌单
-			getHzPlayList() {
-				let id = this.$store.state.hzId
-				// if (!id) {
-				// 	setTimeout(() => {
-				// 		id = this.$store.state.hzId
-				// 		if (id) this.getHzPlayList()
-				// 	}, 200)
-				// }
-				if (!id||this.$store.state.userId ==8023474819) return
+			getHzPlayList() {				
+				if(!this.$store.state.hzId) return
 				this.$http.get('/playlist/track/all', {
 					params: {
 						id:this.$store.state.hzId,
@@ -126,8 +120,17 @@
 					}
 
 				}).then(res => {
+					console.log('get');
 					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
-					this.setOffset = true
+				})
+			},
+			//跳转MV页面
+			turnMvPage(id) {
+				this.$router.push({
+					path: '/main/video',
+					query: {
+						mvId: id
+					}
 				})
 			},
 			//跳转歌手页面
@@ -149,11 +152,12 @@
 				})
 			},
 			load(){
-				if(this.$route.path!='/main/userpage') return
-				if(!this.setOffset) return
+				console.log('load');
+				if(this.hzPlayList == []) return
+				if(this.hzPlayList.length<50) return
 				if (this.offset >= this.hzPlayList.length) return
+				console.log('loadOk');
 				this.offset = this.hzPlayList.length
-				this.setOffset = false
 				this.getHzPlayList()
 			},
 			//播放时间格式化
@@ -169,6 +173,7 @@
 				}
 				return min + ':' + sec
 			},
+			//设置日期
 			setDate(date) {
 				let year = new Date(date).getFullYear()
 				return year + '年创建'
@@ -194,11 +199,11 @@
 			},
 			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
 			getUserPlayList() {
-				if(this.$store.state.userId==''||this.$store.state.userId ==8023474819){
+				if(this.$store.state.userId==''){
 					this.$message('请先登录哦')
 					return
 				}
-				if(this.find) return
+				//检测到用户登录，获取用户歌单
 				this.$http.get('/user/playlist', {
 					params: {
 						uid: this.$store.state.userId
@@ -206,10 +211,12 @@
 				}).then(res => {
 					let userPlayList = res.data.playlist
 					let hzId = ''
+					console.log(userPlayList);
+					//判断是否生成专属歌单
 					userPlayList.forEach(item => {
 						if (item.name == '皇子音乐') {
-							this.find = true
 							hzId = item.id
+							this.find = true
 						}
 					})
 					if (this.find) {
@@ -217,6 +224,7 @@
 						this.getHzPlayList()
 						return
 					}
+					//没发现专属歌单，进行歌单生成
 					this.createPlayList()
 				})
 			},
@@ -229,7 +237,6 @@
 					}
 				})
 				this.created = true
-				this.find = true
 				this.getUserPlayList()
 				this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
 				

@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;" v-infinite-scroll="load" infinite-scroll-delay="300"
+	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
 		infinite-scroll-distance="50" ref="playListPage">
 		<!-- 专辑信息区 -->
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
@@ -116,7 +116,7 @@
 				vc.getAllListSongs()
 				vc.showDesc = false				
 				vc.$nextTick(() => {
-					vc.$refs.playListPage.parentNode.scrollTop = 0
+					vc.$refs.playListPage.scrollTop = 0
 				})
 			})
 		},

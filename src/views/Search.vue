@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 15px;" v-infinite-scroll="load" infinite-scroll-delay="300"
+	<div style="padding: 20px 20px 20px 15px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
 		infinite-scroll-distance="50" ref="searchRef" infinite-scroll-immediate="0">
 		<!-- 标签导航 -->
 		<el-row>
@@ -18,7 +18,7 @@
 						<el-row v-if="orderNone">
 							<el-col :span="11" class="recommend" v-if="songLists.length>0">
 								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 10px;"
-									:src="songLists[0].al.picUrl+'?param=300y300'" fit="cover">
+									:src="songLists[0].al.picUrl+'?param=300y300'" fit="cover" @click="playMusic(songLists[0].id)">
 								</el-image>
 								<p class="main-p">{{songLists[0].name}}</p>
 								<p>单曲</p>
@@ -314,27 +314,18 @@
 				return this.getSearchSignal()
 			},
 		},
-		mounted() {
-			this.getRecommend()
-			this.searchSongs()
-			this.searchAlbums()
-			this.searchPlaylists()
-			this.searchvideoLists()
-			this.searchSingers()
-		},
 		beforeRouteEnter(to,from,next){
 			next(vc =>{
 				vc.$nextTick(()=>{
-					vc.$refs.searchRef.parentNode.scrollTop = 0
+					vc.$refs.searchRef.scrollTop = 0
 				})
 			})
 		},
 		beforeRouteUpdate(to,from,next){
-			this.$refs.searchRef.parentNode.scrollTop = 0
+			this.$refs.searchRef.scrollTop = 0
 			if(to.path =='/main/search'){
 				next()
 			}
-			
 		},
 		watch: {
 			searchSignal: function() {
@@ -342,27 +333,41 @@
 					this.lastSearch = this.newSearch
 					this.newSearch = this.searchWords
 					if (this.newSearch == this.lastSearch) return
-					this.getRecommend()
-					this.searchSongs()
-					this.searchAlbums()
-					this.searchPlaylists()
-					this.searchvideoLists()
-					this.searchSingers()
-					this.resetAll()
+					console.log('search');
+					this.haveSearch()
 				}
 			},
-			searchWords(){
-				if(this.$route.path != '/main/search') return
-				this.getRecommend()
-				this.searchSongs()
-				this.searchAlbums()
-				this.searchPlaylists()
-				this.searchvideoLists()
-				this.searchSingers()
-				this.resetAll()
-			}
+			// searchWords(){
+			// 	if(this.$route.path != '/main/search') return
+			// 	this.getRecommend()
+			// 	this.searchSongs()
+			// 	this.searchAlbums()
+			// 	this.searchPlaylists()
+			// 	this.searchvideoLists()
+			// 	this.searchSingers()
+			// 	this.resetAll()
+			// }
 		},
 		methods: {
+			haveSearch(){
+				this.resetAll()
+				this.getRecommend()
+				setTimeout(()=>{
+					this.searchSongs()
+				},50)
+				setTimeout(()=>{
+					this.searchAlbums()
+				},100)
+				setTimeout(()=>{
+					this.searchPlaylists()
+				},150)
+				setTimeout(()=>{
+					this.searchvideoLists()
+				},200)
+				setTimeout(()=>{
+					this.searchSingers()
+				},300)
+			},
 			//跳转MV页面
 			turnMvPage(id) {
 				this.$router.push({
@@ -478,8 +483,7 @@
 					params: {
 						keywords: this.searchWords,
 						limit: 15,
-						offset: 0 + this.searchOffset,
-						time:new Date().valueOf()
+						offset: 0 + this.searchOffset
 					}
 				}).then(res => {
 					this.songLists = this.songLists.concat(res.data.result.songs)
@@ -493,7 +497,6 @@
 						limit: 24,
 						type: 10,
 						offset: 0 + this.searchOffset,
-						time:new Date().valueOf()
 					}
 				}).then(res => {
 					this.albumLists = this.albumLists.concat(res.data.result.albums)
@@ -506,8 +509,7 @@
 						keywords: this.searchWords,
 						limit: 16,
 						type: 1000,
-						offset: 0 + this.searchOffset,
-						time:new Date().valueOf()
+						offset: 0 + this.searchOffset
 					}
 				}).then(res => {
 					this.playlists = this.playlists.concat(res.data.result.playlists)
@@ -520,8 +522,7 @@
 						keywords: this.searchWords,
 						limit: 15,
 						type: 1014,
-						offset: 0 + this.searchOffset,
-						time:new Date().valueOf()
+						offset: 0 + this.searchOffset
 					}
 				}).then(res => {
 					this.videoLists = this.videoLists.concat(res.data.result.videos)
@@ -533,8 +534,7 @@
 					params: {
 						keywords: this.searchWords,
 						limit: 12,
-						type: 100,
-						time:new Date().valueOf()
+						type: 100
 					}
 				}).then(res => {
 					this.singerLists = this.singerLists.concat(res.data.result.artists)
@@ -544,7 +544,7 @@
 			getSearchSignal() {
 				setTimeout(() => {
 					this.$store.state.searchSignal = 0
-				}, 20)
+				}, 200)
 				return this.$store.state.searchSignal
 			},
 			//获取搜索推荐

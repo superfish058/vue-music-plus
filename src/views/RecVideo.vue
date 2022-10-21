@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px" v-infinite-scroll="load" infinite-scroll-delay="300"
+	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
 		infinite-scroll-distance="50" ref="recVideoPage">
 		<el-row>
 			<el-card>
@@ -76,14 +76,14 @@
 				next(vc => {
 					if(!vc.$store.state.userId) return
 					vc.$nextTick(() => {
-						vc.$refs.recVideoPage.parentNode.scrollTop = 0
+						vc.$refs.recVideoPage.scrollTop = 0
 					})
 
 				})
 			} else {
 				next(vc => {
 					vc.$nextTick(() => {
-						vc.$refs.recVideoPage.parentNode.scrollTop = 0
+						vc.$refs.recVideoPage.scrollTop = 0
 						vc.selectTag = to.query.name
 						let name = to.query.name
 						vc.allTagIndex = -1

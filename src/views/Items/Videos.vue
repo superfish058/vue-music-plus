@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px" ref="videoPage">
+	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" ref="videoPage">
 		<el-row>
 			<!-- 视频主体区 -->
 			<el-col :span="15" style="padding-right: 20px">
@@ -111,7 +111,7 @@
 				}
 				vc.getVideoInfo()
 				vc.$nextTick(()=>{
-					vc.$refs.videoPage.parentNode.scrollTop = 0
+					vc.$refs.videoPage.scrollTop = 0
 				})
 				
 			})
@@ -125,7 +125,7 @@
 				this.mvId = false
 			}
 			this.listOn = false
-			this.$refs.videoPage.parentNode.scrollTop = 0
+			this.$refs.videoPage.scrollTop = 0
 			this.getVideoInfo()
 			next()
 		},

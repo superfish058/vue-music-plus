@@ -91,7 +91,7 @@
 				return this.$store.state.currentTime
 			},
 		},
-		beforeRouteEnter(to, from, next) {
+		beforeRouteEnter(to, from, next){
 			next(vc => {
 				vc.setLyric()
 			})
@@ -176,6 +176,7 @@
 				this.$store.dispatch('addSong',this.currentMusicInfo.songId)
 				this.judgeCurrentIn()
 			},
+			//取消收藏
 			removeSong() {
 				this.$confirm('确定要取消收藏本首歌曲?', '提示', {
 					confirmButtonText: '确定',
@@ -203,6 +204,10 @@
 			},
 			//跳转歌手页面
 			turnSingerPage(id) {
+				if(this.currentMusicInfo.artist == '黑暗皇子'){
+					this.$message('黑暗皇子')
+					return
+				}
 				if(!id) return
 				this.$router.push({
 					path: '/main/singer',
@@ -213,6 +218,10 @@
 			},
 			//跳转专辑界面
 			turnAlbumPage(id) {
+				if(this.currentMusicInfo.alName == '黑暗降临'){
+					this.$message('黑暗降临')
+					return
+				}
 				if(!id) return
 				this.$router.push({
 					path: '/main/album',

@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px;box-sizing: border-box;height: 590px;transform: translate3d(0, 0, 0);overflow-x:none ;">
+	<div style="padding: 20px;box-sizing: border-box;height: 590px;transform: translate3d(0, 0, 0);overflow-y:scroll;">
 		<div style="position: relative; top: 0;height: 220px;">
 			<el-carousel :interval="4000" type="card" height="190px" trigger="click" ref="carousel">
 				<el-carousel-item v-for="(item,index) in banners" height="200px" :key="index">
