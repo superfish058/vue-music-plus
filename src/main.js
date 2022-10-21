@@ -5,7 +5,7 @@ import router from './router'
 import '@/plugins/element.js'
 import '@/assets/reset.css'
 import axios from 'axios'
-axios.defaults.baseURL = 'https://www.hzmusic.top/'
+axios.defaults.baseURL = 'https://www.hzmusic.fit/'
 axios.defaults.withCredentials = true
 axios.defaults.timeout = 10000
 
