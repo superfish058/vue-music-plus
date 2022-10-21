@@ -478,7 +478,8 @@
 					params: {
 						keywords: this.searchWords,
 						limit: 15,
-						offset: 0 + this.searchOffset
+						offset: 0 + this.searchOffset,
+						time:new Date().valueOf()
 					}
 				}).then(res => {
 					this.songLists = this.songLists.concat(res.data.result.songs)
@@ -491,7 +492,8 @@
 						keywords: this.searchWords,
 						limit: 24,
 						type: 10,
-						offset: 0 + this.searchOffset
+						offset: 0 + this.searchOffset,
+						time:new Date().valueOf()
 					}
 				}).then(res => {
 					this.albumLists = this.albumLists.concat(res.data.result.albums)
@@ -504,7 +506,8 @@
 						keywords: this.searchWords,
 						limit: 16,
 						type: 1000,
-						offset: 0 + this.searchOffset
+						offset: 0 + this.searchOffset,
+						time:new Date().valueOf()
 					}
 				}).then(res => {
 					this.playlists = this.playlists.concat(res.data.result.playlists)
@@ -517,7 +520,8 @@
 						keywords: this.searchWords,
 						limit: 15,
 						type: 1014,
-						offset: 0 + this.searchOffset
+						offset: 0 + this.searchOffset,
+						time:new Date().valueOf()
 					}
 				}).then(res => {
 					this.videoLists = this.videoLists.concat(res.data.result.videos)
@@ -529,7 +533,8 @@
 					params: {
 						keywords: this.searchWords,
 						limit: 12,
-						type: 100
+						type: 100,
+						time:new Date().valueOf()
 					}
 				}).then(res => {
 					this.singerLists = this.singerLists.concat(res.data.result.artists)

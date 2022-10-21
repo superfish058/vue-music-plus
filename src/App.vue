@@ -34,22 +34,6 @@
 					this.findPlayList()
 				})
 			},
-			//获取皇子音乐歌单
-			getHzPlayList() {
-				let id = this.$store.state.hzId
-				if (!id||this.$store.state.userId ==8023474819) return
-				this.$http.get('/playlist/track/all', {
-					params: {
-						id:this.$store.state.hzId,
-						time: new Date().valueOf(),
-						limit:50,
-						offset:this.offset
-					}
-			
-				}).then(res => {
-					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
-				})
-			},
 			//寻找专用歌单
 			findPlayList() {
 				this.getUserPlayList()
@@ -76,7 +60,6 @@
 					})
 					if (this.find) {
 						this.$store.state.hzId = hzId
-						this.getHzPlayList()
 						return
 					}
 					this.createPlayList()
