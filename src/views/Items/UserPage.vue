@@ -147,7 +147,7 @@
 			},
 			load(){
 				if(this.$route.path!='/main/userpage') return
-				if (this.offset >= this.hzPlayList.length ||!this.hzPlayList.length%50) return
+				if (this.offset >= this.hzPlayList.length ||!this.hzPlayList.length%50||!this.this.hzPlayList.length) return
 				this.offset = this.hzPlayList.length
 				this.getHzPlayList()
 			},

@@ -60,8 +60,7 @@ const actions = {
 		axios.get('/song/url/v1', {
 			params: {
 				id,
-				level:'exhigh',
-				time:new Date().valueOf()
+				level:'exhigh'
 			}
 		}).then(res => {
 			url = res.data.data[0].url
@@ -72,6 +71,7 @@ const actions = {
 				ids: id
 			}
 		}).then(res => {
+			if(!res.data.song[0])return
 			name = res.data.songs[0].name
 			artists = res.data.songs[0].ar
 			picUrl = res.data.songs[0].al.picUrl
