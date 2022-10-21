@@ -78,6 +78,7 @@
 				offset:0,
 				created:false,
 				find:false,
+				setOffset:false
 			}
 		},
 		mounted() {
@@ -88,6 +89,7 @@
 			next(vc => {
 				vc.hzPlayList = []
 				vc.offset = 0
+				vc.setOffset =false
 				vc.getHzPlayList()
 				vc.getUserPlayList()
 				vc.$nextTick(()=>{
@@ -125,6 +127,7 @@
 
 				}).then(res => {
 					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
+					this.setOffset = true
 				})
 			},
 			//跳转歌手页面
@@ -147,8 +150,10 @@
 			},
 			load(){
 				if(this.$route.path!='/main/userpage') return
-				if (this.offset >= this.hzPlayList.length ||!this.hzPlayList.length%50||!this.this.hzPlayList.length) return
+				if(!this.setOffset) return
+				if (this.offset >= this.hzPlayList.length) return
 				this.offset = this.hzPlayList.length
+				this.setOffset = false
 				this.getHzPlayList()
 			},
 			//播放时间格式化
