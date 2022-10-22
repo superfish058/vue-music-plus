@@ -7,7 +7,7 @@ import '@/assets/reset.css'
 import axios from 'axios'
 axios.defaults.baseURL = 'https://www.hzmusic.fit/'
 axios.defaults.withCredentials = true
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 30000
 
 Vue.prototype.$http = axios
 new Vue({

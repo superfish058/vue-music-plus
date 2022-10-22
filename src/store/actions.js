@@ -1,6 +1,8 @@
 import axios from 'axios'
 import Vue from 'vue'
 
+let getMusic = false
+let getMusics = false
 const actions = {
 	//添加歌曲至歌单
 	addSong({
@@ -32,10 +34,15 @@ const actions = {
 		commit('RemoveSong',id)
 	},
 	//添加单曲
+	
 	async getMusicUrl({
 		commit,
 		state
 	}, id) {
+		if(getMusic){
+			Vue.prototype.$message('获取歌曲中，请稍后')
+			return
+		}
 		let switchIndex = -1
 		state.musicInfo.forEach((item,index) =>{
 			if(item.songId == id){
@@ -58,6 +65,7 @@ const actions = {
 		let songId = id
 		let mv = ''
 		let alId = ''
+		getMusic = true
 		const {data:res} = await axios.get('/song/url/v1', {
 			params: {
 				id,
@@ -66,11 +74,13 @@ const actions = {
 		})
 		if(res.code != 200){
 			Vue.prototype.$message.error('获取歌曲失败')
+			getMusic = false
 			return
 		}else{
 			url = res.data[0].url
 			if(url == null){
 				Vue.prototype.$message('音源不可用')
+				getMusic = false
 				return
 			}
 			commit('SetUrl', url)
@@ -111,6 +121,7 @@ const actions = {
 			lyc = res.data.lrc.lyric
 			commit('SetLyric', lyc)
 		})
+		getMusic = false
 	},
 	//添加播放列表
 	async sendList({
@@ -118,6 +129,11 @@ const actions = {
 		state
 	}, ids) {
 		state.id = ''
+		if(getMusics){
+			Vue.prototype.$message('获取歌曲列表中,请稍后')
+			return
+		}
+		getMusics = true
 		const {data:res} = await axios.get('/song/url/v1', {
 			params: {
 				id: ids,
@@ -128,6 +144,7 @@ const actions = {
 		let idsArray = ids.split(',')
 		if(res.code != 200){
 			Vue.prototype.$message.error('获取播放列表失败')
+			getMusics = false
 			return
 		}else{	
 			idsArray.forEach(it => {
@@ -205,8 +222,8 @@ const actions = {
 				}
 			})
 		})
-
-
+		Vue.prototype.$message.success('获取列表成功')
+		getMusics = false
 	}
 
 }
