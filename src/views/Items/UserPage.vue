@@ -110,7 +110,10 @@
 		methods: {
 			//获取皇子音乐歌单
 			getHzPlayList() {				
-				if(!this.$store.state.hzId) return
+				if(!this.$store.state.hzId){
+					this.$message('请先登录哦')
+					return
+				} 
 				this.$http.get('/playlist/track/all', {
 					params: {
 						id:this.$store.state.hzId,
@@ -120,7 +123,6 @@
 					}
 
 				}).then(res => {
-					console.log('get');
 					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
 				})
 			},
@@ -152,11 +154,9 @@
 				})
 			},
 			load(){
-				console.log('load');
 				if(this.hzPlayList == []) return
 				if(this.hzPlayList.length<50) return
 				if (this.offset >= this.hzPlayList.length) return
-				console.log('loadOk');
 				this.offset = this.hzPlayList.length
 				this.getHzPlayList()
 			},
@@ -211,7 +211,6 @@
 				}).then(res => {
 					let userPlayList = res.data.playlist
 					let hzId = ''
-					console.log(userPlayList);
 					//判断是否生成专属歌单
 					userPlayList.forEach(item => {
 						if (item.name == '皇子音乐') {
@@ -220,12 +219,13 @@
 						}
 					})
 					if (this.find) {
+						this.$message.success('正在加载歌单')
 						this.$store.state.hzId = hzId
 						this.getHzPlayList()
-						return
+					}else{
+						//没发现专属歌单，进行歌单生成
+						this.createPlayList()
 					}
-					//没发现专属歌单，进行歌单生成
-					this.createPlayList()
 				})
 			},
 			//生成专用歌单
@@ -235,10 +235,16 @@
 					params: {
 						name: '皇子音乐'
 					}
+				}).then(res =>{
+					if(res.data.code == 302){
+						this.$message('请先登录哦')
+					}else{
+						this.created = true
+						this.getUserPlayList()
+						this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
+					}
 				})
-				this.created = true
-				this.getUserPlayList()
-				this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
+				
 				
 			},
 

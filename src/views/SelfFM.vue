@@ -334,7 +334,7 @@
 		width: 40px;
 		border-radius: 5px;
 		user-select: none;
-		filter: brightness(0.9) drop-shadow(0.7px 0.7px 0.7px rgba(255, 255, 255, 0.8));
+		filter: brightness(0.9) drop-shadow(0px 0px 0.7px rgba(255, 255, 255, 0.8));
 	}
 
 	.lyarea {
@@ -360,7 +360,7 @@
 				font-size: 18px;
 				font-weight: normal;
 				line-height: 28px;
-				letter-spacing: 0.5px;
+				letter-spacing: 0.6px;
 				text-align: center;
 			}
 
@@ -373,9 +373,10 @@
 
 			li.filter {
 				font-size: 20px;
-				font-weight: bold;
+				font-weight: 700;
 				line-height: 30px;
-				filter: brightness(0.9) drop-shadow(0.7px 0.7px 0.7px rgba(255, 255, 255, 0.8));
+				filter: brightness(0.9) drop-shadow(0px 0px 0.8px rgba(255, 255, 255, 0.8));
+				// text-shadow: 0.5px 0.5px 3px rgba(255, 255, 255, 0.4),-0.5px -0.5px 3px rgba(255, 255, 255, 0.4);
 			}
 		}
 

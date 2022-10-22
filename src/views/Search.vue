@@ -329,6 +329,7 @@
 		},
 		watch: {
 			searchSignal: function() {
+				console.log(this.searchSignal);
 				if (this.searchSignal != 0) {
 					this.lastSearch = this.newSearch
 					this.newSearch = this.searchWords

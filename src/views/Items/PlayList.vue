@@ -154,7 +154,6 @@
 			showDetail() {
 				if (this.showDesc) {
 					let nameWidth = this.$refs.creatorName.getBoundingClientRect().width
-					console.log(nameWidth);
 					this.$refs.creator.style.transform = "translateY(41px)"
 					this.$refs.createrInfo.style.transform = 'translateX(' + (nameWidth + 50) + 'px' + ')'
 				} else {

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 const actions = {
 	//添加歌曲至歌单
@@ -31,7 +32,7 @@ const actions = {
 		commit('RemoveSong',id)
 	},
 	//添加单曲
-	getMusicUrl({
+	async getMusicUrl({
 		commit,
 		state
 	}, id) {
@@ -57,16 +58,24 @@ const actions = {
 		let songId = id
 		let mv = ''
 		let alId = ''
-		axios.get('/song/url/v1', {
+		let get = false
+		const {data:res} = await axios.get('/song/url/v1', {
 			params: {
 				id,
 				level:'exhigh'
 			}
-		}).then(res => {
-			console.log(res);
-			url = res.data.data[0].url
-			commit('SetUrl', url)
 		})
+		if(res.code != 200){
+			get = false
+		}else{
+			url = res.data[0].url
+			get = true
+			commit('SetUrl', url)
+		}
+		if(!get){
+			Vue.prototype.$message.error('获取歌曲失败')
+			return
+		}
 		axios.get('/song/detail', {
 			params: {
 				ids: id
@@ -105,30 +114,34 @@ const actions = {
 		})
 	},
 	//添加播放列表
-	sendList({
+	async sendList({
 		commit,
 		state
 	}, ids) {
+		let get =false
 		state.id = ''
-		axios.get('/song/url/v1', {
+		const {data:res} = await axios.get('/song/url/v1', {
 			params: {
 				id: ids,
-				level:'exhigh',
-				time:new Date().valueOf()
+				level:'exhigh'
 			}
-		}).then(res => {
-			let urls = []
-			let idsArray = ids.split(',')
+		})
+		let urls = []
+		let idsArray = ids.split(',')
+		if(res.data.code != 200){
+			Vue.prototype.$message.error('获取播放列表失败')
+		}else{	
+			get = true
 			idsArray.forEach(it => {
-				res.data.data.forEach(item => {
+				res.data.forEach(item => {
 					if (item.id == it) {
 						urls.push(item.url)
 					}
 				})
 			})
 			commit('SetUrls', urls)
-		})
-
+		}
+		if(!get) return
 		axios.get('/song/detail', {
 			params: {
 				ids: ids

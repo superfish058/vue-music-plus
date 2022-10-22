@@ -72,8 +72,6 @@
 					narrow: false,
 					autoplay: true,
 					lrcType: 1,
-					theme: 'aqua',
-					preload: true,
 					mutex: true
 				});
 				ap.on('timeupdate', function() {

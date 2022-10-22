@@ -181,13 +181,16 @@
 				if (this.searchWords == '') {
 					this.searchWords = this.defaultKeyword
 				}
-				this.$store.state.searchSignal += 1
+				setTimeout(()=>{
+					this.$store.state.searchSignal += 1
+				},50)
 				this.$router.push({
 					path: 'search',
 					query: {
 						keyword: this.searchWords
 					}
 				})
+				
 			},
 			//提交注册
 			submitLoginForm(formName) {
