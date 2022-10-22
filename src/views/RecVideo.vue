@@ -1,6 +1,6 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
-		infinite-scroll-distance="50" ref="recVideoPage">
+	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" class="RecVideo"
+		v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="50" ref="recVideoPage">
 		<el-row>
 			<el-card>
 				<el-row style="position: relative;top: 10px;">
@@ -20,9 +20,10 @@
 					</div>
 				</el-row>
 				<el-row :gutter="30" style="margin-top: 20px;">
-					<el-col :span="8" v-for="item,index in videoList" :key="index" class="personalized-image" >
+					<el-col :span="8" v-for="item,index in videoList" :key="index" class="personalized-image">
 						<div v-if="item.data">
-							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.data.coverUrl+'?param=570y320'" fit="cover"
+							<el-image style="width: 100%; aspect-ratio: 16/9;"
+								:src="item.data.coverUrl+'?param=570y320'" fit="cover"
 								@click="turnVideoPage(item.data)">
 							</el-image>
 							<div style="height: 64px;font-size: 16px;">
@@ -37,7 +38,8 @@
 										{{it.name}}
 									</span>
 								</p>
-								<p v-if="item.type==1" style="text-align: justify;word-break: break-all;" class="main-p">
+								<p v-if="item.type==1" style="text-align: justify;word-break: break-all;"
+									class="main-p">
 									by&nbsp;{{item.data.creator.nickname}}
 								</p>
 							</div>
@@ -74,9 +76,10 @@
 		beforeRouteEnter(to, from, next) {
 			if (from.path != '/main/video') {
 				next(vc => {
-					if(!vc.$store.state.userId) return
+					if (!vc.$store.state.userId) return
 					vc.$nextTick(() => {
 						vc.$refs.recVideoPage.scrollTop = 0
+						vc.$store.state.localTop = 'RecVideo'
 					})
 
 				})
@@ -89,6 +92,7 @@
 						vc.allTagIndex = -1
 						vc.changeTag(to.query.id, vc.findIndex(name))
 						vc.tagId = to.query.id
+
 					})
 				})
 			}
@@ -241,7 +245,7 @@
 				this.$refs.tagRowPlus.childNodes[0].style.border = "1px solid #121212"
 			},
 			getVideoLists() {
-				if(!this.$store.state.userId||!this.$store.state.hzId){
+				if (!this.$store.state.userId || !this.$store.state.hzId) {
 					this.$message('请先登录哦')
 					return
 				}

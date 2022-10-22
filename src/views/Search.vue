@@ -1,6 +1,6 @@
 <template>
 	<div style="padding: 20px 20px 20px 15px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
-		infinite-scroll-distance="50" ref="searchRef" infinite-scroll-immediate="0">
+		infinite-scroll-distance="50" ref="searchRef" infinite-scroll-immediate="0" class="Search">
 		<!-- 标签导航 -->
 		<el-row>
 			<div class="tags" ref="tags">
@@ -318,6 +318,7 @@
 			next(vc =>{
 				vc.$nextTick(()=>{
 					vc.$refs.searchRef.scrollTop = 0
+					vc.$store.state.localTop = 'Search'
 				})
 			})
 		},

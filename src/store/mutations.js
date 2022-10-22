@@ -65,7 +65,6 @@ const mutations = {
 			info['singerIds'] = pushSingerIds
 			info['mv'] = pushmv
 			info['alId'] = pushAlId
-			console.log(info);
 			if (state.musicInfo[0].artist == '黑暗皇子') {
 				state.musicInfo = []
 			}

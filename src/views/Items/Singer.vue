@@ -1,6 +1,6 @@
 <template>
 	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
-		infinite-scroll-distance="50" ref="singerPage">
+		infinite-scroll-distance="50" ref="singerPage" class="Singer">
 		<!-- 歌手背景图 -->
 		<el-row v-if="singerInfo.artist">
 			<el-col :span="6">
@@ -179,6 +179,7 @@
 					vc.tags.forEach((item, ind) => {
 						vc.$refs.tags.childNodes[ind].style = 'none'
 					})
+					vc.$store.state.localTop = 'Singer'
 					vc.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
 					vc.$refs.singerPage.scrollTop = 0
 				})

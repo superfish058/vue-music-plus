@@ -1,15 +1,16 @@
 <template>
-	<div style="padding: 20px;box-sizing: border-box;height: 590px;transform: translate3d(0, 0, 0);overflow-y:scroll;">
+	<div style="padding: 20px;box-sizing: border-box;height: 590px;transform: translate3d(0, 0, 0);overflow-y:scroll;"
+		class="Discovery">
 		<div style="position: relative; top: 0;height: 220px;">
 			<el-carousel :interval="4000" type="card" height="190px" trigger="click" ref="carousel">
 				<el-carousel-item v-for="(item,index) in banners" height="200px" :key="index">
-						<el-image style="position: absolute;border-radius: 5px;height: 190px;" :src="item.imageUrl"
-							fit="fill" @click="turnRelatedPage(item,index)">
-							<div slot="error" class="image-slot">
-								<i class="el-icon-loading"></i>
-								<span>loading</span>
-							</div>
-						</el-image>
+					<el-image style="position: absolute;border-radius: 5px;height: 190px;" :src="item.imageUrl"
+						fit="fill" @click="turnRelatedPage(item,index)">
+						<div slot="error" class="image-slot">
+							<i class="el-icon-loading"></i>
+							<span>loading</span>
+						</div>
+					</el-image>
 					<span class="banner-text">{{item.typeTitle}}</span>
 				</el-carousel-item>
 			</el-carousel>
@@ -25,8 +26,8 @@
 			</el-row>
 			<el-col :span="6" v-for="item,index in personalized" :key="index">
 				<el-row class="personalized-image" v-if="item.picUrl">
-					<el-image style="width:80%; aspect-ratio: 1; border-radius: 5px;" :src="item.picUrl+'?param=450y450'" fit="cover"
-						@click="turnPlayListPage(item.id)" >
+					<el-image style="width:80%; aspect-ratio: 1; border-radius: 5px;"
+						:src="item.picUrl+'?param=450y450'" fit="cover" @click="turnPlayListPage(item.id)">
 						<div slot="error" class="image-slot">
 							<i class="el-icon-loading"></i>
 							<span>loading</span>
@@ -51,8 +52,9 @@
 					style="margin-bottom: 10px;position: relative;box-sizing: border-box;padding-right:10px;">
 					<el-row class="newsong-row">
 						<el-col :span="8" style="display: flex;" v-if="item.picUrl">
-							<el-image style="border-radius: 5px;width: 100%;aspect-ratio: 1;" :src="item.picUrl+'?param=300y300'"
-								fit="fill" @click="playMusic(item.id)" @error="getNewSongs()">
+							<el-image style="border-radius: 5px;width: 100%;aspect-ratio: 1;"
+								:src="item.picUrl+'?param=300y300'" fit="fill" @click="playMusic(item.id)"
+								@error="getNewSongs()">
 								<div slot="error" class="image-slot">
 									<i class="el-icon-loading"></i>
 									<span>loading</span>
@@ -95,15 +97,14 @@
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
-				if(!vc.banners){
-					vc.getBanner()
-					vc.getNewSongs()
-				}
+				vc.$nextTick(() => {
+					vc.$store.state.localTop = 'Discovery'
+				})
 			})
 		},
 		methods: {
-			turnRelatedPage(item,index) {
-				if(this.$refs.carousel.activeIndex != index) return
+			turnRelatedPage(item, index) {
+				if (this.$refs.carousel.activeIndex != index) return
 				let type = item.targetType
 				if (type == 3000) {
 					window.open(item.url, '_blank')
@@ -116,9 +117,9 @@
 							albumId: item.targetId
 						}
 					})
-				}else if (type == 1000) {
+				} else if (type == 1000) {
 					this.turnPlayListPage(item.targetId)
-				} 
+				}
 
 			},
 			//跳转歌手页面

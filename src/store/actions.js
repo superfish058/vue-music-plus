@@ -58,7 +58,6 @@ const actions = {
 		let songId = id
 		let mv = ''
 		let alId = ''
-		let get = false
 		const {data:res} = await axios.get('/song/url/v1', {
 			params: {
 				id,
@@ -66,15 +65,15 @@ const actions = {
 			}
 		})
 		if(res.code != 200){
-			get = false
-		}else{
-			url = res.data[0].url
-			get = true
-			commit('SetUrl', url)
-		}
-		if(!get){
 			Vue.prototype.$message.error('获取歌曲失败')
 			return
+		}else{
+			url = res.data[0].url
+			if(url == null){
+				Vue.prototype.$message('音源不可用')
+				return
+			}
+			commit('SetUrl', url)
 		}
 		axios.get('/song/detail', {
 			params: {
@@ -118,7 +117,6 @@ const actions = {
 		commit,
 		state
 	}, ids) {
-		let get =false
 		state.id = ''
 		const {data:res} = await axios.get('/song/url/v1', {
 			params: {
@@ -128,10 +126,10 @@ const actions = {
 		})
 		let urls = []
 		let idsArray = ids.split(',')
-		if(res.data.code != 200){
+		if(res.code != 200){
 			Vue.prototype.$message.error('获取播放列表失败')
+			return
 		}else{	
-			get = true
 			idsArray.forEach(it => {
 				res.data.forEach(item => {
 					if (item.id == it) {
@@ -141,7 +139,6 @@ const actions = {
 			})
 			commit('SetUrls', urls)
 		}
-		if(!get) return
 		axios.get('/song/detail', {
 			params: {
 				ids: ids

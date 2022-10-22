@@ -28,6 +28,7 @@ const store = new Vuex.Store({
 	hzPLayListIds:[],//皇子歌单音乐ids
 	deleteMusic:false,//删除歌曲标识
 	deleteIndex:0,//删除歌曲下标
+	localTop:'Discovery',//回到顶部标识
   },
   actions,
   mutations

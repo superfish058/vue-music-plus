@@ -1,8 +1,10 @@
 @font-face {
-	  font-family: "仓耳渔阳体 W03";font-weight: 400;src: url("//at.alicdn.com/wf/webfont/fMXyFp0126C7/q61iYwvvp63CRcvkUMsJL.woff2") format("woff2"),
-	  url("//at.alicdn.com/wf/webfont/fMXyFp0126C7/RpXq-QeP1akj8cYCh6QZn.woff") format("woff");
-	  font-display: swap;
-	}
+	font-family: "仓耳渔阳体 W03";
+	font-weight: 400;
+	src: url("//at.alicdn.com/wf/webfont/fMXyFp0126C7/q61iYwvvp63CRcvkUMsJL.woff2") format("woff2"),
+		url("//at.alicdn.com/wf/webfont/fMXyFp0126C7/RpXq-QeP1akj8cYCh6QZn.woff") format("woff");
+	font-display: swap;
+}
 
 html,
 body,
@@ -14,14 +16,14 @@ body,
 	font-family: "仓耳渔阳体 W03";
 }
 
-.hover:hover{
+.hover:hover {
 	cursor: pointer;
 	color: aquamarine;
 	opacity: 0.9;
-	
+
 }
 
-*{
+* {
 	scroll-behavior: smooth;
 }
 

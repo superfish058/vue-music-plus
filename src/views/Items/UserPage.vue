@@ -1,6 +1,6 @@
 <template>
 	<div style="padding: 20px 20px 20px 18px;height: 100%;overflow-y: scroll;box-sizing: border-box;" v-infinite-scroll="load" infinite-scroll-delay="300"
-		infinite-scroll-distance="50" ref="userPage">
+		infinite-scroll-distance="50" ref="userPage" class="UserPage">
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
 			<el-col :span="6" v-if="hzPlayList!==undefined && hzPlayList.length > 0 ">
 				<el-image :src="hzPlayList[0].al.picUrl+'?param=500y500'" fit="cover" style="width: 90%;aspect-ratio: 1;">
@@ -75,8 +75,6 @@
 			return {
 				hzPlayList: [], //皇子音乐歌单
 				offset:0,
-				created:false,
-				find:false,
 				setOffset:false
 			}
 		},
@@ -92,9 +90,6 @@
 				}
 			}
 		},
-		mounted(){
-			this.getUserPlayList()
-		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
 				vc.hzPlayList = []
@@ -104,6 +99,7 @@
 				vc.getHzPlayList()
 				vc.$nextTick(()=>{
 					vc.$refs.userPage.scrollTop = 0
+					vc.$store.state.localTop = 'UserPage'
 				})
 			})
 		},
@@ -197,56 +193,7 @@
 				if (ids == idsArr && ids != '') return
 				this.$store.dispatch('sendList', ids)
 			},
-			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
-			getUserPlayList() {
-				if(this.$store.state.userId==''){
-					this.$message('请先登录哦')
-					return
-				}
-				//检测到用户登录，获取用户歌单
-				this.$http.get('/user/playlist', {
-					params: {
-						uid: this.$store.state.userId
-					}
-				}).then(res => {
-					let userPlayList = res.data.playlist
-					let hzId = ''
-					//判断是否生成专属歌单
-					userPlayList.forEach(item => {
-						if (item.name == '皇子音乐') {
-							hzId = item.id
-							this.find = true
-						}
-					})
-					if (this.find) {
-						this.$message.success('正在加载歌单')
-						this.$store.state.hzId = hzId
-						this.getHzPlayList()
-					}else{
-						//没发现专属歌单，进行歌单生成
-						this.createPlayList()
-					}
-				})
-			},
-			//生成专用歌单
-			createPlayList() {
-				if(this.created) return
-				this.$http.get('/playlist/create', {
-					params: {
-						name: '皇子音乐'
-					}
-				}).then(res =>{
-					if(res.data.code == 302){
-						this.$message('请先登录哦')
-					}else{
-						this.created = true
-						this.getUserPlayList()
-						this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
-					}
-				})
-				
-				
-			},
+
 
 		}
 	}

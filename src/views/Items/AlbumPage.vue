@@ -1,5 +1,5 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" ref="albumPage">
+	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" ref="albumPage" class="Album">
 		<!-- 专辑信息区 -->
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
 			<el-col :span="6" v-if="albumInfo.picUrl">
@@ -99,6 +99,7 @@
 				vc.getAlbums()
 				vc.$nextTick(() => {
 					vc.$refs.albumPage.parentNode.scrollTop = 0
+					vc.$store.state.localTop = 'Album'
 				})
 
 			})
