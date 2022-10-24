@@ -29,6 +29,7 @@ const store = new Vuex.Store({
 	deleteMusic:false,//删除歌曲标识
 	deleteIndex:0,//删除歌曲下标
 	localTop:'Discovery',//回到顶部标识
+	listChange :false,//歌单列表改变标识符
   },
   actions,
   mutations

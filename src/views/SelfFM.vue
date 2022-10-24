@@ -172,6 +172,7 @@
 					this.$message.warning('这首歌曲不能添加哦')
 					return
 				}
+				this.$store.state.listChange = true
 				this.$message.success('添加成功')
 				this.$store.dispatch('addSong',this.currentMusicInfo.songId)
 				this.judgeCurrentIn()
@@ -183,6 +184,7 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
+					this.$store.state.listChange = true
 					this.$store.dispatch('removeSong',this.currentMusicInfo.songId)
 					this.judgeCurrentIn()
 					this.$message({

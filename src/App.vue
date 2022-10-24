@@ -27,10 +27,20 @@
 		computed:{
 			localTop(){
 				return this.$store.state.localTop
+			},
+			userId(){
+				return this.$store.state.userId
 			}
 		},
 		created() {
 			this.getLoginStatus()
+		},
+		wartch:{
+			userId(){
+				if(!this.userId&&!this.$store.state.hzId){
+					this.getLoginStatus()
+				}
+			}
 		},
 		methods: {
 			getLoginStatus() {

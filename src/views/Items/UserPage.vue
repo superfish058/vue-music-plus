@@ -29,7 +29,7 @@
 						<template slot-scope="scope">
 							<div v-if="scope.row">
 								<el-image :src="scope.row.al.picUrl+'?param=150y150'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
-									fit="cover" @click="playMusic(scope.row.id)">
+									fit="cover" @click="playMusic(scope.row.id)" lazy>
 								</el-image>
 							</div>
 						</template>
@@ -83,19 +83,13 @@
 				return this.$store.state.userId
 			}
 		},
-		watch:{
-			userId(){
-				if(this.userId){
-					this.getUserPlayList()
-				}
-			}
-		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
-				vc.hzPlayList = []
-				vc.offset = 0
-				vc.setOffset =false
-				vc.getUserPlayList
+				if(vc.$store.state.listChange){
+					vc.hzPlayList = []
+					vc.offset = 0
+					vc.setOffset =false
+				}
 				vc.getHzPlayList()
 				vc.$nextTick(()=>{
 					vc.$refs.userPage.scrollTop = 0
@@ -110,6 +104,13 @@
 					this.$message('请先登录哦')
 					return
 				} 
+				if(!this.$store.state.listChange){
+					if(this.hzPlayList.length){
+						return
+					}
+				}
+				console.log('in');
+				this.$message.success('正在加载歌单，请稍后')
 				this.$http.get('/playlist/track/all', {
 					params: {
 						id:this.$store.state.hzId,
@@ -120,6 +121,7 @@
 
 				}).then(res => {
 					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
+					this.$store.state.listChange = false
 				})
 			},
 			//跳转MV页面

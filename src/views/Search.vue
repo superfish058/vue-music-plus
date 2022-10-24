@@ -17,7 +17,7 @@
 						<!-- 歌曲展示（保底） -->
 						<el-row v-if="orderNone">
 							<el-col :span="11" class="recommend" v-if="songLists.length>0">
-								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 10px;"
+								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 10px;" lazy
 									:src="songLists[0].al.picUrl+'?param=300y300'" fit="cover" @click="playMusic(songLists[0].id)">
 								</el-image>
 								<p class="main-p">{{songLists[0].name}}</p>
@@ -29,7 +29,7 @@
 						<!-- 歌手展示信息 -->
 						<el-row>
 							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendArtist)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 50%;" class="img-hidden"
+								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 50%;" class="img-hidden" lazy
 									:src="recommendArtist.img1v1Url+'?param=300y300'" fit="cover"
 									@click="turnSingerPage(recommendArtist.id)">
 								</el-image>
@@ -40,7 +40,7 @@
 							</el-col>
 							<!-- 专辑展示 -->
 							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendAlbum)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;" :src="recommendAlbum.blurPicUrl+'?param=300y300'"
+								<el-image style="width: 80%; aspect-ratio: 1;" :src="recommendAlbum.blurPicUrl+'?param=300y300'" lazy
 									class="hover" @click="turnAlbumPage(recommendAlbum.id)"></el-image>
 								<p class="main-p">{{recommendAlbum.name}}</p>
 								<p>专辑</p>
@@ -48,7 +48,7 @@
 							<!-- 歌单展示 -->
 							<el-col :span="2" style="opacity: 0;" v-if="JSON.stringify(recommendAlbum)!='{}'">1</el-col>
 							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendPlaylist)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;" :src="recommendPlaylist.coverImgUrl+'?param=300y300'"
+								<el-image style="width: 80%; aspect-ratio: 1;" :src="recommendPlaylist.coverImgUrl+'?param=300y300'" lazy
 									@click="turnPlayListPage(recommendPlaylist.id)">
 								</el-image>
 								<p class="main-p">{{recommendPlaylist.name}}</p>
@@ -64,7 +64,7 @@
 						<el-row v-for="item,index in songLists.slice(0,4)" :key="index" class="song-row"
 							style="padding: 4px;height: 58px;" @dblclick.native="playMusic(item.id)">
 							<el-col :span="3">
-								<el-image style="width:50px; aspect-ratio: 1;border-radius: 3px;" :src="item.al.picUrl+'?param=150y150'"
+								<el-image style="width:50px; aspect-ratio: 1;border-radius: 3px;" :src="item.al.picUrl+'?param=150y150'" lazy
 									fit="cover" @click="playMusic(item.id)"></el-image>
 							</el-col>
 							<el-col :span="18" style="position: relative;height: 50px;">
@@ -97,7 +97,7 @@
 				<el-card style="margin-top: 20px;" class="hotResult">
 					<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">专辑</p>
 					<el-col :span="4" v-for="item,index in albumLists.slice(0,6)" :key="index" class="recommend">
-						<el-image style="width: 80%; aspect-ratio: 1;" :src="item.blurPicUrl+'?param=300y300'"
+						<el-image style="width: 80%; aspect-ratio: 1;" :src="item.blurPicUrl+'?param=300y300'" lazy
 							@click="turnAlbumPage(item.id)"></el-image>
 						<div style="width: 100%;">
 							<p class="main-p">{{item.name}}</p>
@@ -115,7 +115,7 @@
 					<el-row style="padding: 0;" :gutter="30">
 						<el-col :span="6" v-for="item,index in playlists.slice(0,8)" :key="index"
 							class="personalized-image">
-							<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'" fit="cover"
+							<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'" fit="cover" lazy
 								@click="turnPlayListPage(item.id)">
 							</el-image>
 							<div style="padding-top: 10px;height: 58px;">
@@ -134,7 +134,7 @@
 						<el-col :span="8" v-for="item,index in videoLists.slice(0,9)" :key="index"
 							class="personalized-image">
 							<div v-if="item">
-								<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'" fit="cover"
+								<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'" fit="cover" lazy
 									@click="turnVideoPage(item)">
 								</el-image>
 							</div>
@@ -167,7 +167,7 @@
 				<el-table-column label="标题" width="70">
 					<template slot-scope="scope">
 						<div v-if="scope.row.al">
-							<el-image :src="scope.row.al.picUrl+'?param=150y150'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
+							<el-image :src="scope.row.al.picUrl+'?param=150y150'" style="width:100%;aspect-ratio: 1;cursor: pointer;" lazy
 								fit="cover" @click="playMusic(scope.row.id)">
 							</el-image>
 						</div>		
@@ -212,7 +212,7 @@
 				<p style="font-size: 22px;font-weight: 700;margin-bottom: 10px;">歌单</p>
 				<el-row style="padding: 0;" :gutter="30">
 					<el-col :span="6" v-for="item,index in playlists" :key="index" class="personalized-image">
-						<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'" fit="cover"
+						<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'" fit="cover" lazy
 							@click="turnPlayListPage(item.id)">
 						</el-image>
 						<div style="padding-top: 10px;height: 58px;">
@@ -228,7 +228,7 @@
 			<el-card style="margin-top: 20px;" class="hotResult">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">专辑</p>
 				<el-col :span="4" v-for="item,index in albumLists" :key="index" class="recommend">
-					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.blurPicUrl+'?param=300y300'"
+					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.blurPicUrl+'?param=300y300'" lazy
 						@click="turnAlbumPage(item.id)"></el-image>
 					<div style="width: 100%;height: 27px;">
 						<p class="main-p">{{item.name}}</p>
@@ -244,7 +244,7 @@
 			<el-card style="margin-top: 20px;" class="hotResult">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">歌手</p>
 				<el-col :span="4" v-for="item,index in singerLists" :key="index" class="recommend">
-					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'" class="img-hidden hover"
+					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'" class="img-hidden hover" lazy
 						fit="cover" @click="turnSingerPage(item.id)">
 					</el-image>
 					<div style="width: 100%;height: 30px;">
@@ -260,7 +260,7 @@
 				<el-row :gutter="30">
 					<el-col :span="8" v-for="item,index in videoLists" :key="index" class="personalized-image">
 						<div v-if="item">
-							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'" fit="cover"
+							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'" fit="cover" lazy
 								@click="turnVideoPage(item)">
 							</el-image>
 						</div>

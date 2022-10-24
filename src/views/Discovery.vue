@@ -26,7 +26,7 @@
 			</el-row>
 			<el-col :span="6" v-for="item,index in personalized" :key="index">
 				<el-row class="personalized-image" v-if="item.picUrl">
-					<el-image style="width:80%; aspect-ratio: 1; border-radius: 5px;"
+					<el-image style="width:80%; aspect-ratio: 1; border-radius: 5px;" lazy
 						:src="item.picUrl+'?param=450y450'" fit="cover" @click="turnPlayListPage(item.id)">
 						<div slot="error" class="image-slot">
 							<i class="el-icon-loading"></i>
@@ -52,7 +52,7 @@
 					style="margin-bottom: 10px;position: relative;box-sizing: border-box;padding-right:10px;">
 					<el-row class="newsong-row">
 						<el-col :span="8" style="display: flex;" v-if="item.picUrl">
-							<el-image style="border-radius: 5px;width: 100%;aspect-ratio: 1;"
+							<el-image style="border-radius: 5px;width: 100%;aspect-ratio: 1;" lazy
 								:src="item.picUrl+'?param=300y300'" fit="fill" @click="playMusic(item.id)"
 								@error="getNewSongs()">
 								<div slot="error" class="image-slot">

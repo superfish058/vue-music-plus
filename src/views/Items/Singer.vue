@@ -47,7 +47,7 @@
 				</el-table-column>
 				<el-table-column label="标题" width="75">
 					<template slot-scope="scope">
-						<el-image :src="scope.row.al.picUrl+'?param=200y200'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
+						<el-image :src="scope.row.al.picUrl+'?param=200y200'" style="width:100%;aspect-ratio: 1;cursor: pointer;" lazy
 							fit="cover" @click="playMusic(scope.row.id)">
 						</el-image>
 					</template>
@@ -88,7 +88,7 @@
 		<el-row v-if="tagsActive=='最新专辑'">
 			<el-card class="hotResult">
 				<el-col :span="6" v-for="item,index in albums" :key="index" class="recommend">
-					<el-image style="width: 80%; aspect-ratio: 1;" v-if="item" :src="item.blurPicUrl+'?param=400y400'"
+					<el-image style="width: 80%; aspect-ratio: 1;" v-if="item" :src="item.blurPicUrl+'?param=400y400'" lazy
 						@click="turnAlbumPage(item.id)"></el-image>
 					<div style="width: 100%;height: 34px;">
 						<p class="main-p" v-if="item">{{item.name}}</p>
@@ -101,7 +101,7 @@
 			<el-card>
 				<el-row :gutter="30" style="margin-top: 20px;">
 					<el-col :span="8" v-for="item,index in videos" :key="index" class="personalized-image">
-						<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.imgurl16v9+'?param=568y320'" fit="cover"
+						<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.imgurl16v9+'?param=568y320'" fit="cover" lazy
 							@click="turnMvPage(item.id)">
 						</el-image>
 						<div style="height: 40px;font-size: 16px;">
