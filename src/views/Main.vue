@@ -6,8 +6,8 @@
 				<el-row>
 					<!-- 历史记录导航 -->
 					<el-col :span="4">
-						<el-image style="height: 55px;transform: translateY(5px);cursor: pointer;" 
-						:src="require('@/assets/logo2.png')" fit="fill" @click="$router.push('discovery')">
+						<el-image style="height: 55px;transform: translateY(5px);cursor: pointer;"
+							:src="require('@/assets/logo2.png')" fit="fill" @click="$router.push('discovery')">
 						</el-image>
 					</el-col>
 					<el-col :span="4">
@@ -55,6 +55,7 @@
 						<button class="mini-button" @click="loginVisible=true" v-if="userName==''">登录</button>
 						<el-avatar shape="square" size="medium" :src="userImg" v-if="userName!=''"></el-avatar>
 						<span class="username" v-if="userName!=''">{{userName}}</span>
+						<button class="logout" @click="logout" v-if="userName!=''">退出</button>
 					</el-col>
 				</el-row>
 			</el-header>
@@ -64,9 +65,9 @@
 					<el-row>
 						<el-col :span="24" class="aside">
 							<el-menu background-color="transparent" text-color="#fff" active-text-color="none"
-								style="border: none;" >
-								<router-link to="discovery" >
-									<el-menu-item index="1" >
+								style="border: none;">
+								<router-link to="discovery">
+									<el-menu-item index="1">
 										<i class="el-icon-discover"></i>
 										<span slot="title">发现音乐</span>
 									</el-menu-item>
@@ -77,7 +78,7 @@
 										<span slot="title">私人FM</span>
 									</el-menu-item>
 								</router-link>
-								<router-link to="recvideo" >
+								<router-link to="recvideo">
 									<el-menu-item index="3">
 										<i class="el-icon-video-camera"></i>
 										<span slot="title">推荐视频</span>
@@ -118,7 +119,7 @@
 					style="margin-right: 3px;">确定</button>
 			</div>
 		</el-dialog>
-		
+
 	</div>
 </template>
 
@@ -142,7 +143,7 @@
 				}, //用户登录信息
 				userName: '', //用户名称
 				userImg: '', //用户头像
-				userId:'',//用户id
+				userId: '', //用户id
 				//表单验证规则
 				loginRules: {
 					phone: [{
@@ -172,6 +173,38 @@
 			this.getSearchDefault()
 		},
 		methods: {
+			//退出登录
+				logout() {
+				this.$confirm('此操作将退出当前账号, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					this.$http.get('/logout',{
+						time:new Date().valueOf()
+					})
+					this.hzId = ''
+					this.userId = ''
+					this.userName = ''
+					this.userImg = ''
+					this.$store.state.userId = 0,
+					this.$store.state.hzId = 0
+					setTimeout(()=>{
+						this.$http.get('/login/status',{
+							time:new Date().valueOf()
+						})
+					},2000)				
+					this.$message({
+						type: 'success',
+						message: '登出成功!'
+					});
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				});
+			},
 			//搜索功能
 			turnSearch(e) {
 				if (e) {
@@ -181,16 +214,16 @@
 				if (this.searchWords == '') {
 					this.searchWords = this.defaultKeyword
 				}
-				setTimeout(()=>{
+				setTimeout(() => {
 					this.$store.state.searchSignal += 1
-				},50)
+				}, 50)
 				this.$router.push({
 					path: 'search',
 					query: {
 						keyword: this.searchWords
 					}
 				})
-				
+
 			},
 			//提交注册
 			submitLoginForm(formName) {
@@ -215,10 +248,10 @@
 						this.$message.error('登陆失败')
 					} else {
 						this.$message.success('登陆成功')
-						setTimeout(()=>{
+						setTimeout(() => {
 							this.getLoginStatus()
-						},200)
-						
+						}, 200)
+
 					}
 					this.dialogVisible = false
 				})
@@ -226,13 +259,13 @@
 			//获取登录状态
 			getLoginStatus() {
 				this.$http.get('/login/status').then(res => {
-					if(res.data.data.code != 200) return
+					if (res.data.data.account.type === 0) return
 					this.userName = res.data.data.profile.nickname
 					this.userImg = res.data.data.profile.avatarUrl
 					this.userId = res.data.data.account.id
-					this.$store.state.userId = this.userId 
+					this.$store.state.userId = this.userId
 				})
-				console.log(this.userName,this.userId);
+				console.log(this.userName, this.userId);
 			},
 			//搜索建议
 			querySearch(keyword, cb) {
@@ -331,6 +364,7 @@
 		width: 100%;
 		background-color: transparent;
 		color: #fff;
+
 		.router-link-active {
 			text-decoration: none;
 		}
@@ -339,23 +373,25 @@
 			text-decoration: none;
 		}
 	}
-	
-	.el-menu-item{
-		&:hover{
-			span,i{
+
+	.el-menu-item {
+		&:hover {
+
+			span,
+			i {
 				color: aquamarine;
 				opacity: 0.9;
 			}
 		}
 	}
-	
-	.aside{
-		span{
+
+	.aside {
+		span {
 			font-size: 16px;
 			letter-spacing: 0.2px;
 		}
 	}
-	
+
 	.hotIndex {
 		height: 100%;
 		display: flex;
@@ -386,6 +422,24 @@
 	}
 
 
+	.logout {
+		border-radius: 2px;
+		margin-left: 8px;
+		padding: 3px 5px;
+		border: none;
+		cursor: pointer;
+		background-color: transparent;
+		color: rgba(255, 255, 255, 0.4);
+		letter-spacing: 0.2px;
+		transition: 0.2s ease;
+
+		&:hover {
+			color: rgba(255, 255, 255, 0.8);
+			border: 1px solid rgba(255, 255, 255, 0.4);
+			letter-spacing: 0.5px;
+			transform: translateY(-0.8px);
+		}
+	}
 
 	.mini-button {
 		padding: 4px 7px;

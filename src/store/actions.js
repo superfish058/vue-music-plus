@@ -9,7 +9,6 @@ const actions = {
 		commit,
 		state
 	}, id) {
-		if(!id) return
 		axios.get('/playlist/tracks', {
 			params: {
 				op: 'add',
