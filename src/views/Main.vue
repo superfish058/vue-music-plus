@@ -206,7 +206,7 @@
 			}
 		},
 		mounted() {
-			this.getLoginStatus()
+			// this.getLoginStatus()
 			this.getHotList()
 			this.getSearchDefault()
 		},
@@ -216,37 +216,37 @@
 				this.$store.state.isPlay = val
 			},
 			//退出登录
-			logout() {
-				this.$confirm('此操作将退出当前账号, 是否继续?', '提示', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}).then(() => {
-					this.$http.get('/logout', {
-						time: new Date().valueOf()
-					})
-					this.hzId = ''
-					this.userId = ''
-					this.userName = ''
-					this.userImg = ''
-					this.$store.state.userId = 0,
-						this.$store.state.hzId = 0
-					setTimeout(() => {
-						this.$http.get('/login/status', {
-							time: new Date().valueOf()
-						})
-					}, 2000)
-					this.$message({
-						type: 'success',
-						message: '登出成功!'
-					});
-				}).catch(() => {
-					this.$message({
-						type: 'info',
-						message: '已取消删除'
-					});
-				});
-			},
+			// logout() {
+			// 	this.$confirm('此操作将退出当前账号, 是否继续?', '提示', {
+			// 		confirmButtonText: '确定',
+			// 		cancelButtonText: '取消',
+			// 		type: 'warning'
+			// 	}).then(() => {
+			// 		this.$http.get('/logout', {
+			// 			time: new Date().valueOf()
+			// 		})
+			// 		this.hzId = ''
+			// 		this.userId = ''
+			// 		this.userName = ''
+			// 		this.userImg = ''
+			// 		this.$store.state.userId = 0,
+			// 			this.$store.state.hzId = 0
+			// 		setTimeout(() => {
+			// 			this.$http.get('/login/status', {
+			// 				time: new Date().valueOf()
+			// 			})
+			// 		}, 2000)
+			// 		this.$message({
+			// 			type: 'success',
+			// 			message: '登出成功!'
+			// 		});
+			// 	}).catch(() => {
+			// 		this.$message({
+			// 			type: 'info',
+			// 			message: '已取消删除'
+			// 		});
+			// 	});
+			// },
 			//搜索功能
 			turnSearch(e) {
 				if (e) {
@@ -268,47 +268,47 @@
 
 			},
 			//提交注册
-			submitLoginForm(formName) {
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
-						this.loginVisible = false
-						this.login()
-					} else {
-						return false;
-					}
-				});
-			},
+			// submitLoginForm(formName) {
+			// 	this.$refs[formName].validate((valid) => {
+			// 		if (valid) {
+			// 			this.loginVisible = false
+			// 			this.login()
+			// 		} else {
+			// 			return false;
+			// 		}
+			// 	});
+			// },
 			//登录功能
-			login() {
-				this.$http.get('/login/cellphone', {
-					params: {
-						phone: this.loginForm.phone,
-						password: this.loginForm.password
-					}
-				}).then(res => {
-					if (res.data.code != 200) {
-						this.$message.error('登陆失败')
-					} else {
-						this.$message.success('登陆成功')
-						setTimeout(() => {
-							this.getLoginStatus()
-						}, 200)
+			// login() {
+			// 	this.$http.get('/login/cellphone', {
+			// 		params: {
+			// 			phone: this.loginForm.phone,
+			// 			password: this.loginForm.password
+			// 		}
+			// 	}).then(res => {
+			// 		if (res.data.code != 200) {
+			// 			this.$message.error('登陆失败')
+			// 		} else {
+			// 			this.$message.success('登陆成功')
+			// 			setTimeout(() => {
+			// 				this.getLoginStatus()
+			// 			}, 200)
 
-					}
-					this.dialogVisible = false
-				})
-			},
+			// 		}
+			// 		this.dialogVisible = false
+			// 	})
+			// },
 			//获取登录状态
-			getLoginStatus() {
-				this.$http.get('/login/status').then(res => {
-					if (res.data.data.account.type === 0) return
-					this.userName = res.data.data.profile.nickname
-					this.userImg = res.data.data.profile.avatarUrl
-					this.userId = res.data.data.account.id
-					this.$store.state.userId = this.userId
-				})
-				console.log(this.userName, this.userId);
-			},
+			// getLoginStatus() {
+			// 	this.$http.get('/login/status').then(res => {
+			// 		if (res.data.data.account.type === 0) return
+			// 		this.userName = res.data.data.profile.nickname
+			// 		this.userImg = res.data.data.profile.avatarUrl
+			// 		this.userId = res.data.data.account.id
+			// 		this.$store.state.userId = this.userId
+			// 	})
+			// 	console.log(this.userName, this.userId);
+			// },
 			//搜索建议
 			querySearch(keyword, cb) {
 				if (this.searchWords == '') {
@@ -429,6 +429,9 @@
 					padding-bottom: 4px;
 					color: #fff;
 					font-size: 3vh;
+					&:focus-visible{
+						outline: none!important;
+					}
 				}
 				span{
 					font-size: 5vh;

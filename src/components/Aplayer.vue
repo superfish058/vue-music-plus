@@ -6,7 +6,6 @@
 </template>
 <script src="node_modules/colorthief/dist/color-thief.umd.js"></script>
 <script>
-	let ap = undefined
 	import 'aplayer/dist/APlayer.min.css';
 	import APlayer from 'aplayer';
 	// import ColorThief from 'colorthief'
@@ -16,6 +15,7 @@
 			return {
 				isPlay: 0,
 				recordState:0,//标识初次记录播放状态
+				ap:null,
 			}
 		},
 		computed: {
@@ -40,34 +40,40 @@
 			}
 		},
 		mounted() {
-			ap = this.loadAplayer()
+			this.ap = this.loadAplayer()
 		},
 		watch: {
 			reloadNum: function() {
 				if (this.reloadNum % 3 == 0) {
-					this.loadAplayer()
+					if(!this.$store.state.id){
+						this.ap.list.clear()
+					}
+					this.ap.list.add(this.currentMusic)
+					if(this.ap.audio.paused){
+						this.ap.play()
+					}
 				}
 			},
 			switchIndex: function() {
 				if (this.switchIndex == -1) return
-				ap.list.switch(this.switchIndex)
+				this.ap.list.switch(this.switchIndex)
 			},
 			deleteMusic() {
 				if (this.deleteMusic == false) return
-				ap.list.remove(this.deleteIndex)
+				this.ap.list.remove(this.deleteIndex)
 				if (this.deleteIndex == this.$store.state.musicInfo.length - 1) {
-					ap.list.switch(0)
+					this.ap.list.switch(0)
 				} else {
-					ap.list.switch(this.deleteIndex)
+					this.ap.list.switch(this.deleteIndex)
 				}
 				this.$store.state.deleteMusic = false
 			},
 			isPlaying() {
 				if (!this.isPlaying) {
-					ap.pause()
+					this.ap.pause()
 				}
 				if (this.isPlaying) {
-					ap.play()
+					this.ap.play()
 				}
 			}
 		},

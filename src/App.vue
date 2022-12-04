@@ -34,73 +34,73 @@
 			}
 		},
 		created() {
-			this.getLoginStatus()
+			// this.getLoginStatus()
 		},
 		wartch: {
 			userId() {
 				if (!this.userId && !this.$store.state.hzId) {
-					this.getLoginStatus()
+					// this.getLoginStatus()
 				}
 			}
 		},
 		methods: {
-			getLoginStatus() {
-				this.$http.get('/login/status').then(res => {
-					if (res.data.data.code != 200) return
-					this.$store.state.userId = res.data.data.account.id
-					this.getUserPlayList()
-				})
-			},
+			// getLoginStatus() {
+			// 	this.$http.get('/login/status').then(res => {
+			// 		if (res.data.data.code != 200) return
+			// 		this.$store.state.userId = res.data.data.account.id
+			// 		this.getUserPlayList()
+			// 	})
+			// },
 			//获取所有歌单并判断是否生成专用歌单，若生成，获取歌单ID
-			getUserPlayList() {
-				if (this.$store.state.userId == '') {
-					this.$message('请先登录哦')
-					return
-				}
-				//检测到用户登录，获取用户歌单
-				this.$http.get('/user/playlist', {
-					params: {
-						uid: this.$store.state.userId
-					}
-				}).then(res => {
-					let userPlayList = res.data.playlist
-					let hzId = ''
-					//判断是否生成专属歌单
-					userPlayList.forEach(item => {
-						if (item.name == '皇子音乐') {
-							hzId = item.id
-							this.find = true
-						}
-					})
-					if (this.find) {
-						this.$message.success({
-							message: '正在加载歌单',
-							duration: 1000
-						})
-						this.$store.state.hzId = hzId
-					} else {
-						//没发现专属歌单，进行歌单生成
-						this.createPlayList()
-					}
-				})
-			},
+			// getUserPlayList() {
+			// 	if (this.$store.state.userId == '') {
+			// 		this.$message('请先登录哦')
+			// 		return
+			// 	}
+			// 	//检测到用户登录，获取用户歌单
+			// 	this.$http.get('/user/playlist', {
+			// 		params: {
+			// 			uid: this.$store.state.userId
+			// 		}
+			// 	}).then(res => {
+			// 		let userPlayList = res.data.playlist
+			// 		let hzId = ''
+			// 		//判断是否生成专属歌单
+			// 		userPlayList.forEach(item => {
+			// 			if (item.name == '皇子音乐') {
+			// 				hzId = item.id
+			// 				this.find = true
+			// 			}
+			// 		})
+			// 		if (this.find) {
+			// 			this.$message.success({
+			// 				message: '正在加载歌单',
+			// 				duration: 1000
+			// 			})
+			// 			this.$store.state.hzId = hzId
+			// 		} else {
+			// 			//没发现专属歌单，进行歌单生成
+			// 			this.createPlayList()
+			// 		}
+			// 	})
+			// },
 			//生成专用歌单
-			createPlayList() {
-				if (this.created) return
-				this.$http.get('/playlist/create', {
-					params: {
-						name: '皇子音乐'
-					}
-				}).then(res => {
-					if (res.data.code == 302) {
-						this.$message('请先登录哦')
-					} else {
-						this.created = true
-						this.getUserPlayList()
-						this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
-					}
-				})
-			},
+			// createPlayList() {
+			// 	if (this.created) return
+			// 	this.$http.get('/playlist/create', {
+			// 		params: {
+			// 			name: '皇子音乐'
+			// 		}
+			// 	}).then(res => {
+			// 		if (res.data.code == 302) {
+			// 			this.$message('请先登录哦')
+			// 		} else {
+			// 			this.created = true
+			// 			this.getUserPlayList()
+			// 			this.$message.success('已为你生成专用歌单，快去添加歌曲吧')
+			// 		}
+			// 	})
+			// },
 		}
 	}
 </script>
@@ -117,8 +117,6 @@
 		background-repeat: no-repeat;
 		padding: 0;
 		overflow: hidden;
-		
-		
 		.el-backtop {
 			position: absolute;
 			right: 7vw !important;

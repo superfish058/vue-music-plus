@@ -90,40 +90,41 @@
 					vc.offset = 0
 					vc.setOffset =false
 				}
-				vc.getHzPlayList()
+				// vc.getHzPlayList()
 				vc.$nextTick(()=>{
 					vc.$refs.userPage.scrollTop = 0
 					vc.$store.state.localTop = 'UserPage'
+					vc.$store.state.localPage = '我的'
 				})
 			})
 		},
 		methods: {
 			//获取皇子音乐歌单
-			getHzPlayList() {				
-				if(!this.$store.state.hzId){
-					this.$message('请先登录哦')
-					return
-				} 
-				if(!this.$store.state.listChange){
-					if(this.hzPlayList.length){
-						return
-					}
-				}
-				console.log('in');
-				this.$message.success('正在加载歌单，请稍后')
-				this.$http.get('/playlist/track/all', {
-					params: {
-						id:this.$store.state.hzId,
-						time: new Date().valueOf(),
-						limit:50,
-						offset:this.offset
-					}
+			// getHzPlayList() {				
+			// 	if(!this.$store.state.hzId){
+			// 		this.$message('请先登录哦')
+			// 		return
+			// 	} 
+			// 	if(!this.$store.state.listChange){
+			// 		if(this.hzPlayList.length){
+			// 			return
+			// 		}
+			// 	}
+			// 	console.log('in');
+			// 	this.$message.success('正在加载歌单，请稍后')
+			// 	this.$http.get('/playlist/track/all', {
+			// 		params: {
+			// 			id:this.$store.state.hzId,
+			// 			time: new Date().valueOf(),
+			// 			limit:50,
+			// 			offset:this.offset
+			// 		}
 
-				}).then(res => {
-					this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
-					this.$store.state.listChange = false
-				})
-			},
+			// 	}).then(res => {
+			// 		this.hzPlayList = this.hzPlayList.concat(res.data.songs) 
+			// 		this.$store.state.listChange = false
+			// 	})
+			// },
 			//跳转MV页面
 			turnMvPage(id) {
 				this.$router.push({
