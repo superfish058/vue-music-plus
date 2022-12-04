@@ -17,6 +17,7 @@ const store = new Vuex.Store({
 		alName:'黑暗降临'
 	}],
 	currentTime:0,//当前播放时间
+	duration:0,//总播放时间
 	reloadNum:0,//重新加载播放器
 	switchIndex:0,//跳转歌曲下标
 	listIndex:0,//当前音乐下标
@@ -28,8 +29,12 @@ const store = new Vuex.Store({
 	hzPLayListIds:[],//皇子歌单音乐ids
 	deleteMusic:false,//删除歌曲标识
 	deleteIndex:0,//删除歌曲下标
-	localTop:'Discovery',//回到顶部标识
+	localTop:'',//回到顶部标识
 	listChange :false,//歌单列表改变标识符
+	localPage:'发现',
+	seek:false,
+	seekTime:0,
+	isPlay:false,//正在播放歌曲标识
   },
   actions,
   mutations

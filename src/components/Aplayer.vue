@@ -6,6 +6,7 @@
 </template>
 <script src="node_modules/colorthief/dist/color-thief.umd.js"></script>
 <script>
+	let ap = undefined
 	import 'aplayer/dist/APlayer.min.css';
 	import APlayer from 'aplayer';
 	// import ColorThief from 'colorthief'
@@ -13,8 +14,8 @@
 	export default {
 		data() {
 			return {
-				isHide: 0, //关闭歌词标识
-				isPlay: 1, //歌曲播放标识
+				isPlay: 0,
+				recordState:0,//标识初次记录播放状态
 			}
 		},
 		computed: {
@@ -34,9 +35,12 @@
 			switchIndex() {
 				return this.$store.state.switchIndex
 			},
+			isPlaying() {
+				return this.$store.state.isPlay
+			}
 		},
 		mounted() {
-			this.loadAplayer()
+			ap = this.loadAplayer()
 		},
 		watch: {
 			reloadNum: function() {
@@ -46,19 +50,25 @@
 			},
 			switchIndex: function() {
 				if (this.switchIndex == -1) return
-				let ap = this.loadAplayer()
 				ap.list.switch(this.switchIndex)
 			},
 			deleteMusic() {
 				if (this.deleteMusic == false) return
-				let ap = this.loadAplayer()
 				ap.list.remove(this.deleteIndex)
-				if (this.deleteIndex == this.$store.state.musicInfo.length-1) {
+				if (this.deleteIndex == this.$store.state.musicInfo.length - 1) {
 					ap.list.switch(0)
 				} else {
 					ap.list.switch(this.deleteIndex)
 				}
 				this.$store.state.deleteMusic = false
+			},
+			isPlaying() {
+				if (!this.isPlaying) {
+					ap.pause()
+				}
+				if (this.isPlaying) {
+					ap.play()
+				}
 			}
 		},
 		methods: {
@@ -75,15 +85,24 @@
 					mutex: true
 				});
 				ap.on('timeupdate', function() {
-					that.$store.state.currentTime = ap.audio.currentTime
-					if (that.$route.path == '/main/selfFM' && that.isHide == 0) {
-						ap.lrc.hide()
-						that.isHide = 1
+					if(!that.recordState){
+						that.$store.state.isPlay = true
+						that.recordState = 1
 					}
-					if (that.$route.path != '/main/selfFM' && that.isHide == 1) {
-						that.isHide = 0
+					that.$store.state.currentTime = ap.audio.currentTime
+					that.$store.state.duration = ap.audio.duration
+					if (that.$store.state.seek) {
+						that.$store.state.seek = false
+						ap.seek(that.$store.state.seekTime);
+					}
+					//歌词展示
+					if (that.$route.path == '/main/selfFM') {
+						ap.lrc.hide()
+					}
+					if (that.$route.path != '/main/selfFM') {
 						ap.lrc.show()
 					}
+					//视频暂停歌曲播放
 					if (that.$route.path == '/main/video' && that.isPlay == 1) {
 						ap.pause()
 						that.isPlay = 0
@@ -91,7 +110,6 @@
 					if (that.$route.path != '/main/video' && that.isPlay == 0) {
 						that.isPlay = 1
 					}
-
 				})
 				//主题自定义
 				const colorThief = new ColorThief();

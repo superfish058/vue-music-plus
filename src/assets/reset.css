@@ -1,19 +1,18 @@
 @font-face {
-	font-family: "仓耳渔阳体 W03";
-	font-weight: 400;
-	src: url("//at.alicdn.com/wf/webfont/fMXyFp0126C7/q61iYwvvp63CRcvkUMsJL.woff2") format("woff2"),
-		url("//at.alicdn.com/wf/webfont/fMXyFp0126C7/RpXq-QeP1akj8cYCh6QZn.woff") format("woff");
+	font-family: "霞鹜臻楷";
+	src: url("@/assets/font/霞鹜臻楷.ttf") ;
 	font-display: swap;
 }
-
-html,
-body,
-#app {
-	height: 100%;
+@font-face {
+	font-family: "yezigongchangmiaomiaoti";
+	src: url("@/assets/font/yezigongchangmiaomiaoti.ttf") ;
+	font-display: swap;
+}
+* {
 	margin: 0;
 	padding: 0;
-	min-width: 1366px;
-	font-family: "仓耳渔阳体 W03";
+	font-family: "霞鹜臻楷","yezigongchangmiaomiaoti";
+	letter-spacing: 0.2px;
 }
 
 .hover:hover {

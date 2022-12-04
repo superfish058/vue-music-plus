@@ -283,7 +283,6 @@
 		color: rgba(255, 255, 255, 0.9);
 		cursor: default;
 		user-select: none;
-		transform: translate3d(0, 0, 0);
 		scroll-behavior: smooth;
 
 

@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1282",
+      "name": "列表",
+      "font_class": "liebiao",
+      "unicode": "f0161",
+      "unicode_decimal": 983393
+    },
+    {
       "icon_id": "77822",
       "name": "更多",
       "font_class": "gengduo",
@@ -13,11 +20,46 @@
       "unicode_decimal": 983314
     },
     {
+      "icon_id": "383686",
+      "name": "实心",
+      "font_class": "shixin",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "579389",
+      "name": "评论",
+      "font_class": "pinglun",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "579920",
+      "name": "Android更多",
+      "font_class": "androidgengduo",
+      "unicode": "e78d",
+      "unicode_decimal": 59277
+    },
+    {
       "icon_id": "688128",
       "name": "下一个 下一首",
       "font_class": "xiayigexiayishou",
       "unicode": "e7a5",
       "unicode_decimal": 59301
+    },
+    {
+      "icon_id": "2674474",
+      "name": "播放",
+      "font_class": "bofang",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "2674483",
+      "name": "暂停",
+      "font_class": "zanting",
+      "unicode": "e629",
+      "unicode_decimal": 58921
     },
     {
       "icon_id": "4942661",
@@ -53,6 +95,13 @@
       "font_class": "24gf-playCircle",
       "unicode": "ea82",
       "unicode_decimal": 60034
+    },
+    {
+      "icon_id": "27285356",
+      "name": "转发",
+      "font_class": "a-ziyuan567",
+      "unicode": "e78e",
+      "unicode_decimal": 59278
     }
   ]
 }

@@ -1,86 +1,134 @@
 <template>
-	<div style="padding: 20px;box-sizing: border-box;height: 590px;transform: translate3d(0, 0, 0);overflow-y:scroll;"
-		class="Discovery">
-		<div style="position: relative; top: 0;height: 220px;">
-			<el-carousel :interval="4000" type="card" height="190px" trigger="click" ref="carousel">
-				<el-carousel-item v-for="(item,index) in banners" height="200px" :key="index">
-					<el-image style="position: absolute;border-radius: 5px;height: 190px;" :src="item.imageUrl"
-						fit="fill" @click="turnRelatedPage(item,index)">
-						<div slot="error" class="image-slot">
-							<i class="el-icon-loading"></i>
-							<span>loading</span>
-						</div>
-					</el-image>
-					<span class="banner-text">{{item.typeTitle}}</span>
-				</el-carousel-item>
-			</el-carousel>
-		</div>
-		<!-- 推荐歌单 -->
-		<el-row class="fontstyle">
+	<div class="Discovery">
+		<div>
+			<!-- 轮播图 PC-->
+			<div class="bannerStyle PC">
+				<el-carousel :interval="4000" type="card" height="30vh" trigger="click" ref="carousel">
+					<el-carousel-item v-for="(item,index) in banners" :key="index">
+						<el-image style="position: absolute;border-radius: 5px;height: 30vh;" :src="item.imageUrl"
+							fit="fill" @click="turnRelatedPage(item,index)">
+						</el-image>
+						<span class="banner-text">{{item.typeTitle}}</span>
+					</el-carousel-item>
+				</el-carousel>
+			</div>
+			<!-- 轮播图 mobile-->
+			<div class="bannerStyle mobile">
+				<el-carousel :interval="4000" height="35vw" trigger="click" ref="carousel" indicator-position="none">
+					<el-carousel-item v-for="(item,index) in banners" :key="index">
+						<el-image style="position: absolute;border-radius: 5px;height:35vw" :src="item.imageUrl"
+							fit="fill" @click="turnRelatedPage(item,index)">
+						</el-image>
+						<span class="banner-text">{{item.typeTitle}}</span>
+					</el-carousel-item>
+				</el-carousel>
+			</div>
+
+			<!-- 推荐歌单 -->
 			<el-row>
-				<p style="font-size: 18px;letter-spacing: 0.1em;margin:30px 0 20px 0 ;">
-					<i class="el-icon-cloudy" style="font-size: 20px;"></i>
-					推荐歌单
-					<i class="el-icon-arrow-right" style="font-size: 20px;transform: translate(-8px,1px);"></i>
-				</p>
+				<!-- 文字 -->
+				<el-row>
+					<p class="textArea">
+						<i class="el-icon-cloudy icon1"></i>
+						推荐歌单
+						<i class="el-icon-arrow-right icon2"></i>
+					</p>
+				</el-row>
+				<!-- 歌单 -->
+				<div class="PC ">
+					<el-col :span="6" v-for="item,index in personalized" :key="index">
+						<el-row class="personalized-image" v-if="item.picUrl">
+							<el-image class="recImg" :src="item.picUrl+'?param=450y450'" fit="cover"
+								@click="turnPlayListPage(item.id)">
+							</el-image>
+						</el-row>
+						<el-row>
+							<p class="personalized-desc" v-if="item">{{item.name}}</p>
+						</el-row>
+					</el-col>
+				</div>
+				<div class="mobile mobileRecList">
+					<el-col :span="8" v-for="item,index in personalized" :key="index" >
+						<el-row class="personalized-image" v-if="item.picUrl">
+							<el-image class="recImg" :src="item.picUrl+'?param=450y450'" fit="cover"
+								@click="turnPlayListPage(item.id)">
+							</el-image>
+						</el-row>
+						<el-row>
+							<p class="personalized-desc" v-if="item">{{item.name}}</p>
+						</el-row>
+					</el-col>
+				</div>
 			</el-row>
-			<el-col :span="6" v-for="item,index in personalized" :key="index">
-				<el-row class="personalized-image" v-if="item.picUrl">
-					<el-image style="width:80%; aspect-ratio: 1; border-radius: 5px;" lazy
-						:src="item.picUrl+'?param=450y450'" fit="cover" @click="turnPlayListPage(item.id)">
-						<div slot="error" class="image-slot">
-							<i class="el-icon-loading"></i>
-							<span>loading</span>
-						</div>
-					</el-image>
+			<!-- 最新音乐 -->
+			<el-row>
+				<!-- 文字 -->
+				<el-row>
+					<p class="textArea">
+						<i class="el-icon-coffee-cup hover icon1" @click="sendList()"></i>
+						音乐上新
+					</p>
 				</el-row>
 				<el-row>
-					<p class="personalized-desc" v-if="item">{{item.name}}</p>
-				</el-row>
-			</el-col>
-		</el-row>
-		<!-- 最新音乐 -->
-		<el-row class="fontstyle">
-			<el-row>
-				<p style="font-size: 18px;letter-spacing: 0.1em;margin:30px 0 20px 0 ;">
-					<i class="el-icon-coffee-cup hover" style="font-size: 20px;" @click="sendList()"></i>
-					音乐上新
-				</p>
-			</el-row>
-			<el-row>
-				<el-col :span="8" v-for="item,index in newsongs" :key="index"
-					style="margin-bottom: 10px;position: relative;box-sizing: border-box;padding-right:10px;">
-					<el-row class="newsong-row">
-						<el-col :span="8" style="display: flex;" v-if="item.picUrl">
-							<el-image style="border-radius: 5px;width: 100%;aspect-ratio: 1;" lazy
-								:src="item.picUrl+'?param=300y300'" fit="fill" @click="playMusic(item.id)"
-								@error="getNewSongs()">
-								<div slot="error" class="image-slot">
-									<i class="el-icon-loading"></i>
-									<span>loading</span>
-								</div>
-							</el-image>
-						</el-col>
-						<el-col :span="16" v-if="item.song">
-							<el-row style="position: absolute;top: 18%; left: 37%;font-size: 18px;width: 68%;
-								overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.name}}</el-row>
-							<el-row style="position: absolute;top: 57%; left: 37%;font-size: 16px;width: 68%;
-								overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-								<span v-for="it,ind in item.song.artists" :key="ind" style="cursor: pointer;"
-									class="hover" @click="turnSingerPage(it.id)">
-									{{it.name}}
-								</span>
+					<!-- 音乐 PC-->
+					<div class="PC">
+						<el-col :span="8" v-for="item,index in newsongs" :key="index" class="newArea">
+							<el-row class="newsong-row">
+								<el-col :span="8" style="display: flex;" v-if="item.picUrl">
+									<el-image class="newImg" :src="item.picUrl+'?param=300y300'" fit="fill"
+										@click="playMusic(item.id)">
+									</el-image>
+								</el-col>
+								<el-col :span="16" v-if="item.song">
+									<el-row class="songNameStyle">{{item.name}}</el-row>
+									<el-row class="singerNameStyle">
+										<span v-for="it,ind in item.song.artists" :key="ind" style="cursor: pointer;"
+											class="hover" @click="turnSingerPage(it.id)">
+											{{it.name}}
+										</span>
+									</el-row>
+								</el-col>
 							</el-row>
 						</el-col>
-					</el-row>
-
-				</el-col>
+					</div>
+					
+					<!-- 音乐 mobile -->
+					<div class="mobile">
+						<el-col :span="12" v-for="item,index in newsongs" :key="index" class="newArea" >
+							<el-row class="newsong-row">
+								<el-col :span="8" style="display: flex;" v-if="item.picUrl">
+									<el-image class="newImg" :src="item.picUrl+'?param=300y300'" fit="fill"
+										@click="playMusic(item.id)">
+									</el-image>
+								</el-col>
+								<el-col :span="16" v-if="item.song">
+									<el-row class="songNameStyle">{{item.name}}</el-row>
+									<el-row class="singerNameStyle">
+										<span v-for="it,ind in item.song.artists" :key="ind" style="cursor: pointer;"
+											class="hover" @click="turnSingerPage(it.id)">
+											{{it.name}}
+										</span>
+									</el-row>
+								</el-col>
+							</el-row>
+						</el-col>
+					</div>
+					
+				</el-row>
 			</el-row>
-		</el-row>
+		</div>
+
 	</div>
+
+
+
 </template>
 
 <script>
+	import {
+		turnSingerPage,
+		turnPlayListPage
+	} from '@/utils/index'
 	export default {
 		data() {
 			return {
@@ -99,16 +147,16 @@
 			next(vc => {
 				vc.$nextTick(() => {
 					vc.$store.state.localTop = 'Discovery'
+					vc.$store.state.localPage = '发现'
 				})
 			})
 		},
 		methods: {
+			//轮播图跳转
 			turnRelatedPage(item, index) {
 				if (this.$refs.carousel.activeIndex != index) return
 				let type = item.targetType
-				if (type == 3000) {
-					window.open(item.url, '_blank')
-				} else if (type == 1) {
+				if (type == 1) {
 					this.playMusic(item.targetId)
 				} else if (type == 10) {
 					this.$router.push({
@@ -122,23 +170,13 @@
 				}
 
 			},
-			//跳转歌手页面
+			// 跳转歌手页面
 			turnSingerPage(id) {
-				this.$router.push({
-					path: '/main/singer',
-					query: {
-						singerId: id
-					}
-				})
+				turnSingerPage.call(this, id)
 			},
 			//跳转歌单页面
 			turnPlayListPage(id) {
-				this.$router.push({
-					path: '/main/playlist',
-					query: {
-						listId: id
-					}
-				})
+				turnPlayListPage.call(this, id)
 			},
 			//获取轮播图
 			getBanner() {
@@ -151,7 +189,6 @@
 				this.$http.get('/personalized?limit=12').then(res => {
 					this.personalized = res.data.result
 				})
-
 			},
 			//获取最新音乐
 			getNewSongs() {
@@ -177,38 +214,156 @@
 				if (ids == this.$store.state.ids && ids != '') return
 				this.$store.dispatch('sendList', ids)
 			}
-
-
 		},
 	}
 </script>
 
 <style scoped lang="less">
-	* {
-		color: rgba(255, 255, 255, 0.8);
-	}
-
-	.hover {
-		&:hover {
-			cursor: pointer;
-			transform: translateY(-3px);
-			transition: 0.3s ease;
+	@media screen and (max-width:1150px) {
+		.PCAside {
+			width: 150px !important;
 		}
 	}
 
-	/deep/.image-slot {
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		flex-wrap: wrap;
-		align-items: center;
-		font-size: 16px;
-		letter-spacing: 0.1em;
+	@media screen and (max-width:850px) {
+		.Discovery {
+			padding: 0px 0px 10px 15px !important;
+		}
 
-		span {
-			margin-left: 10px;
-			font-style: oblique;
-			opacity: 0.8;
+		.mobile {
+			display: block !important;
+		}
+
+		.PC {
+			display: none;
+		}
+		
+		.recImg {
+			width: 91%!important;
+		}
+		
+		.personalized-desc{
+			width: 91%!important;
+		}
+		
+		.mobileRecList{
+			font-size: 14px!important;
+		}
+		.songNameStyle {
+			font-size: 14px!important;
+			top: 12%!important;
+			left: 37%;
+		}
+		
+		.singerNameStyle {
+			font-size: 12px!important;
+			top: 62%!important;
+			left: 37%;
+		}
+
+		
+	}
+
+	.mobile {
+		display: none;
+
+	}
+
+	.Discovery {
+		padding: 20px;
+		box-sizing: border-box;
+		transform: translate3d(0, 0, 0);
+		height: 100%;
+		overflow-y: scroll;
+		color: rgba(255, 255, 255, 0.8);
+	}
+
+	.bannerStyle {
+		position: relative;
+		top: 0;
+	}
+
+	.textArea {
+		font-size: 18px;
+		letter-spacing: 0.1em;
+		margin: 30px 0 20px 0;
+
+		.icon1 {
+			font-size: 20px;
+		}
+
+		.icon2 {
+			font-size: 20px;
+			transform: translate(-8px, 1px);
+		}
+	}
+
+	.newArea {
+		margin-bottom: 10px;
+		position: relative;
+		box-sizing: border-box;
+		padding-right: 10px;
+
+		.newsong-row {
+			margin-bottom: 20px;
+
+			.newImg {
+				border-radius: 5px;
+				width: 100%;
+				aspect-ratio: 1;
+			}
+
+			.songNameStyle {
+				position: absolute;
+				top: 18%;
+				left: 37%;
+				font-size: 18px;
+				width: 64%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+			.singerNameStyle {
+				position: absolute;
+				top: 57%;
+				left: 37%;
+				font-size: 16px;
+				width: 64%;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+
+
+			&:hover {
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 5px;
+				transition: 0.2s ease;
+
+			}
+
+			.hover:hover {
+				cursor: pointer;
+				transform: translateY(-3px);
+				transition: 0.3s ease;
+			}
+
+			/deep/.el-image {
+				overflow: visible;
+
+				img {
+					border-radius: 5px;
+				}
+			}
+
+			/deep/.el-image__inner:hover {
+				cursor: pointer;
+				box-shadow: 0px 1px 2px 2px rgba(55, 55, 55, 0.8), -1px -1px 2px 2px rgba(55, 55, 55, 0.8);
+				transition: 0.2s ease;
+				opacity: 1;
+
+			}
 		}
 	}
 
@@ -220,7 +375,6 @@
 		bottom: 0px;
 		right: 0px;
 		z-index: 8;
-		font-family: sans-serif;
 		padding: 4px 6px;
 		border-radius: 4px;
 		background-color: rgba(0, 0, 0, 0.5);
@@ -253,34 +407,14 @@
 			transition: 0.2s ease;
 			opacity: 1;
 		}
-	}
 
-	.newsong-row {
-		margin-bottom: 20px;
-
-		&:hover {
-			background-color: rgba(0, 0, 0, 0.4);
+		.recImg {
+			width: 80%;
+			aspect-ratio: 1;
 			border-radius: 5px;
-			transition: 0.2s ease;
-
-		}
-
-		/deep/.el-image {
-			overflow: visible;
-
-			img {
-				border-radius: 5px;
-			}
-		}
-
-		/deep/.el-image__inner:hover {
-			cursor: pointer;
-			box-shadow: 0px 1px 2px 2px rgba(55, 55, 55, 0.8), -1px -1px 2px 2px rgba(55, 55, 55, 0.8);
-			transition: 0.2s ease;
-			opacity: 1;
-
 		}
 	}
+
 
 	/deep/.el-image__inner {
 		opacity: 0.9;

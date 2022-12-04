@@ -330,25 +330,13 @@
 		},
 		watch: {
 			searchSignal: function() {
-				console.log(this.searchSignal);
 				if (this.searchSignal != 0) {
 					this.lastSearch = this.newSearch
 					this.newSearch = this.searchWords
 					if (this.newSearch == this.lastSearch) return
-					console.log('search');
 					this.haveSearch()
 				}
 			},
-			// searchWords(){
-			// 	if(this.$route.path != '/main/search') return
-			// 	this.getRecommend()
-			// 	this.searchSongs()
-			// 	this.searchAlbums()
-			// 	this.searchPlaylists()
-			// 	this.searchvideoLists()
-			// 	this.searchSingers()
-			// 	this.resetAll()
-			// }
 		},
 		methods: {
 			haveSearch(){
@@ -619,7 +607,7 @@
 		color: rgba(255, 255, 255, 0.9);
 		cursor: default;
 		user-select: none;
-		transform: translate3d(0, 0, 0);
+		
 	}
 
 	p {
@@ -721,7 +709,6 @@
 		/deep/.el-image__inner:hover {
 			cursor: pointer;
 			box-shadow: 1px 1px 3px 2px rgba(55, 55, 55, 0.8), -1px -1px 2px 2px rgba(55, 55, 55, 0.7);
-			transition: 0.2s ease;
 			opacity: 1;
 		}
 	}
@@ -810,6 +797,9 @@
 		border: none;
 		border-radius: 10px;
 		padding: 15px 20px;
+	}
+	/deep/.el-card__body{
+		padding: 0;
 	}
 
 

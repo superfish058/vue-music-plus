@@ -169,7 +169,7 @@
 				vc.getSingerHotSongs()
 				vc.getSingerAlbums()
 				vc.getSingerVideos()
-				vc.getSimiSingers()
+				// vc.getSimiSingers()
 				vc.getSingerDesc()
 				vc.albums = []
 				vc.videos = []
@@ -195,7 +195,7 @@
 			this.getSingerHotSongs()
 			this.getSingerAlbums()
 			this.getSingerVideos()
-			this.getSimiSingers()
+			// this.getSimiSingers()
 			this.getSingerDesc()
 			this.$nextTick(() => {
 				this.tags.forEach((item, ind) => {

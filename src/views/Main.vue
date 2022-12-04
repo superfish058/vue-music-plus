@@ -2,14 +2,15 @@
 	<div id="main">
 		<el-container style="height: 100%;">
 			<!-- 头部 -->
-			<el-header class="border" style="border-bottom: none;height: 60px;">
+			<el-header class="border PC_header" style="border-bottom: none;height: 10vh;">
 				<el-row>
-					<!-- 历史记录导航 -->
+					<!-- logo -->
 					<el-col :span="4">
-						<el-image style="height: 55px;transform: translateY(5px);cursor: pointer;"
+						<el-image style="height: 8vh;transform: translateY(1.6vh);cursor: pointer;"
 							:src="require('@/assets/logo2.png')" fit="fill" @click="$router.push('discovery')">
 						</el-image>
 					</el-col>
+					<!-- 历史记录导航 -->
 					<el-col :span="4">
 						<div class="history">
 							<i class="el-icon-arrow-left" @click="$router.go(-1)"></i>
@@ -29,7 +30,7 @@
 									</el-col>
 									<el-col :span="22">
 										<div>{{ item.searchWord }}</div>
-										<div style="height: 30px;color:#919191;transform: translateY(-5px);">
+										<div style="height: 28px;color:#919191;transform: translateY(-5px);">
 											{{ item.content }}
 										</div>
 									</el-col>
@@ -59,9 +60,18 @@
 					</el-col>
 				</el-row>
 			</el-header>
-			<el-container>
-				<!-- 侧边栏导航 -->
-				<el-aside width="200px" class="border" style="border-right: none;">
+			<!-- 头部 mobile -->
+			<el-header class="mobile" style="border-bottom: none;height: 6vh;">
+				<div style="display: flex;align-items: center;height: 100%;justify-content: space-between;">
+					<span style="font-size: 20px;letter-spacing: 0.2em;">
+						{{$store.state.localPage}}
+					</span>
+					<i class="el-icon-search" style="font-size: 20px;"></i>
+				</div>
+			</el-header>
+			<el-container style="height: 50vh;">
+				<!-- 侧边栏导航 PC-->
+				<el-aside class="routerStyle PCAside" style="border-right: none;">
 					<el-row>
 						<el-col :span="24" class="aside">
 							<el-menu background-color="transparent" text-color="#fff" active-text-color="none"
@@ -94,13 +104,41 @@
 						</el-col>
 					</el-row>
 				</el-aside>
+
 				<!-- 路由展示区 -->
-				<el-main class="border" style="width: 1000px; height: 590px;padding: 0;overflow-y: hidden;">
+				<el-main class="routerStyle">
 					<keep-alive>
 						<router-view></router-view>
 					</keep-alive>
 				</el-main>
 			</el-container>
+			<!-- 底部导航 mobile-->
+			<div class="mobile " style="border-right: none;height: 7vh;">
+				<el-row class="footer">
+					<el-col :span="8">
+						<router-link to="discovery">
+							<i class="el-icon-discover"></i>
+							<p >发现</p>
+						</router-link>
+					</el-col>
+					<el-col :span="8">
+						<router-link to="selfFM">
+							<i class="el-icon-s-promotion" v-show="$store.state.localPage!='音乐'"></i>
+							<span class="iconfont icon-bofang" v-show="!$store.state.isPlay&&$store.state.localPage=='音乐'"
+								v-tap="(e)=>setPlay(true,e)"></span>
+							<span class="iconfont icon-zanting" v-show="$store.state.isPlay&&$store.state.localPage=='音乐'"
+								v-tap="(e)=>setPlay(false,e)"></span>
+							<p v-show="$store.state.localPage!='音乐'">音乐</p>
+						</router-link>
+					</el-col>
+					<el-col :span="8">
+						<router-link to="userpage">
+							<i class="el-icon-star-off"></i>
+							<p>我的</p>
+						</router-link>
+					</el-col>
+				</el-row>
+			</div>
 		</el-container>
 		<!-- 登录对话框 -->
 		<el-dialog title="用户登录" :visible.sync="loginVisible" :modal-append-to-body='false'>
@@ -173,27 +211,31 @@
 			this.getSearchDefault()
 		},
 		methods: {
+			setPlay(val){
+				if (!this.$store.state.id) return
+				this.$store.state.isPlay = val
+			},
 			//退出登录
-				logout() {
+			logout() {
 				this.$confirm('此操作将退出当前账号, 是否继续?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.$http.get('/logout',{
-						time:new Date().valueOf()
+					this.$http.get('/logout', {
+						time: new Date().valueOf()
 					})
 					this.hzId = ''
 					this.userId = ''
 					this.userName = ''
 					this.userImg = ''
 					this.$store.state.userId = 0,
-					this.$store.state.hzId = 0
-					setTimeout(()=>{
-						this.$http.get('/login/status',{
-							time:new Date().valueOf()
+						this.$store.state.hzId = 0
+					setTimeout(() => {
+						this.$http.get('/login/status', {
+							time: new Date().valueOf()
 						})
-					},2000)				
+					}, 2000)
 					this.$message({
 						type: 'success',
 						message: '登出成功!'
@@ -359,6 +401,61 @@
 </script>
 
 <style scoped lang="less">
+	@media screen and (min-width:1150px) {
+		.PCAside {
+			width: 200px !important;
+		}
+	}
+
+	@media screen and (max-width:1150px) {
+		.PCAside {
+			width: 150px !important;
+		}
+	}
+
+	@media screen and (max-width:850px) {
+		.mobile {
+			display: block !important;
+			.footer{
+				.el-col-8{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					height: 7vh;
+				}
+				i,span{
+					display: flex;
+					justify-content: center;
+					padding-bottom: 4px;
+					color: #fff;
+					font-size: 3vh;
+				}
+				span{
+					font-size: 5vh;
+				}
+				p{
+					color: #fff;
+					font-size: 1.5vh;
+				}
+			}
+		}
+
+		.PCAside {
+			display: none;
+		}
+
+
+		.PC_header {
+			display: none;
+		}
+
+		.routerStyle {
+			border: none !important;
+
+		}
+
+	}
+
 	#main {
 		height: 100%;
 		width: 100%;
@@ -372,6 +469,10 @@
 		a {
 			text-decoration: none;
 		}
+	}
+
+	.mobile {
+		display: none;
 	}
 
 	.el-menu-item {
@@ -472,7 +573,7 @@
 
 
 	.history {
-		height: 60px;
+		height: 10vh;
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
@@ -493,8 +594,9 @@
 		color: #fff;
 	}
 
-	.border {
+	.routerStyle {
 		border: 1px solid rgba(255, 255, 255, 0.1);
+		padding: 0;
 	}
 
 	.el-menu-item:hover {
@@ -502,7 +604,7 @@
 	}
 
 	.search {
-		height: 60px;
+		height: 10vh;
 		display: flex;
 		align-items: center;
 		padding-left: 40px;
