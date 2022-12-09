@@ -66,7 +66,7 @@
 					<span style="font-size: 20px;letter-spacing: 0.2em;">
 						{{$store.state.localPage}}
 					</span>
-					<i class="el-icon-search" style="font-size: 20px;"></i>
+					<i class="el-icon-search" style="font-size: 20px;" @click="turnMobileSearch()"></i>
 				</div>
 			</el-header>
 			<el-container style="height: 50vh;">
@@ -211,6 +211,13 @@
 			this.getSearchDefault()
 		},
 		methods: {
+			// 跳转手机搜索页面
+			turnMobileSearch(){
+				this.$router.push({
+					path: '/searchPage'
+				})
+			},
+			// 设置播放图标
 			setPlay(val){
 				if (!this.$store.state.id) return
 				this.$store.state.isPlay = val
@@ -403,7 +410,7 @@
 <style scoped lang="less">
 	@media screen and (min-width:1150px) {
 		.PCAside {
-			width: 200px !important;
+			width: 160px !important;
 		}
 	}
 

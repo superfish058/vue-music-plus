@@ -37,17 +37,19 @@
 			},
 			isPlaying() {
 				return this.$store.state.isPlay
+			},
+			localPage(){
+				return this.$store.state.localPage
 			}
 		},
 		mounted() {
 			this.ap = this.loadAplayer()
+			this.judgeHide()
 		},
 		watch: {
 			reloadNum: function() {
 				if (this.reloadNum % 3 == 0) {
-					if(!this.$store.state.id){
-						this.ap.list.clear()
-					}
+					this.ap.list.clear()
 					this.ap.list.add(this.currentMusic)
 					if(this.ap.audio.paused){
 						this.ap.play()
@@ -75,9 +77,20 @@
 				if (this.isPlaying) {
 					this.ap.play()
 				}
+			},
+			localPage(){
+				this.judgeHide()
 			}
 		},
 		methods: {
+			//判断歌词隐藏
+			judgeHide(){
+				if (this.localPage == '搜索'||this.localPage == '音乐') {
+					this.ap.lrc.hide()
+				}else{
+					this.ap.lrc.show()
+				}
+			},
 			//加载Aplayer
 			loadAplayer() {
 				const that = this
@@ -100,13 +113,6 @@
 					if (that.$store.state.seek) {
 						that.$store.state.seek = false
 						ap.seek(that.$store.state.seekTime);
-					}
-					//歌词展示
-					if (that.$route.path == '/main/selfFM') {
-						ap.lrc.hide()
-					}
-					if (that.$route.path != '/main/selfFM') {
-						ap.lrc.show()
 					}
 					//视频暂停歌曲播放
 					if (that.$route.path == '/main/video' && that.isPlay == 1) {

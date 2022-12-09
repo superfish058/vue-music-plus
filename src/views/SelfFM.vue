@@ -7,25 +7,25 @@
 				<el-row class="mobile">
 					<!-- 歌名 -->
 					<el-row class="songName">
-						<p>{{currentMusicInfo.name}}</p>
+						<p style="max-width: 80vw;" class="noWrop">{{currentMusicInfo.name}}</p>
 						<span class="iconfont icon-shipin mvIco" v-if="currentMusicInfo.mv"
 							@click="turnMvPage(currentMusicInfo.mv)"></span>
 					</el-row>
 					<el-row class="songInfo">
 						<span v-for="(item,index) in currentMusicInfo.artist.split('/')||currentMusicInfo.artist" :key="index"
-							style="margin-right: 5px;cursor: pointer;" class="hover"
+							style="margin-right: 5px;cursor: pointer;max-width: 45vw;" class="hover noWrop"
 							@click="turnSingerPage(currentMusicInfo.singerIds[index])">
 							{{item}}
 						</span>
 						<span style="cursor: default;"> - </span>
-						<span @click="turnAlbumPage(currentMusicInfo.alId)" style="cursor: pointer;" class="hover">
+						<span @click="turnAlbumPage(currentMusicInfo.alId)" style="cursor: pointer;max-width: 45vw;" class="hover noWrop">
 							{{currentMusicInfo.alName}}
 						</span>
 					</el-row>
 				</el-row>
 				<!-- 图片区 -->
-				<el-row class="imgArea"   v-swipeleft="nextSong"  v-swiperight="lastSong">
-					<el-image class="imgStyle" :src="currentMusicInfo.cover+'?param=600y600'" fit="cover"></el-image>
+				<el-row class="imgArea"   v-swipeup="nextSong"  v-swipedown="lastSong">
+					<el-image class="imgStyle" :src="currentMusicInfo.cover" fit="cover"></el-image>
 				</el-row>
 				<!-- 功能区 PC-->
 				<el-row class="funcArea PC">
@@ -159,13 +159,16 @@
 		},
 		computed: {
 			currentMusicInfo() {
-				return this.$store.state.musicInfo[this.$store.state.listIndex]
+				return this.$store.state.musicInfo[this.currentIndex]
 			},
 			currentId() {
 				return this.$store.state.id
 			},
 			currentTime() {
 				return this.$store.state.currentTime
+			},
+			currentIndex(){
+				return this.$store.state.listIndex
 			}
 		},
 		mounted() {
@@ -501,6 +504,12 @@
 </script>
 
 <style scoped lang="less">
+	.noWrop{
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+	}
+	
 	@media screen and (max-width:850px) {
 		.PC {
 			display: none !important;
@@ -699,7 +708,7 @@
 
 	.lyricArea {
 		color: rgba(255, 255, 255, .85);
-		transform: translateX(-60px);
+		transform: translateX(-40px);
 
 		.songNameArea {
 			margin-top: 16px;
@@ -757,7 +766,7 @@
 	.lyarea {
 		position: relative;
 		top: 28px;
-		height: 332px;
+		height: 308px;
 		overflow-y: hidden;
 
 		ul {

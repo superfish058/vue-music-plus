@@ -10,6 +10,8 @@ import PlayList from '@/views/Items/PlayList'
 import Singer from '@/views/Items/Singer'
 import Videos from '@/views/Items/Videos'
 import UserPage from '@/views/Items/UserPage'
+
+import SearchPage from '@/views/mobile/SearchPage'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -25,6 +27,10 @@ export default new VueRouter({
 		}, {
 			path: '/main',
 			redirect: '/main/discovery'
+		},
+		{
+			path:'/searchPage',
+			component:SearchPage
 		},
 		{
 			path: '/main',
@@ -64,7 +70,8 @@ export default new VueRouter({
 				{
 					path: 'userpage',
 					component: UserPage
-				}
+				},
+				
 			]
 		}
 	]

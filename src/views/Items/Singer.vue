@@ -41,48 +41,7 @@
 		</el-row>
 		<!-- 歌手热门歌曲 -->
 		<el-row class="songRow" v-if="tagsActive == '热门歌曲'">
-			<span class="iconfont icon-24gf-playCircle playIcon" @click="sendList()"></span>
-			<el-table :data="hotSongs" style="width: 100%;border-radius: 10px;">
-				<el-table-column label="#" type="index" width="50">
-				</el-table-column>
-				<el-table-column label="标题" width="75">
-					<template slot-scope="scope">
-						<el-image :src="scope.row.al.picUrl+'?param=200y200'" style="width:100%;aspect-ratio: 1;cursor: pointer;" lazy
-							fit="cover" @click="playMusic(scope.row.id)">
-						</el-image>
-					</template>
-				</el-table-column>
-				<el-table-column width="460">
-					<template slot-scope="scope">
-						<el-row style="display: flex;align-items: center;">
-							{{scope.row.name}}
-							<span class="iconfont icon-shipin" style="color:aquamarine;opacity: 0.9;font-size: 20px;margin-left: 5px;cursor: pointer;" 
-								v-if="scope.row.mv" @click="turnMvPage(scope.row.mv)"></span>
-						</el-row>
-						<el-row :gutter="5">
-							<span v-for="item,index in scope.row.ar" :key="index"
-								style="margin-right: 5px;cursor: pointer;" class="hover"
-								@click="turnSingerPage(item.id)">
-								{{item.name}}
-							</span>
-						</el-row>
-					</template>
-				</el-table-column>
-				<el-table-column label="专辑" width="300">
-					<template slot-scope="scope">
-						<el-row v-if="scope.row">
-							<span @click="turnAlbumPage(scope.row.al.id)" style="cursor: pointer;" class="hover">
-								{{scope.row.al.name}}
-							</span>
-						</el-row>
-					</template>
-				</el-table-column>
-				<el-table-column label="时长" width="70">
-					<template slot-scope="scope">
-						{{setDtime(scope.row.dt)}}
-					</template>
-				</el-table-column>
-			</el-table>
+			<songList :songList="hotSongs"></songList>
 		</el-row>
 		<!-- 最新专辑 -->
 		<el-row v-if="tagsActive=='最新专辑'">
@@ -146,7 +105,13 @@
 </template>
 
 <script>
-	export default {
+	import {
+		turnAlbumPage,
+		turnMvPage,
+		turnSingerPage
+	} from '@/utils'
+	import songList from '@/components/songList'
+	export default {		
 		data() {
 			return {
 				singerInfo: '', //歌手信息
@@ -160,6 +125,9 @@
 				tags: ['热门歌曲', '最新专辑', '歌手MV', '歌手详情', '相似歌手'],
 				singerId: ''
 			}
+		},
+		components:{
+			songList
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
@@ -209,30 +177,15 @@
 		methods: {
 			//跳转MV页面
 			turnMvPage(id) {
-				this.$router.push({
-					path: '/main/video',
-					query: {
-						mvId: id
-					}
-				})
+				turnMvPage.call(this,id)
 			},
 			//跳转歌手页面
 			turnSingerPage(id) {
-				this.$router.push({
-					path: '/main/singer',
-					query: {
-						singerId: id
-					}
-				})
+				turnSingerPage.call(this,id)
 			},
 			//跳转专辑页面
 			turnAlbumPage(id) {
-				this.$router.push({
-					path: '/main/album',
-					query: {
-						albumId: id
-					}
-				})
+				turnAlbumPage.call(this,id)
 			},
 			//切换标签
 			changeTag(tag) {
@@ -497,81 +450,6 @@
 		padding: 15px 20px;
 	}
 
-	.songRow {
-		.el-table {
-			background-color: transparent;
-		}
-
-		.el-image {
-			transform: translateY(3px);
-		}
-
-		.playIcon {
-			position: absolute;
-			font-size: 26px;
-			color: rgba(255, 255, 255, 0.9);
-			top: -35px;
-			right: 20px;
-			transition: 0.2s ease;
-
-			&:hover {
-				cursor: pointer;
-				transform: translateY(-3px);
-				filter: contrast(0.7);
-			}
-		}
-
-		/deep/.el-table--scrollable-x .el-table__body-wrapper {
-			overflow-x: hidden;
-		}
-
-		/deep/table {
-			border-spacing: 0;
-		}
-
-		/deep/.el-table__cell {
-			color: rgba(255, 255, 255, 0.9);
-			padding: 3px 0;
-			background-color: transparent;
-		}
-
-		/deep/tr {
-			background-color: #121212;
-			opacity: 0.9;
-		}
-
-		/deep/th.el-table__cell {
-			padding: 10px 0;
-			background-color: transparent;
-			color: rgba(255, 255, 255, 0.9);
-			overflow: visible;
-		}
-
-		/deep/.el-table__row {
-			background-color: #121212;
-			opacity: 0.9;
-
-		}
-
-		/deep/.el-table--enable-row-hover .el-table__body tr:hover>td {
-			background-color: #2a2a2a;
-
-		}
-
-		/deep/.el-table__row>td {
-			border: none;
-		}
-
-
-		.el-table::before {
-			height: 0px;
-		}
-
-		/deep/.el-table th.is-leaf {
-			/* 去除上边框 */
-			border: none;
-		}
-	}
 
 	.tags {
 		margin: 7px 0 13px 0;

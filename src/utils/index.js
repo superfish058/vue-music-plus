@@ -48,6 +48,9 @@ export const setDtime = function(dt) {
 }
 
 export const setDuration = function(dt) {
+	if(isNaN(dt)){
+		dt = 0
+	}
 	let min = Math.floor(dt/60) 
 	let sec = Math.floor(dt%60)
 	if (min == 0) {

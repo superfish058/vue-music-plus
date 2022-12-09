@@ -32,8 +32,8 @@ const actions = {
 		})
 		commit('RemoveSong',id)
 	},
-	//添加单曲
 	
+	//添加单曲
 	async getMusicUrl({
 		commit,
 		state
@@ -42,6 +42,7 @@ const actions = {
 			Vue.prototype.$message('获取歌曲中，请稍后')
 			return
 		}
+		//判断是否为列表中歌曲，是则跳转播放
 		let switchIndex = -1
 		state.musicInfo.forEach((item,index) =>{
 			if(item.songId == id){
@@ -53,87 +54,85 @@ const actions = {
 			commit('SwitchUrl', switchIndex)
 			return
 		}
-		let url = ''
-		let name = ''
-		let artists = []
-		let lyc = ''
-		let singers = ''
-		let picUrl = ''
-		let alName = ''
-		let singerIds = []
-		let songId = id
-		let mv = ''
-		let alId = ''
+		//不是列表中歌曲，获取新数据
+		let url =''
+		//标识正在获取歌曲
 		getMusic = true
-		const {data:res} = await axios.get('/song/url/v1', {
+		//获取url
+		const {data:res1} = await axios.get('/song/url/v1', {
 			params: {
 				id,
 				level:'exhigh'
 			}
 		})
-		if(res.code != 200){
+		if(res1.code != 200){
 			Vue.prototype.$message.error('获取歌曲失败')
 			getMusic = false
 			return
 		}else{
-			url = res.data[0].url
+			url = res1.data[0].url
 			if(url == null){
 				Vue.prototype.$message('音源不可用')
 				getMusic = false
 				return
 			}
-			commit('SetUrl', url)
 		}
-		axios.get('/song/detail', {
+		//获取detail
+		const res2 = await axios.get('/song/detail', {
 			params: {
 				ids: id
 			}
-		}).then(res => {
-			name = res.data.songs[0].name
-			artists = res.data.songs[0].ar
-			picUrl = res.data.songs[0].al.picUrl
-			alName = res.data.songs[0].al.name
-			mv = res.data.songs[0].mv
-			alId = res.data.songs[0].al.id
-			artists.forEach((item) => {
-				singers += (item.name + '/')
-				singerIds.push(item.id)
-			})
-			singers = singers.slice(0, -1)
-			let info = {
-				name,
-				singers,
-				picUrl,
-				alName,
-				singerIds,
-				songId,
-				mv,
-				alId
-			}
-			commit('SetDetail', info)
 		})
-		axios.get('/lyric', {
+		let name = res2.data.songs[0].name
+		let artists = res2.data.songs[0].ar
+		let picUrl = res2.data.songs[0].al.picUrl
+		let alName = res2.data.songs[0].al.name
+		let mv = res2.data.songs[0].mv
+		let alId = res2.data.songs[0].al.id
+		let singers = ''
+		let singerIds = []
+		let songId = id
+		artists.forEach((item) => {
+			singers += (item.name + '/')
+			singerIds.push(item.id)
+		})
+		singers = singers.slice(0, -1)
+		let info = {
+			name,
+			singers,
+			picUrl,
+			alName,
+			singerIds,
+			songId,
+			mv,
+			alId
+		}
+		//获取歌词
+		const res3 = await axios.get('/lyric', {
 			params: {
 				id
 			}
-		}).then(res => {
-			lyc = res.data.lrc.lyric
-			commit('SetLyric', lyc)
 		})
+		let lyc = res3.data.lrc.lyric
+		info.lrc = lyc
+		info.url = url
+		commit('SetSingleInfo',info)
+		// 标识获取音乐完成
 		getMusic = false
 	},
+	
 	//添加播放列表
 	async sendList({
 		commit,
 		state
 	}, ids) {
-		state.id = ''
 		if(getMusics){
 			Vue.prototype.$message('获取歌曲列表中,请稍后')
 			return
 		}
+		//开始获取歌曲列表
 		getMusics = true
-		const {data:res} = await axios.get('/song/url/v1', {
+		const {data:res1} = await axios.get('/song/url/v1', {
 			params: {
 				id: ids,
 				level:'exhigh'
@@ -141,86 +140,73 @@ const actions = {
 		})
 		let urls = []
 		let idsArray = ids.split(',')
-		if(res.code != 200){
+		if(res1.code != 200){
 			Vue.prototype.$message.error('获取播放列表失败')
 			getMusics = false
 			return
 		}else{	
 			idsArray.forEach(it => {
-				res.data.forEach(item => {
+				res1.data.forEach(item => {
 					if (item.id == it) {
 						urls.push(item.url)
 					}
 				})
 			})
-			commit('SetUrls', urls)
 		}
-		axios.get('/song/detail', {
+		
+		const res2 = await axios.get('/song/detail', {
 			params: {
 				ids: ids
 			}
-		}).then(res => {
-			let infos = []
-			res.data.songs.forEach((item,index) => {
-				let name = item.name
-				let artists = item.ar
-				let alName = item.al.name
-				let picUrl = item.al.picUrl
-				let singerIds = []
-				let singers = ''
-				let songIds = []
-				let mv = item.mv
-				let alId = item.al.id
-				artists.forEach((it) => {
-					singers += (it.name + '/')
-					singerIds.push(it.id)
-				})
-				songIds = ids.split(',')
-				singers = singers.slice(0, -1)
-				infos.push({
-					name: name,
-					artist: singers,
-					cover: picUrl,
-					alName: alName,
-					singerIds:singerIds,
-					songId:songIds[index],
-					mv,
-					alId
-
-				})
+		})
+		let infos = []
+		res2.data.songs.forEach((item,index) => {
+			let name = item.name
+			let artists = item.ar
+			let alName = item.al.name
+			let picUrl = item.al.picUrl
+			let singerIds = []
+			let singers = ''
+			let songIds = []
+			let mv = item.mv
+			let alId = item.al.id
+			artists.forEach((it) => {
+				singers += (it.name + '/')
+				singerIds.push(it.id)
 			})
-			commit('SetDetails', infos)
+			songIds = ids.split(',')
+			singers = singers.slice(0, -1)
+			infos.push({
+				name: name,
+				artist: singers,
+				cover: picUrl,
+				alName: alName,
+				singerIds:singerIds,
+				songId:songIds[index],
+				mv,
+				alId
+
+			})
 		})
 
-		//并发请求(假)
+		//发送歌词请求？？？
 		let theIds = ids.split(',')
-		let lycs = []
+		let length = theIds.length
 		let counts = 0
-		let indexs = []
-		theIds.forEach((item, index) => {
-			axios.get('/lyric', {
+		theIds.forEach(async(item, index) => {
+			let res = await axios.get('/lyric', {
 				params: {
 					id: item
 				}
-			}).then(res => {
-				lycs.push(res.data.lrc.lyric)
-				indexs.push(index)
-				counts++
-				if (counts == theIds.length) {
-					let trueLycs = []
-					indexs.forEach((it0, id0) => {
-						let trueindex = indexs.findIndex((theitem, theindex) => {
-							return theitem == id0
-						})
-						let lyc = lycs.find((it, ind) => {
-							return ind === trueindex
-						})
-						trueLycs.push(lyc)
-					})
-					commit('SetLyrics', trueLycs)
-				}
 			})
+			infos[index]['url'] = urls[index]
+			infos[index]['lrc'] = res.data.lrc.lyric
+			counts ++
+			if(counts == length){
+				commit('SetListInfo',infos)
+			}
 		})
+		
 		Vue.prototype.$message.success('获取列表成功')
 		getMusics = false
 	}

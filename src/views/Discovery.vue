@@ -3,9 +3,9 @@
 		<div>
 			<!-- 轮播图 PC-->
 			<div class="bannerStyle PC">
-				<el-carousel :interval="4000" type="card" height="30vh" trigger="click" ref="carousel">
+				<el-carousel :interval="4000" type="card" height="27vh" trigger="click">
 					<el-carousel-item v-for="(item,index) in banners" :key="index">
-						<el-image style="position: absolute;border-radius: 5px;height: 30vh;" :src="item.imageUrl"
+						<el-image style="position: absolute;border-radius: 5px;height: 27vh;" :src="item.imageUrl"
 							fit="fill" @click="turnRelatedPage(item,index)">
 						</el-image>
 						<span class="banner-text">{{item.typeTitle}}</span>
@@ -154,7 +154,6 @@
 		methods: {
 			//轮播图跳转
 			turnRelatedPage(item, index) {
-				if (this.$refs.carousel.activeIndex != index) return
 				let type = item.targetType
 				if (type == 1) {
 					this.playMusic(item.targetId)
@@ -166,7 +165,7 @@
 						}
 					})
 				} else if (type == 1000) {
-					this.turnPlayListPage(item.targetId)
+					turnPlayListPage.call(this,item.targetId)
 				}
 
 			},

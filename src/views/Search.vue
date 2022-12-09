@@ -1,6 +1,6 @@
 <template>
-	<div style="padding: 20px 20px 20px 15px;height: 100%;box-sizing: border-box;overflow-y: scroll;" v-infinite-scroll="load" infinite-scroll-delay="300"
-		infinite-scroll-distance="50" ref="searchRef" infinite-scroll-immediate="0" class="Search">
+	<div v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="50" ref="searchRef"
+		infinite-scroll-immediate="0" class="Search">
 		<!-- 标签导航 -->
 		<el-row>
 			<div class="tags" ref="tags">
@@ -18,7 +18,8 @@
 						<el-row v-if="orderNone">
 							<el-col :span="11" class="recommend" v-if="songLists.length>0">
 								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 10px;" lazy
-									:src="songLists[0].al.picUrl+'?param=300y300'" fit="cover" @click="playMusic(songLists[0].id)">
+									:src="songLists[0].al.picUrl+'?param=300y300'" fit="cover"
+									@click="playMusic(songLists[0].id)">
 								</el-image>
 								<p class="main-p">{{songLists[0].name}}</p>
 								<p>单曲</p>
@@ -29,8 +30,8 @@
 						<!-- 歌手展示信息 -->
 						<el-row>
 							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendArtist)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 50%;" class="img-hidden" lazy
-									:src="recommendArtist.img1v1Url+'?param=300y300'" fit="cover"
+								<el-image style="width: 80%; aspect-ratio: 1;;border-radius: 50%;" class="img-hidden"
+									lazy :src="recommendArtist.img1v1Url+'?param=300y300'" fit="cover"
 									@click="turnSingerPage(recommendArtist.id)">
 								</el-image>
 								<p class="main-p">{{recommendArtist.name}}</p>
@@ -40,15 +41,17 @@
 							</el-col>
 							<!-- 专辑展示 -->
 							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendAlbum)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;" :src="recommendAlbum.blurPicUrl+'?param=300y300'" lazy
-									class="hover" @click="turnAlbumPage(recommendAlbum.id)"></el-image>
+								<el-image style="width: 80%; aspect-ratio: 1;"
+									:src="recommendAlbum.blurPicUrl+'?param=300y300'" lazy class="hover"
+									@click="turnAlbumPage(recommendAlbum.id)"></el-image>
 								<p class="main-p">{{recommendAlbum.name}}</p>
 								<p>专辑</p>
 							</el-col>
 							<!-- 歌单展示 -->
 							<el-col :span="2" style="opacity: 0;" v-if="JSON.stringify(recommendAlbum)!='{}'">1</el-col>
 							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendPlaylist)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;" :src="recommendPlaylist.coverImgUrl+'?param=300y300'" lazy
+								<el-image style="width: 80%; aspect-ratio: 1;"
+									:src="recommendPlaylist.coverImgUrl+'?param=300y300'" lazy
 									@click="turnPlayListPage(recommendPlaylist.id)">
 								</el-image>
 								<p class="main-p">{{recommendPlaylist.name}}</p>
@@ -64,8 +67,9 @@
 						<el-row v-for="item,index in songLists.slice(0,4)" :key="index" class="song-row"
 							style="padding: 4px;height: 58px;" @dblclick.native="playMusic(item.id)">
 							<el-col :span="3">
-								<el-image style="width:50px; aspect-ratio: 1;border-radius: 3px;" :src="item.al.picUrl+'?param=150y150'" lazy
-									fit="cover" @click="playMusic(item.id)"></el-image>
+								<el-image style="width:50px; aspect-ratio: 1;border-radius: 3px;"
+									:src="item.al.picUrl+'?param=150y150'" lazy fit="cover" @click="playMusic(item.id)">
+								</el-image>
 							</el-col>
 							<el-col :span="18" style="position: relative;height: 50px;">
 								<p style="position: absolute;top: 3px;">
@@ -115,8 +119,8 @@
 					<el-row style="padding: 0;" :gutter="30">
 						<el-col :span="6" v-for="item,index in playlists.slice(0,8)" :key="index"
 							class="personalized-image">
-							<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'" fit="cover" lazy
-								@click="turnPlayListPage(item.id)">
+							<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'"
+								fit="cover" lazy @click="turnPlayListPage(item.id)">
 							</el-image>
 							<div style="padding-top: 10px;height: 58px;">
 								<p class="main-p" style="font-size: 18px;white-space: normal;-webkit-line-clamp: 2;display: -webkit-box;
@@ -134,8 +138,8 @@
 						<el-col :span="8" v-for="item,index in videoLists.slice(0,9)" :key="index"
 							class="personalized-image">
 							<div v-if="item">
-								<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'" fit="cover" lazy
-									@click="turnVideoPage(item)">
+								<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'"
+									fit="cover" lazy @click="turnVideoPage(item)">
 								</el-image>
 							</div>
 							<div style="height: 64px;font-size: 16px;" v-if="item">
@@ -160,51 +164,7 @@
 		</el-row>
 		<!-- 歌曲界面 -->
 		<el-row v-if="tagsActive=='歌曲'" class="songRow">
-			<span class="iconfont icon-24gf-playCircle playIcon" @click="sendList()"></span>
-			<el-table :data="songLists" style="width: 100%;border-radius: 10px;">
-				<el-table-column label="#" type="index" width="50">
-				</el-table-column>
-				<el-table-column label="标题" width="70">
-					<template slot-scope="scope">
-						<div v-if="scope.row.al">
-							<el-image :src="scope.row.al.picUrl+'?param=150y150'" style="width:100%;aspect-ratio: 1;cursor: pointer;" lazy
-								fit="cover" @click="playMusic(scope.row.id)">
-							</el-image>
-						</div>		
-					</template>
-				</el-table-column>
-				<el-table-column width="460">
-					<template slot-scope="scope">
-						<el-row style="display: flex;align-items: center;">
-							{{scope.row.name}}
-							<span class="iconfont icon-shipin"
-								style="color:aquamarine;opacity: 0.9;font-size: 20px;margin-left: 5px;cursor: pointer;"
-								v-if="scope.row.mv" @click="turnMvPage(scope.row.mv)"></span>
-						</el-row>
-						<el-row :gutter="5">
-							<span v-for="item,index in scope.row.ar" :key="index"
-								style="margin-right: 5px;cursor: pointer;" class="hover"
-								@click="turnSingerPage(item.id)">
-								{{item.name}}
-							</span>
-						</el-row>
-					</template>
-				</el-table-column>
-				<el-table-column label="专辑" width="300">
-					<template slot-scope="scope">
-						<el-row v-if="scope.row.al">
-							<span @click="turnAlbumPage(scope.row.al.id)" style="cursor: pointer;" class="hover">
-								{{scope.row.al.name}}
-							</span>
-						</el-row>
-					</template>
-				</el-table-column>
-				<el-table-column label="时长" width="70">
-					<template slot-scope="scope">
-						{{setDtime(scope.row.dt)}}
-					</template>
-				</el-table-column>
-			</el-table>
+			<songList :songList='songLists'></songList>
 		</el-row>
 		<!-- 歌单界面 -->
 		<el-row v-if="tagsActive=='歌单'">
@@ -212,8 +172,8 @@
 				<p style="font-size: 22px;font-weight: 700;margin-bottom: 10px;">歌单</p>
 				<el-row style="padding: 0;" :gutter="30">
 					<el-col :span="6" v-for="item,index in playlists" :key="index" class="personalized-image">
-						<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'" fit="cover" lazy
-							@click="turnPlayListPage(item.id)">
+						<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'"
+							fit="cover" lazy @click="turnPlayListPage(item.id)">
 						</el-image>
 						<div style="padding-top: 10px;height: 58px;">
 							<p class="main-p" style="font-size: 18px;white-space: normal;-webkit-line-clamp: 2;display: -webkit-box;
@@ -244,8 +204,8 @@
 			<el-card style="margin-top: 20px;" class="hotResult">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">歌手</p>
 				<el-col :span="4" v-for="item,index in singerLists" :key="index" class="recommend">
-					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'" class="img-hidden hover" lazy
-						fit="cover" @click="turnSingerPage(item.id)">
+					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'"
+						class="img-hidden hover" lazy fit="cover" @click="turnSingerPage(item.id)">
 					</el-image>
 					<div style="width: 100%;height: 30px;">
 						<p class="main-p">{{item.name}}</p>
@@ -260,8 +220,8 @@
 				<el-row :gutter="30">
 					<el-col :span="8" v-for="item,index in videoLists" :key="index" class="personalized-image">
 						<div v-if="item">
-							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'" fit="cover" lazy
-								@click="turnVideoPage(item)">
+							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'"
+								fit="cover" lazy @click="turnVideoPage(item)">
 							</el-image>
 						</div>
 						<div style="height: 64px;font-size: 16px;" v-if="item">
@@ -286,6 +246,13 @@
 </template>
 
 <script>
+	import songList from '@/components/songList'
+	import {
+		turnAlbumPage,
+		turnMvPage,
+		turnSingerPage,
+		turnPlayListPage
+	} from '@/utils'
 	export default {
 		data() {
 			return {
@@ -314,17 +281,20 @@
 				return this.getSearchSignal()
 			},
 		},
-		beforeRouteEnter(to,from,next){
-			next(vc =>{
-				vc.$nextTick(()=>{
+		components: {
+			songList
+		},
+		beforeRouteEnter(to, from, next) {
+			next(vc => {
+				vc.$nextTick(() => {
 					vc.$refs.searchRef.scrollTop = 0
 					vc.$store.state.localTop = 'Search'
 				})
 			})
 		},
-		beforeRouteUpdate(to,from,next){
+		beforeRouteUpdate(to, from, next) {
 			this.$refs.searchRef.scrollTop = 0
-			if(to.path =='/main/search'){
+			if (to.path == '/main/search') {
 				next()
 			}
 		},
@@ -339,33 +309,28 @@
 			},
 		},
 		methods: {
-			haveSearch(){
+			haveSearch() {
 				this.resetAll()
 				this.getRecommend()
-				setTimeout(()=>{
+				setTimeout(() => {
 					this.searchSongs()
-				},50)
-				setTimeout(()=>{
+				}, 50)
+				setTimeout(() => {
 					this.searchAlbums()
-				},100)
-				setTimeout(()=>{
+				}, 100)
+				setTimeout(() => {
 					this.searchPlaylists()
-				},150)
-				setTimeout(()=>{
+				}, 150)
+				setTimeout(() => {
 					this.searchvideoLists()
-				},200)
-				setTimeout(()=>{
+				}, 200)
+				setTimeout(() => {
 					this.searchSingers()
-				},300)
+				}, 300)
 			},
 			//跳转MV页面
 			turnMvPage(id) {
-				this.$router.push({
-					path: '/main/video',
-					query: {
-						mvId: id
-					}
-				})
+				turnMvPage.call(this,id)
 			},
 			//跳转视频页面
 			turnVideoPage(data) {
@@ -388,33 +353,18 @@
 			},
 			//跳转歌手页面
 			turnSingerPage(id) {
-				this.$router.push({
-					path: '/main/singer',
-					query: {
-						singerId: id
-					}
-				})
+				turnSingerPage.call(this,id)
 			},
 			//跳转歌单页面
 			turnPlayListPage(id) {
-				this.$router.push({
-					path: '/main/playlist',
-					query: {
-						listId: id
-					}
-				})
+				turnPlayListPage.call(this,id)
 			},
 			//跳转专辑页面
 			turnAlbumPage(id) {
-				this.$router.push({
-					path: '/main/album',
-					query: {
-						albumId: id
-					}
-				})
+				turnAlbumPage.call(this,id)
 			},
 			load() {
-				if(this.$route.path != '/main/search') return
+				if (this.$route.path != '/main/search') return
 				if (this.tagsActive === '歌曲') {
 					if (this.songLists.length % 15) return
 					this.searchOffset = this.songLists.length
@@ -452,7 +402,7 @@
 				this.$nextTick(() => {
 					this.tags.forEach((item, ind) => {
 						this.$refs.tags.childNodes[ind].style = 'none'
-						
+
 					})
 					this.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
 				})
@@ -607,7 +557,15 @@
 		color: rgba(255, 255, 255, 0.9);
 		cursor: default;
 		user-select: none;
-		
+
+	}
+
+	.Search {
+		padding: 20px 20px 20px 15px;
+		height: 100%;
+		box-sizing: border-box;
+		overflow-y: scroll;
+		transform: translate3d(0,0,0);
 	}
 
 	p {
@@ -798,7 +756,8 @@
 		border-radius: 10px;
 		padding: 15px 20px;
 	}
-	/deep/.el-card__body{
+
+	/deep/.el-card__body {
 		padding: 0;
 	}
 
