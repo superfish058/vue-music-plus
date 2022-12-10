@@ -61,9 +61,10 @@
 				</el-row>
 			</el-header>
 			<!-- 头部 mobile -->
-			<el-header class="mobile" style="border-bottom: none;height: 6vh;">
+			<el-header class="mobile" style="border-bottom: none;height: 6vh;" v-swipeleft="(e) =>{$router.go(-1)}" 
+				v-swiperight="(e)=>{$router.go(1)}">
 				<div style="display: flex;align-items: center;height: 100%;justify-content: space-between;">
-					<span style="font-size: 20px;letter-spacing: 0.2em;">
+					<span style="font-size: 20px;letter-spacing: 0.2em;" v-tap="(e)=>{$router.go(-1)}">
 						{{$store.state.localPage}}
 					</span>
 					<i class="el-icon-search" style="font-size: 20px;" @click="turnMobileSearch()"></i>

@@ -13,15 +13,17 @@
 				</el-carousel>
 			</div>
 			<!-- 轮播图 mobile-->
-			<div class="bannerStyle mobile">
-				<el-carousel :interval="4000" height="35vw" trigger="click" ref="carousel" indicator-position="none">
-					<el-carousel-item v-for="(item,index) in banners" :key="index">
-						<el-image style="position: absolute;border-radius: 5px;height:35vw" :src="item.imageUrl"
-							fit="fill" @click="turnRelatedPage(item,index)">
-						</el-image>
-						<span class="banner-text">{{item.typeTitle}}</span>
-					</el-carousel-item>
-				</el-carousel>
+			<div class="bannerStyle mobile" style="padding-right: 15px;box-sizing: border-box;">
+				<van-swipe :autoplay="30000" indicator-color="white" >
+					<van-swipe-item v-for="(item,index) in banners" :key="index" >
+						<div style="position: relative;width: 100%;height: 35vw;">
+							<el-image style="position: absolute;border-radius: 5px;height:100%;width: 100%;" :src="item.imageUrl"
+								fit="cover" @click="turnRelatedPage(item,index)">
+							</el-image>
+							<span class="banner-text" >{{item.typeTitle}}</span>
+						</div>
+					</van-swipe-item>
+				</van-swipe>
 			</div>
 
 			<!-- 推荐歌单 -->
@@ -48,7 +50,7 @@
 					</el-col>
 				</div>
 				<div class="mobile mobileRecList">
-					<el-col :span="8" v-for="item,index in personalized" :key="index" >
+					<el-col :span="8" v-for="item,index in personalized" :key="index">
 						<el-row class="personalized-image" v-if="item.picUrl">
 							<el-image class="recImg" :src="item.picUrl+'?param=450y450'" fit="cover"
 								@click="turnPlayListPage(item.id)">
@@ -91,10 +93,10 @@
 							</el-row>
 						</el-col>
 					</div>
-					
+
 					<!-- 音乐 mobile -->
 					<div class="mobile">
-						<el-col :span="12" v-for="item,index in newsongs" :key="index" class="newArea" >
+						<el-col :span="12" v-for="item,index in newsongs" :key="index" class="newArea">
 							<el-row class="newsong-row">
 								<el-col :span="8" style="display: flex;" v-if="item.picUrl">
 									<el-image class="newImg" :src="item.picUrl+'?param=300y300'" fit="fill"
@@ -113,7 +115,7 @@
 							</el-row>
 						</el-col>
 					</div>
-					
+
 				</el-row>
 			</el-row>
 		</div>
@@ -165,7 +167,7 @@
 						}
 					})
 				} else if (type == 1000) {
-					turnPlayListPage.call(this,item.targetId)
+					turnPlayListPage.call(this, item.targetId)
 				}
 
 			},
@@ -236,31 +238,33 @@
 		.PC {
 			display: none;
 		}
-		
+
 		.recImg {
-			width: 91%!important;
+			width: 91% !important;
 		}
-		
-		.personalized-desc{
-			width: 91%!important;
+
+		.personalized-desc {
+			width: 91% !important;
 		}
-		
-		.mobileRecList{
-			font-size: 14px!important;
+
+		.mobileRecList {
+			font-size: 14px !important;
 		}
+
 		.songNameStyle {
-			font-size: 14px!important;
-			top: 12%!important;
-			left: 37%;
-		}
-		
-		.singerNameStyle {
-			font-size: 12px!important;
-			top: 62%!important;
+			font-size: 14px !important;
+			top: 12% !important;
 			left: 37%;
 		}
 
+		.singerNameStyle {
+			font-size: 12px !important;
+			top: 62% !important;
+			left: 37%;
+		}
 		
+
+
 	}
 
 	.mobile {
@@ -280,12 +284,13 @@
 	.bannerStyle {
 		position: relative;
 		top: 0;
+		width: 100%;
 	}
 
 	.textArea {
 		font-size: 18px;
 		letter-spacing: 0.1em;
-		margin: 30px 0 20px 0;
+		margin: 15px 0 20px 0;
 
 		.icon1 {
 			font-size: 20px;
@@ -383,7 +388,8 @@
 		margin-top: 5px;
 		margin-bottom: 18px;
 		width: 80%;
-		height: 2.6em;
+		line-height: 20px;
+		height: 40px;
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;

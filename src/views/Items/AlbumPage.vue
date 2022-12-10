@@ -1,11 +1,11 @@
 <template>
 	<div ref="albumPage" class="Album">
 		<!-- 专辑信息区 -->
-		<el-row class="infoArea">
+		<el-row class="infoArea PC">
 			<el-col :span="6" >
-				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 90%;aspect-ratio: 1;" v-if="albumInfo.picUrl">
+				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 85%;aspect-ratio: 1;" v-if="albumInfo.picUrl">
 				</el-image>
-				<el-skeleton style="width: 90%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
+				<el-skeleton style="width: 85%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
 					v-show="!albumInfo.picUrl">
 					<template slot="template">
 						<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
@@ -41,6 +41,34 @@
 				</el-row>
 			</el-col>
 		</el-row>
+		
+		<!-- 专辑信息区 mobile-->
+		<el-row class="mobile" style="height: 35vw;padding: 15px 5px;">
+			<el-col :span="8" style="height: 100%;">
+				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 90%;aspect-ratio: 1;"
+					v-if="albumInfo.picUrl">
+				</el-image>
+				<el-skeleton style="width: 90%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated v-show="albumInfo.picUrl">
+					<template slot="template">
+						<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
+					</template>
+				</el-skeleton>
+			</el-col>
+			<el-col :span="16" style="height: 100%;">
+				<div style="display: flex;flex-direction: column;height: 100%;" v-if="albumInfo.artist">
+					<el-skeleton :rows="3" :loading="!albumInfo.picUrl" animated v-show="albumInfo.picUrl" />
+					<div style="flex:2;">
+						<p style="font-size: 20px;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;line-clamp: 2;">{{albumInfo.name}}</p>
+					</div>					
+					<div style="flex:1;display: flex;align-items: center;height: 100%;" v-if="albumInfo.artist.name">
+						<el-image :src="albumInfo.artist.img1v1Url+'?param=100y100'" fit="cover" style="width: 9vw;; aspect-ratio: 1;
+							border-radius: 50%;margin-right: 5px;" lazy></el-image>
+						<span>{{albumInfo.artist.name}}</span>
+					</div>
+				</div>
+			</el-col>
+		</el-row>
+		
 		<!-- 歌曲信息区 -->
 		<el-row>
 			<songList :songList="albumSongs"></songList>
@@ -78,6 +106,7 @@
 				vc.getAlbums()
 				vc.$nextTick(() => {
 					vc.$refs.albumPage.parentNode.scrollTop = 0
+					vc.$store.state.localPage = '专辑'
 					vc.$store.state.localTop = 'Album'
 				})
 
@@ -119,7 +148,6 @@
 
 <style scoped lang="less">
 	.Album {
-		padding: 20px 20px 20px 18px;
 		height: 100%;
 		box-sizing: border-box;
 		overflow-y: scroll;

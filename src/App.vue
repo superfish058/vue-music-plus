@@ -22,7 +22,8 @@
 		data() {
 			return {
 				find: false,
-				created: false
+				created: false,
+				screenWidth:0,
 			}
 		},
 		computed: {
@@ -33,8 +34,23 @@
 				return this.$store.state.userId
 			}
 		},
-		created() {
-			// this.getLoginStatus()
+		mounted() {
+			this.screenWidth = document.body.clientWidth
+			if(this.screenWidth<850){
+				this.$store.state.mobileMode = true
+			}else{
+				this.$store.state.mobileMode = false
+			}
+			window.onresize = () => {
+				if(this.screenWidth<850){
+					this.$store.state.mobileMode = true
+				}else{
+					this.$store.state.mobileMode = false
+				}
+				return (() => {
+					this.screenWidth = document.body.clientWidth
+				})()
+			}
 		},
 		wartch: {
 			userId() {
@@ -180,6 +196,7 @@
 			}
 			
 			.PC {
+				display: block!important;
 				visibility: hidden;
 				
 			}

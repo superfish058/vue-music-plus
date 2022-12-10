@@ -169,7 +169,7 @@
 			},
 			currentIndex(){
 				return this.$store.state.listIndex
-			}
+			},
 		},
 		mounted() {
 			this.screenWidth = document.body.clientWidth
@@ -755,7 +755,7 @@
 		cursor: pointer;
 		z-index: 99;
 		top: 20px;
-		right: 30px;
+		right: 0;
 		height: 20px;
 		width: 40px;
 		border-radius: 5px;

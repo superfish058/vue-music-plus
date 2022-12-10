@@ -51,3 +51,27 @@
 	border-right: none;
 	background-clip: padding-box;
 }
+
+@media screen and (max-width:850px){
+	.PC{
+		display: none!important;
+	}
+	.monile{
+		display: block;
+	}
+	.mobileSize{
+		font-size: 13px!important;
+	}
+	::-webkit-scrollbar{
+		width: 0;
+	}
+}
+
+@media screen and (min-width:850px){
+	.mobile{
+		display: none!important;
+	}
+	.PC{
+		display: block;
+	}
+}
