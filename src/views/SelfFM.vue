@@ -25,7 +25,7 @@
 				</el-row>
 				<!-- 图片区 -->
 				<el-row class="imgArea"   v-swipeup="nextSong"  v-swipedown="lastSong">
-					<el-image class="imgStyle" :src="currentMusicInfo.cover" fit="cover"></el-image>
+					<el-image class="imgStyle" :src="currentMusicInfo.cover?currentMusicInfo.cover:waitingImg" fit="cover"></el-image>
 				</el-row>
 				<!-- 功能区 PC-->
 				<el-row class="funcArea PC">
@@ -155,6 +155,7 @@
 				setStronger:false,//设置更强亮度
 				judgeFilter:false,//判断滤镜
 				filterClass:'filter',//默认滤镜
+				waitingImg:'',
 			}
 		},
 		computed: {
@@ -390,6 +391,9 @@
 					} else {
 						this.addSeek = 1
 					}
+				}
+				if(this.currentMusicInfo.cover!=this.waitingImg){
+					this.waitingImg = this.currentMusicInfo.cover
 				}
 				let lyul = this.$refs.lyul
 				let lyli = this.$refs.lyli
