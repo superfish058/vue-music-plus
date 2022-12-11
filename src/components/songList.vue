@@ -23,7 +23,7 @@
 					<el-col :span="11" class="width90 mobileSize">
 						<div class="songbox index_1">
 							<div class="songImg">
-								<el-image :src="item.al.picUrl+'?param=200y200'" fit="cover" @click="playMusic(item.id)"
+								<el-image :src="item.al.picUrl+'?param=200y200'" fit="fill" @click="playMusic(item.id)"
 									lazy>
 								</el-image>
 							</div>
@@ -205,6 +205,7 @@
 						align-items: center;
 						height: 90%;
 						aspect-ratio: 1;
+						object-fit: cover; 
 						border-radius: 5%;
 						overflow: hidden;
 						cursor: pointer;
