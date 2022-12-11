@@ -651,7 +651,7 @@
 			margin: 0 auto;
 			margin-top: 20px !important;
 			width: 45vh !important;
-			aspect-ratio: 1;
+			height:  45vh !important;;
 			max-width: 85vw !important;
 			min-width: 70vw !important;
 			.imgStyle {
