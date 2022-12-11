@@ -173,7 +173,6 @@
 		},
 		mounted() {
 			this.screenWidth = document.body.clientWidth
-
 			window.onresize = () => {
 				return (() => {
 					this.screenWidth = document.body.clientWidth

@@ -202,10 +202,8 @@
 
 					.songImg {
 						display: flex;
-						align-items: center;
 						height: 90%;
 						aspect-ratio: 1;
-						object-fit: cover; 
 						border-radius: 5%;
 						overflow: hidden;
 						cursor: pointer;

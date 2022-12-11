@@ -13,10 +13,9 @@ const mutations = {
 		finalInfo['mv'] = info.mv
 		finalInfo['alId'] = info.alId
 		if(!state.musicInfo[0].url){
-			state.musicInfo[0] = finalInfo
-		}else{
-			state.musicInfo.unshift(finalInfo)
+			state.musicInfo = []
 		}
+		state.musicInfo.unshift(finalInfo)
 		state.reloadNum += 3
 	},
 	// 添加歌曲列表Plus
