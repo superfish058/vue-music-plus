@@ -14,7 +14,7 @@
 					<span class="iconfont icon-24gf-playCircle " @click="sendList()" ></span>
 					播放全部({{songList.length}})
 				</el-row>
-				<div v-for="item,index in songList" :key="item.id" class="songItem " @dblclick="playMusic(item.id)" v-tap="(e)=>playMusic(item.id)">
+				<div v-for="item,index in songList" :key="index" class="songItem " @dblclick="playMusic(item.id)" v-tap="(e)=>playMusic(item.id)">
 					<!-- 序号 -->
 					<el-col :span="2" class="width10">
 						<div class="index">{{index+1}}</div>

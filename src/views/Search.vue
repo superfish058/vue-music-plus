@@ -4,11 +4,11 @@
 		<!-- 标签导航 -->
 		<el-row>
 			<div class="tags" ref="tags">
-				<span v-for="item,index in tags" :key="index" @click="changeTag(item)" :tabindex="index">{{item}}</span>
+				<span v-for="item,index in tags" :key="index" @click="changeTag(item)" >{{item}}</span>
 			</div>
 		</el-row>
 		<!-- 导航展示界面 -->
-		<el-row v-show="tagsActive=='全部'">
+		<el-row v-show="tagsActive=='全部'" v-if="!$store.state.mobileMode">
 			<!-- 全部 -->
 			<el-row :gutter="20">
 				<el-col :span="10" class="hotResult">
@@ -168,10 +168,10 @@
 		</el-row>
 		<!-- 歌单界面 -->
 		<el-row v-if="tagsActive=='歌单'">
-			<el-card style="margin-top: 20px;">
+			<el-card >
 				<p style="font-size: 22px;font-weight: 700;margin-bottom: 10px;">歌单</p>
 				<el-row style="padding: 0;" :gutter="30">
-					<el-col :span="6" v-for="item,index in playlists" :key="index" class="personalized-image">
+					<el-col :span="!$store.state.mobileMode?6:12" v-for="item,index in playlists" :key="index" class="personalized-image">
 						<el-image style="width: 100%; aspect-ratio: 1;" :src="item.coverImgUrl+'?param=500y500'"
 							fit="cover" lazy @click="turnPlayListPage(item.id)">
 						</el-image>
@@ -185,9 +185,9 @@
 		</el-row>
 		<!-- 专辑界面 -->
 		<el-row v-if="tagsActive=='专辑'">
-			<el-card style="margin-top: 20px;" class="hotResult">
-				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">专辑</p>
-				<el-col :span="4" v-for="item,index in albumLists" :key="index" class="recommend">
+			<el-card  class="hotResult" :style="$store.state.mobileMode?'padding:0!important':''">
+				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: -5px;">专辑</p>
+				<el-col :span="!$store.state.mobileMode?4:8" v-for="item,index in albumLists" :key="index" class="recommend">
 					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.blurPicUrl+'?param=300y300'" lazy
 						@click="turnAlbumPage(item.id)"></el-image>
 					<div style="width: 100%;height: 27px;">
@@ -201,9 +201,9 @@
 		</el-row>
 		<!-- 歌手界面 -->
 		<el-row v-if="tagsActive=='歌手'">
-			<el-card style="margin-top: 20px;" class="hotResult">
+			<el-card class="hotResult">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">歌手</p>
-				<el-col :span="4" v-for="item,index in singerLists" :key="index" class="recommend">
+				<el-col :span="!$store.state.mobileMode?4:12" v-for="item,index in singerLists" :key="index" class="recommend">
 					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'"
 						class="img-hidden hover" lazy fit="cover" @click="turnSingerPage(item.id)">
 					</el-image>
@@ -215,10 +215,10 @@
 		</el-row>
 		<!-- 视频界面 -->
 		<el-row v-if="tagsActive=='视频'">
-			<el-card style="margin-top: 20px;">
+			<el-card >
 				<p style="font-size: 22px;font-weight: 700;margin-bottom: 10px;">视频</p>
 				<el-row :gutter="30">
-					<el-col :span="8" v-for="item,index in videoLists" :key="index" class="personalized-image">
+					<el-col :span="!$store.state.mobileMode?8:12" v-for="item,index in videoLists" :key="index" class="personalized-image">
 						<div v-if="item">
 							<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.coverUrl+'?param=570y320'"
 								fit="cover" lazy @click="turnVideoPage(item)">
@@ -284,11 +284,15 @@
 		components: {
 			songList
 		},
+		mounted() {
+			this.$store.state.searchSignal+= 1
+		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
 				vc.$nextTick(() => {
 					vc.$refs.searchRef.scrollTop = 0
 					vc.$store.state.localTop = 'Search'
+					vc.$store.state.localPage = '搜索'
 				})
 			})
 		},
@@ -299,7 +303,7 @@
 			}
 		},
 		watch: {
-			searchSignal: function() {
+			searchSignal() {
 				if (this.searchSignal != 0) {
 					this.lastSearch = this.newSearch
 					this.newSearch = this.searchWords
@@ -399,18 +403,29 @@
 				this.singerLists = []
 				this.tagsActive = '全部'
 				this.searchOffset = 0
+				if(this.$store.state.mobileMode){
+					this.tagsActive = '歌曲'
+				}
 				this.$nextTick(() => {
 					this.tags.forEach((item, ind) => {
 						this.$refs.tags.childNodes[ind].style = 'none'
-
 					})
-					this.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
+					if(this.$store.state.mobileMode){
+						this.$refs.tags.childNodes[0].style = 'display:none'
+						this.$refs.tags.childNodes[1].style = 'background:#ffffff;color:#121212'
+					}else{
+						this.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
+					}
+					
 				})
 			},
 			//切换标签
 			changeTag(tag) {
 				let index = this.tags.indexOf(tag)
 				this.tags.forEach((item, ind) => {
+					if(this.$store.state.mobileMode&&ind==0){
+						return
+					}
 					this.$refs.tags.childNodes[ind].style = 'none'
 				})
 				this.$refs.tags.childNodes[index].style = 'background:#ffffff;color:#121212'
@@ -537,22 +552,21 @@
 			//播放单曲
 			playMusic(id) {
 				this.$store.dispatch('getMusicUrl', id)
-			},
-			//设置播放列表
-			sendList() {
-				let ids = ''
-				this.songLists.forEach(item => {
-					ids += (item.id + ',')
-				})
-				ids = ids.slice(0, -1)
-				if (ids == this.$store.state.ids && ids != '') return
-				this.$store.dispatch('sendList', ids)
 			}
 		}
 	}
 </script>
 
 <style scoped lang="less">
+	@media screen and (max-width:850px){
+		.Search {
+			padding: 0!important;
+		}
+		.el-card {
+			padding: 0 10px!important;
+		}
+	}
+	
 	* {
 		color: rgba(255, 255, 255, 0.9);
 		cursor: default;
@@ -764,8 +778,6 @@
 
 	.tags {
 		margin: 7px 0 13px 0;
-		margin-bottom: 20px;
-
 		span {
 			margin-right: 10px;
 			background-color: #232323;
@@ -775,7 +787,7 @@
 			transition: 0.1 ease;
 			cursor: pointer;
 			opacity: 0.9;
-
+			line-height: 45px;
 			&:hover {
 				background-color: #ffffff;
 				color: #2a2a2a;

@@ -85,7 +85,7 @@
 		methods: {
 			//判断歌词隐藏
 			judgeHide(){
-				if (this.localPage == '搜索'||this.localPage == '音乐') {
+				if (this.localPage == '搜索'||this.localPage == '音乐'||this.localPage == '视频') {
 					this.ap.lrc.hide()
 				}else{
 					this.ap.lrc.show()

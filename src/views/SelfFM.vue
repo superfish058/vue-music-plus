@@ -768,8 +768,8 @@
 
 	.lyarea {
 		position: relative;
-		top: 28px;
-		height: 308px;
+		top: 29px;
+		height: 302px;
 		overflow-y: hidden;
 
 		ul {

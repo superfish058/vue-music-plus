@@ -1,8 +1,8 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" ref="videoPage">
+	<div ref="videoPage" class="VideoPage">
 		<el-row>
 			<!-- 视频主体区 -->
-			<el-col :span="15" style="padding-right: 20px">
+			<el-col :span="!$store.state.mobileMode?15:24" :style="!$store.state.mobileMode?'padding-right: 20px':''">
 				<!-- 视频 -->
 				<el-row>
 					<p style="margin: 10px 0px 15px 3px;;font-size: 22px;font-weight: 700;">视频详情</p>
@@ -11,16 +11,18 @@
 				</el-row>
 				<!-- 作者头像 -->
 				<el-row style="display: flex;align-items: center;margin-top: 15px;">
-					<el-image :src="avatarUrl+'?param=200y200'" v-if="videoInfo" fit="cover" style="width: 46px;aspect-ratio: 1;border-radius: 50%;"></el-image>
-					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;" v-if="creatorId == 0">{{creatorName}}</span>
-					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;" class="hover"  v-if="creatorId != 0"
-						@click="turnSingerPage(creatorId)">
+					<el-image :src="avatarUrl+'?param=200y200'" v-if="avatarUrl" fit="cover"
+						style="width: 46px;aspect-ratio: 1;border-radius: 50%;"></el-image>
+					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;"
+						v-if="creatorId == 0">{{creatorName}}</span>
+					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;" class="hover"
+						v-if="creatorId != 0" @click="turnSingerPage(creatorId)">
 						{{creatorName}}
 					</span>
 				</el-row>
 				<!-- 标题和简介 -->
 				<el-row style="margin-top: 15px;">
-					<p style="font-size: 24px;font-weight: 700;">
+					<p :style="!$store.state.mobileMode?'font-size: 24px':'font-size: 20px'">
 						{{title}}
 						<span @click="listOn = !listOn" v-if="description" style="font-size: 20px;cursor: pointer;">
 							<i class="el-icon-caret-bottom hover" v-show="!listOn"></i>
@@ -28,26 +30,26 @@
 						</span>
 					</p>
 					<p style="margin-top: 5px;border: 1px solid rgba(255,255,255,0.9);padding: 3px 2px 5px 7px;border-radius: 4px;
-						font-size: 18px;letter-spacing: 0.2px;"
-						v-show="listOn">
+						font-size: 18px;letter-spacing: 0.2px;" v-show="listOn">
 						{{description}}
 					</p>
 				</el-row>
 				<!-- 发布信息 -->
-				<el-row style="margin-top: 8px;">
+				<el-row style="margin-top: 8px;" v-if="videoInfo.publishTime">
 					<span style="margin-right: 10px;">发布时间：{{setDate(videoInfo.publishTime)}}</span>
-					<span>播放次数：{{resetCount(playTime)}}</span>
+					<span :style="$store.state.mobileMode?'display:block;margin-top:8px':''">播放次数：{{resetCount(playTime)}}</span>
 				</el-row>
 				<!-- 标签 -->
-				<el-row style="margin-top: 12px;">
-					<span v-for="item,index in videoInfo.videoGroup" :key="index" class="tagFont" @click="turnRecVideoPage(item)">
+				<!-- <el-row style="margin-top: 12px;">
+					<span v-for="item,index in videoInfo.videoGroup" :key="index" class="tagFont"
+						@click="turnRecVideoPage(item)">
 						{{item.name}}
 					</span>
-				</el-row>
+				</el-row> -->
 			</el-col>
 			<!-- 推荐视频区 -->
-			<el-col :span="9" style="height: 100%;">
-				<p style="margin: 10px 0 15px 3px;font-size: 22px;font-weight: 700;">相关推荐</p>
+			<el-col :span="!$store.state.mobileMode?9:24" style="height: 100%;" v-if="relatedVideos.length">
+				<p style="margin: 10px 0 15px 0px;font-size: 22px;">相关推荐</p>
 				<el-row v-for="item,index in relatedVideos" :key="index" style="margin-bottom: 15px;"
 					class="personalized-image">
 					<el-col :span="12">
@@ -88,39 +90,41 @@
 				videoInfo: {}, //视频信息
 				relatedVideos: [], //推荐视频
 				videoId: '', //视频Id
-				mvId:'',//mvId
+				mvId: '', //mvId
 				videoUrl: '', //视频地址
 				listOn: false, //展开简介
-				avatarUrl : '',//头像地址
-				creatorName:'',
-				description:'',
-				playTime:0,
-				title:'',
-				creatorId:0,
+				avatarUrl: '', //头像地址
+				creatorName: '',
+				description: '',
+				playTime: 0,
+				title: '',
+				creatorId: 0,
 			}
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
+				vc.$store.state.localTop = 'VideoPage'
+				vc.$store.state.localPage = '视频'
 				vc.listOn = false
-				if(vc.$route.query.videoId){
+				if (vc.$route.query.videoId) {
 					vc.mvId = false
 					vc.videoId = vc.$route.query.videoId
-				}else{
+				} else {
 					vc.videoId = false
 					vc.mvId = vc.$route.query.mvId
 				}
 				vc.getVideoInfo()
-				vc.$nextTick(()=>{
+				vc.$nextTick(() => {
 					vc.$refs.videoPage.scrollTop = 0
 				})
-				
+
 			})
 		},
-		beforeRouteUpdate(to, from, next) {	
-			if(to.query.mvId){
+		beforeRouteUpdate(to, from, next) {
+			if (to.query.mvId) {
 				this.mvId = to.query.mvId
 				this.videoId = false
-			}else{
+			} else {
 				this.videoId = to.query.videoId
 				this.mvId = false
 			}
@@ -130,12 +134,12 @@
 			next()
 		},
 		methods: {
-			turnRecVideoPage(item){
+			turnRecVideoPage(item) {
 				this.$router.push({
-					path:'/main/recvideo',
-					query:{
-						id:item.id,
-						name:item.name
+					path: '/main/recvideo',
+					query: {
+						id: item.id,
+						name: item.name
 					}
 				})
 			},
@@ -150,14 +154,14 @@
 			},
 			//跳转视频页面
 			turnVideoPage(data) {
-				if(!isNaN(parseFloat(data.vid)) && isFinite(data.vid)){
+				if (!isNaN(parseFloat(data.vid)) && isFinite(data.vid)) {
 					this.$router.push({
 						path: '/main/video',
 						query: {
 							mvId: data.vid
 						}
 					})
-				}else {
+				} else {
 					this.$router.push({
 						path: '/main/video',
 						query: {
@@ -165,9 +169,9 @@
 						}
 					})
 				}
-				
+
 			},
-			getMvInfo(){
+			getMvInfo() {
 				this.$http.get('/mv/detail', {
 					params: {
 						mvid: this.mvId
@@ -180,13 +184,13 @@
 					this.description = this.videoInfo.desc
 					this.playTime = this.videoInfo.playCount
 					this.title = this.videoInfo.name
-					
+
 				})
 				this.getMvUrl()
 				this.getRelatedVideos()
 			},
 			getVideoInfo() {
-				if(this.mvId){
+				if (this.mvId) {
 					this.getMvInfo()
 					return
 				}
@@ -206,7 +210,7 @@
 				this.getVideoUrl()
 				this.getRelatedVideos()
 			},
-			getMvUrl(){
+			getMvUrl() {
 				this.$http.get('/mv/url', {
 					params: {
 						id: this.mvId
@@ -226,9 +230,9 @@
 			},
 			getRelatedVideos() {
 				let id = 0
-				if(this.videoId){
+				if (this.videoId) {
 					id = this.videoId
-				}else{
+				} else {
 					id = this.mvId
 				}
 				this.$http.get('/related/allvideo', {
@@ -241,7 +245,7 @@
 			},
 			//格式化日期
 			setDate(time) {
-				if(this.mvId) return time
+				if (this.mvId) return time
 				let date = new Date(time)
 				let year = date.getFullYear()
 				let month = date.getMonth()
@@ -275,7 +279,11 @@
 </script>
 
 <style scoped lang="less">
-	* {
+	.VideoPage {
+		padding: 0px 20px 20px 18px;
+		height: 100%;
+		box-sizing: border-box;
+		overflow-y: scroll;
 		transform: translate3d(0, 0, 0);
 		scroll-behavior: smooth;
 		color: rgba(255, 255, 255, 0.9);
@@ -356,6 +364,7 @@
 		right: 15px;
 		text-shadow: 2px 2px 5px #000;
 		opacity: 0.85;
+
 		.countIcon {
 			color: #fff;
 		}
@@ -382,7 +391,8 @@
 		margin-right: 15px;
 		background-color: #f5f5f5;
 		cursor: pointer;
-		&:hover{
+
+		&:hover {
 			color: #fff;
 			background-color: #121212;
 			border: 1px solid #fff;

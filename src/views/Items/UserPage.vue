@@ -1,6 +1,6 @@
 <template>
 	<div style="padding: 20px 20px 20px 18px;height: 100%;overflow-y: scroll;box-sizing: border-box;" v-infinite-scroll="load" infinite-scroll-delay="300"
-		infinite-scroll-distance="50" ref="userPage" class="UserPage">
+		infinite-scroll-distance="50" ref="userPage" class="UserPage" >
 		<el-row style="margin-bottom: 10px;height: 230px;position: relative;margin-top: 10px;">
 			<el-col :span="6" v-if="hzPlayList!==undefined && hzPlayList.length > 0 ">
 				<el-image :src="hzPlayList[0].al.picUrl+'?param=500y500'" fit="cover" style="width: 90%;aspect-ratio: 1;">
@@ -18,53 +18,10 @@
 				</el-row>
 			</el-col>
 		</el-row>
+		<p style="font-size: 20px;">相关界面开发中，请关注后续版本</p>
 		<!-- 歌曲信息区 -->
 		<el-row>
-			<el-row class="songRow">
-				<span class="iconfont icon-24gf-playCircle playIcon" @click="sendList()"></span>
-				<el-table :data="hzPlayList" style="width: 100%;border-radius: 10px;">
-					<el-table-column label="#" type="index" width="50">
-					</el-table-column>
-					<el-table-column label="标题" width="75">
-						<template slot-scope="scope">
-							<div v-if="scope.row">
-								<el-image :src="scope.row.al.picUrl+'?param=150y150'" style="width:100%;aspect-ratio: 1;cursor: pointer;"
-									fit="cover" @click="playMusic(scope.row.id)" lazy>
-								</el-image>
-							</div>
-						</template>
-					</el-table-column>
-					<el-table-column width="460">
-						<template slot-scope="scope">
-							<el-row style="display: flex;align-items: center;">
-								{{scope.row.name}}
-								<span class="iconfont icon-shipin" style="color:aquamarine;opacity: 0.9;font-size: 20px;margin-left: 5px;cursor: pointer;" 
-									v-if="scope.row.mv" @click="turnMvPage(scope.row.mv)"></span>
-							</el-row>
-							<el-row :gutter="5">
-								<span v-for="item,index in scope.row.ar" :key="index" class="hover"
-									style="margin-right: 5px;cursor: pointer;" @click="turnSingerPage(item.id)">
-									{{item.name}}
-								</span>
-							</el-row>
-						</template>
-					</el-table-column>
-					<el-table-column label="专辑" width="300">
-						<template slot-scope="scope">
-							<el-row v-if="scope.row">
-								<span @click="turnAlbumPage(scope.row.al.id)" style="cursor: pointer;" class="hover">
-									{{scope.row.al.name}}
-								</span>
-							</el-row>
-						</template>
-					</el-table-column>
-					<el-table-column label="时长" width="70">
-						<template slot-scope="scope">
-							{{setDtime(scope.row.dt)}}
-						</template>
-					</el-table-column>
-				</el-table>
-			</el-row>
+			
 		</el-row>
 	</div>
 </template>
