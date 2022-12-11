@@ -135,7 +135,7 @@
 		border-radius: 10px;
 		background-color: #121212;
 		opacity: 0.9;
-		padding-bottom: 15px;
+		padding-bottom: 12px;
 		border-radius: 10px;
 
 		.title {
@@ -202,8 +202,9 @@
 
 					.songImg {
 						display: flex;
-						height: 90%;
-						aspect-ratio: 1;
+						align-items: center;
+						height: 50px;
+						width: 50px;
 						border-radius: 5%;
 						overflow: hidden;
 						cursor: pointer;
