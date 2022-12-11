@@ -292,7 +292,7 @@
 				vc.$nextTick(() => {
 					vc.$refs.searchRef.scrollTop = 0
 					vc.$store.state.localTop = 'Search'
-					vc.$store.state.localPage = '搜索'
+					vc.$store.state.localPage = '结果'
 				})
 			})
 		},
