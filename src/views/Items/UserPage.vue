@@ -2,7 +2,7 @@
 	<div v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="50" ref="userPage"
 		class="UserPage">
 		<!-- PC -->
-		<el-row style="margin-bottom: 10px;height:200px;position: relative;" class="PC">
+		<el-row style="margin-bottom: 10px;" class="PC">
 			<el-col :span="6">
 				<el-image :src="hzPlayList[0].al.picUrl+'?param=500y500'" fit="cover" v-if="hzPlayList.length"
 					style="width: 90%;aspect-ratio: 1;">
