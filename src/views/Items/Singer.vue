@@ -2,17 +2,30 @@
 	<div v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="50" ref="singerPage"
 		class="Singer">
 		<!-- 歌手背景图 -->
-		<el-row>
-			<el-col :span="!this.$store.state.mobileMode?6:8">
-				<el-image :src="singerInfo.artist.cover" fit="cover" v-if="singerInfo.artist"
-					style="width: 90%;aspect-ratio: 1;border-radius: 50%;transform: translateX(10%);">
-				</el-image>
-				<el-skeleton style="width: 90%;aspect-ratio: 1;border-radius: 50%;transform: translateX(10%);" :loading="!singerInfo.artist"
-					animated v-show="!singerInfo.artist">
-					<template slot="template">
-						<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
-					</template>
-				</el-skeleton>
+		<el-row style="margin-top: 10px;">
+			<el-col :span="!this.$store.state.mobileMode?6:8" >
+				<div class="mobile">
+					<el-image :src="singerInfo.artist.cover+'?param=570y570'" fit="cover" v-if="singerInfo.artist"
+						style="width: 29vw;height: 29vw;border-radius: 50%;transform: translateX(5%);">
+					</el-image>
+					<el-skeleton style="width: 29vw;height: 29vw;border-radius: 50%;transform: translateX(5%);" :loading="!singerInfo.artist"
+						animated v-show="!singerInfo.artist">
+						<template slot="template">
+							<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
+						</template>
+					</el-skeleton>
+				</div>
+				<div class="PC">
+					<el-image :src="singerInfo.artist.cover+'?param=570y570'" fit="cover" v-if="singerInfo.artist"
+						style="width: 90%;aspect-ratio:1;border-radius:50%;transform: translateX(5%);">
+					</el-image>
+					<el-skeleton style="width: 90%;aspect-ratio:1;;border-radius: 50%;transform: translateX(5%);" :loading="!singerInfo.artist"
+						animated v-show="!singerInfo.artist">
+						<template slot="template">
+							<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
+						</template>
+					</el-skeleton>
+				</div>
 			</el-col>
 			<el-col :span="!this.$store.state.mobileMode?18:14">
 				<el-skeleton :rows="3" animated :style="!this.$store.state.mobileMode?'transform: translateY(20%)':'transform: translateY(5%)'"
@@ -489,7 +502,7 @@
 
 	.tags {
 		margin-bottom: 10px;
-
+		margin-left: 5px;
 		span {
 			margin-right: 10px;
 			background-color: #232323;

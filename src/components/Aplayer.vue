@@ -62,12 +62,14 @@
 			},
 			deleteMusic() {
 				if (this.deleteMusic == false) return
-				this.ap.list.remove(this.deleteIndex)
-				if (this.deleteIndex == this.$store.state.musicInfo.length - 1) {
-					this.ap.list.switch(0)
-				} else {
-					this.ap.list.switch(this.deleteIndex)
-				}
+				this.ap.list.remove(this.deleteIndex)	
+				console.log(this.deleteIndex,this.$store.state.musicInfo.length);
+				// if (this.deleteIndex == this.$store.state.musicInfo.length -1) {
+				// 	this.ap.list.switch(0)
+				// } else {
+				// 	this.ap.list.switch(this.deleteIndex)
+				// }
+				this.$store.state.musicInfo.splice(this.deleteIndex,1)
 				this.$store.state.deleteMusic = false
 			},
 			isPlaying() {

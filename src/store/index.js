@@ -25,8 +25,6 @@ const store = new Vuex.Store({
 	id:'',//当前音乐id
 	playFM:false,//是否播放FM
 	userId:'',//用户id
-	hzId:'',//皇子歌单id
-	hzPLayListIds:[],//皇子歌单音乐ids
 	deleteMusic:false,//删除歌曲标识
 	deleteIndex:0,//删除歌曲下标
 	localTop:'',//回到顶部标识

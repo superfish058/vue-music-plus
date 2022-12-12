@@ -2,7 +2,7 @@
 	<div ref="albumPage" class="Album">
 		<!-- 专辑信息区 -->
 		<el-row class="infoArea PC">
-			<el-col :span="6" >
+			<el-col :span="7" style="padding-left: 10px;">
 				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 85%;aspect-ratio: 1;" v-if="albumInfo.picUrl">
 				</el-image>
 				<el-skeleton style="width: 85%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
@@ -12,7 +12,7 @@
 					</template>
 				</el-skeleton>
 			</el-col>
-			<el-col :span="18" style="position: relative;height: 100%;">
+			<el-col :span="15" style="position: relative;height: 100%;">
 				<el-row><span class="textIcon" style="position: absolute;top: 5px;">专辑</span></el-row>
 				<el-skeleton :rows="4" :loading="!albumInfo.picUrl" animated style="position: relative;top: 45px;"/>
 				<el-row style="font-weight: 700;position: absolute;top: 25px;left: -7px;width: 100%;">

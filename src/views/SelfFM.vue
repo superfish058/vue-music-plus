@@ -280,10 +280,6 @@
 			},
 			//删除音乐
 			deleteMusic() {
-				if (!this.$store.state.hzId) {
-					this.$message.error('请先登录哦')
-					return
-				}
 				if (this.$store.state.musicInfo.length <= 1) {
 					this.$message.warning('删除不了啦')
 					return
@@ -309,20 +305,19 @@
 				if (this.$route.path != '/main/selfFM'){
 					return false
 				}
-				this.currentIn = this.inIds(this.currentMusicInfo.songId)
 				return true
 			},
 			//判断是否被收藏
-			inIds(id) {
-				let inids = false
-				let ids = this.$store.state.hzPLayListIds
-				ids.forEach(item => {
-					if (id == item) {
-						inids = true
-					}
-				})
-				return inids
-			},
+			// inIds(id) {
+			// 	let inids = false
+			// 	let ids = this.$store.state.hzPLayListIds
+			// 	ids.forEach(item => {
+			// 		if (id == item) {
+			// 			inids = true
+			// 		}
+			// 	})
+			// 	return inids
+			// },
 			//添加歌曲至歌单
 			addSong() {
 				if (!this.$store.state.hzId) {

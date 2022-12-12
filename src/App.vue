@@ -162,6 +162,8 @@
 			height: 90vh;
 			overflow-y: auto;
 			transform: translateY(-15px);
+			-webkit-font-smoothing: subpixel-antialiased;
+			-webkit-transform: translateZ(0) scale(1.0, 1.0);
 			color: #fff;
 			border: 1px solid rgba(0, 0, 0, 0.3);
 			background-color: transparent;

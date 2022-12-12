@@ -39,14 +39,15 @@
 									<span>{{item.name}}</span>
 									<span v-if="item.tag=='单曲'">&nbsp;-&nbsp;{{item.artists}}</span>
 									<span style="margin-left: 10px;" v-if="item.tag=='专辑'">{{item.artists}}</span>
-									<el-tag style="position: absolute; right: 0;" size="small" v-if="item.tag=='单曲'"
-										type="success">{{item.tag}}</el-tag>
-									<el-tag style="position: absolute; right: 0;" size="small"
-										v-else-if="item.tag=='专辑'" type="warning">{{item.tag}}</el-tag>
-									<el-tag style="position: absolute; right: 0;" size="small" v-else type="info">
-										{{item.tag}}
-									</el-tag>
-
+									<div>
+										<el-tag style="position: absolute; right: 0;" size="small" v-if="item.tag=='单曲'"
+											type="success">{{item.tag}}</el-tag>
+										<el-tag style="position: absolute; right: 0;" size="small"
+											v-else-if="item.tag=='专辑'" type="warning">{{item.tag}}</el-tag>
+										<el-tag style="position: absolute; right: 0;" size="small" v-else type="info">
+											{{item.tag}}
+										</el-tag>
+									</div>
 								</el-row>
 							</template>
 						</el-autocomplete>

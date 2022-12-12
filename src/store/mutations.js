@@ -24,17 +24,6 @@ const mutations = {
 		state.reloadNum += 3
 	},
 	
-	//添加专属歌单ID
-	AddSong(state,id){
-		state.hzPLayListIds.push(id)
-	},
-	//移除专属歌单ID
-	RemoveSong(state,id){
-		let ids = state.hzPLayListIds
-		let index = ids.indexOf(ids)
-		state.hzPLayListIds.splice(index,1)
-	},
-	
 	//跳转播放单曲
 	SwitchUrl(state,index){
 		state.switchIndex = -1

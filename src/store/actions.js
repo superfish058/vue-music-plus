@@ -3,36 +3,7 @@ import Vue from 'vue'
 
 let getMusic = false
 let getMusics = false
-const actions = {
-	//添加歌曲至歌单
-	addSong({
-		commit,
-		state
-	}, id) {
-		axios.get('/playlist/tracks', {
-			params: {
-				op: 'add',
-				pid: state.hzId,
-				tracks: id,
-				time:new Date().valueOf()
-			}
-		})
-		commit('AddSong',id)
-	},
-	//移除歌曲出歌单
-	removeSong({commit,state},id){
-		if(!id) return
-		axios.get('/playlist/tracks', {
-			params: {
-				op: 'remove',
-				pid: state.hzId,
-				tracks: id,
-				time:new Date().valueOf()
-			}
-		})
-		commit('RemoveSong',id)
-	},
-	
+const actions = {	
 	//添加单曲
 	async getMusicUrl({
 		commit,
@@ -164,7 +135,7 @@ const actions = {
 			let name = item.name
 			let artists = item.ar
 			let alName = item.al.name
-			let picUrl = item.al.picUrl
+			let picUrl = item.al.picUrl+'?param=600y600'
 			let singerIds = []
 			let singers = ''
 			let songIds = []

@@ -1,51 +1,54 @@
 <template>
-	<div style="padding: 20px 20px 20px 18px;height: 100%;box-sizing: border-box;overflow-y: scroll;" class="RecVideo"
-		v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="50" ref="recVideoPage">
+	<div class="RecVideo" v-infinite-scroll="load" infinite-scroll-delay="300" infinite-scroll-distance="50"
+		ref="recVideoPage">
 		<el-row>
 			<el-card>
-				<el-row style="position: relative;top: 10px;">
-					<span class="selectTag taghover" @click="showAllTags()">{{selectTag}}<i
-							class="el-icon-arrow-right"></i></span>
+				<el-row style="position: relative;top: 10px;height: 40px;">
+					<span class="selectTag taghover" @click="showAllTags()">全部<i class="el-icon-arrow-right"></i></span>
 					<!-- 全部展示标签 -->
 					<div ref="tagRow" class="tagRow ">
-						<span v-for="item,index in videoTags" :key="index" @click="changeTag(item.id,index)"
-							class="videoTag taghover">{{item.name}}</span>
+						<div ref="typetags">
+							<span v-for="item,index in types" :key="index" @click="changeTags(item,'type')"
+								class="videoTag taghover">{{item}}</span>
+						</div>
+						<div ref="ordertags">
+							<span v-for="item,index in orders" :key="index" @click="changeTags(item,'order')"
+								class="videoTag taghover">{{item}}</span>
+						</div>
+
 					</div>
 					<!-- 默认展示标签 -->
-					<div ref="tagRowPlus" style="position: absolute; right: 0;top: 0;">
-						<span v-for="item,index in defaultTags" :key="index" @click="changeDefaultTag(index)"
+					<div ref="areatags" style="position: absolute; right: 0;top: 0;">
+						<span v-for="item,index in areas" :key="index" @click="changeTags(item,'area')"
 							class="defaultTag taghover">
 							{{item}}
 						</span>
 					</div>
 				</el-row>
-				<el-row :gutter="30" style="margin-top: 20px;">
-					<el-col :span="8" v-for="item,index in videoList" :key="index" class="personalized-image">
-						<div v-if="item.data">
-							<el-image style="width: 100%; aspect-ratio: 16/9;"
-								:src="item.data.coverUrl+'?param=570y320'" fit="cover"
-								@click="turnVideoPage(item.data)">
-							</el-image>
-							<div style="height: 64px;font-size: 16px;">
-								<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;
-									font-size: 18px; width: 100%;margin-bottom: 5px;margin-top: 5px;">
-									<span v-if="item.data.title">{{item.data.title}}</span>
-									<span v-if="item.data.name">{{item.data.name}}</span>
-								</p>
-								<p v-if="item.type==2" class="main-p">
-									<span v-for="it,ind in item.data.artists" :key="ind" @click="turnSingerPage(it.id)"
-										class="hover">
-										{{it.name}}
-									</span>
-								</p>
-								<p v-if="item.type==1" style="text-align: justify;word-break: break-all;"
-									class="main-p">
-									by&nbsp;{{item.data.creator.nickname}}
-								</p>
+				<div ref="mainArea" style="transition: 0.3s ease;margin-top: 20px;">
+					<el-empty description="正在加载视频中" style="height: 80vh;" v-show="!videoList.length"></el-empty>
+					<el-row :gutter="30">
+						<el-col :span="8" v-for="item,index in videoList" :key="index" class="personalized-image">
+							<div v-if="item.cover">
+								<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.cover+'?param=570y320'"
+									fit="cover" @click="turnVideoPage(item)">
+								</el-image>
+								<div style="height: 64px;font-size: 16px;">
+									<p style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;
+											font-size: 18px; width: 100%;margin-bottom: 5px;margin-top: 5px;">
+										<span v-if="item.name">{{item.name}}</span>
+									</p>
+									<p class="main-p">
+										<span v-for="it,ind in item.artists" :key="ind" @click="turnSingerPage(it.id)"
+											class="hover">
+											{{it.name}}
+										</span>
+									</p>
+								</div>
 							</div>
-						</div>
-					</el-col>
-				</el-row>
+						</el-col>
+					</el-row>
+				</div>
 			</el-card>
 		</el-row>
 	</div>
@@ -57,57 +60,56 @@
 			return {
 				videoList: [], //视频信息
 				offset: 0, //视频偏移量
-				videoTags: [], //视频标签
-				defaultTags: ['现场', '舞蹈', 'MV', '流行', '演唱会', '最佳饭制', 'ACG音乐'], //默认标签
-				defaultTagId: [], //默认标签Id
-				defaultTagIndex: [], //默认标签对应下标
-				allTagIndex: '', //选中标签对应下标
-				tagId: 58100,
+				areas: ['全部', '内地', '港台', '欧美', '日本', '韩国'], //默认标签
+				types: ['全部', '官方版', '原声', '现场版', '网易出品'],
+				orders: ['上升最快', '最热', '最新'],
 				showTags: false, //展示标签
-				setOk: false, //获取视频标志
-				selectTag: '现场'
+				area: '全部',
+				type: '全部',
+				order: '上升最快'
 			}
 		},
 		mounted() {
-			this.getVideoTags()
-			this.getVideoLists()
-
+			this.getVideoList()
+			this.$refs.recVideoPage.scrollTop = 0
+			this.$store.state.localTop = 'RecVideo'
+			this.$store.state.localPage = 'MV'
 		},
 		beforeRouteEnter(to, from, next) {
-			if (from.path != '/main/video') {
-				next(vc => {
-					if (!vc.$store.state.userId) return
-					vc.$nextTick(() => {
-						vc.$refs.recVideoPage.scrollTop = 0
-						vc.$store.state.localTop = 'RecVideo'
-					})
-
+			next(vc => {
+				vc.$nextTick(() => {
+					vc.setTagColor()
+					vc.$refs.recVideoPage.scrollTop = 0
+					vc.$store.state.localTop = 'RecVideo'
+					vc.$store.state.localPage = 'MV'
 				})
-			} else {
-				next(vc => {
-					vc.$nextTick(() => {
-						vc.$refs.recVideoPage.scrollTop = 0
-						vc.selectTag = to.query.name
-						let name = to.query.name
-						vc.allTagIndex = -1
-						vc.changeTag(to.query.id, vc.findIndex(name))
-						vc.tagId = to.query.id
 
-					})
-				})
-			}
-
+			})
 		},
 		watch: {
 			showTags() {
 				if (this.showTags) {
-					this.$refs.tagRow.style.height = '332px'
+					this.$refs.tagRow.style.height = '70px'
+					this.$refs.tagRow.style.position = 'none'
+					this.$refs.mainArea.style.marginTop = '90px'
 				} else {
 					this.$refs.tagRow.style.height = 0
+					this.$refs.mainArea.style.marginTop = '20px'
 				}
 			}
 		},
 		methods: {
+			//设置标签颜色
+			setTagColor() {
+				let refs = ['areatags', 'ordertags', 'typetags']
+				let select1 = this.areas.findIndex(it => it == this.area)
+				let select2 = this.types.findIndex(it => it == this.type)
+				let select3 = this.orders.findIndex(it => it == this.order)
+				this.$refs[refs[0]].childNodes[select1].style = "background:#fff;color:#121212;"
+				this.$refs[refs[1]].childNodes[select3].style = "background:#fff;color:#121212;"
+				this.$refs[refs[2]].childNodes[select2].style = "background:#fff;color:#121212;"
+
+			},
 			//跳转视频页面
 			turnVideoPage(data) {
 				let id = ''
@@ -138,140 +140,59 @@
 					}
 				})
 			},
+			//修改地区标签
+			changeTags(item, type = 'area') {
+				let select = 0
+				let i = 0
+				let ref = type + 'tags'
+				if (type == 'area') {
+					if (item == this.area) return
+					this.area = item
+					select = this.areas.findIndex(it => it == item)
+					i = this.areas.length
+				} else if (type == 'type') {
+					if (item == this.type) return
+					this.type = item
+					select = this.types.findIndex(it => it == item)
+					i = this.types.length
+				} else if (type == 'order') {
+					if (item == this.order) return
+					this.order = item
+					select = this.orders.findIndex(it => it == item)
+					i = this.orders.length
+				}
+				this.getVideoList('clc')
+				while (i > 0) {
+					this.$refs[ref].childNodes[i - 1].style = "none"
+					i--
+				}
+				this.$refs[ref].childNodes[select].style = "background:#fff;color:#121212;"
+			},
 			//展示全部标签
 			showAllTags() {
 				this.showTags = !this.showTags
-				if (this.showTags) {
-					this.videoTags.forEach((item, ind) => {
-						this.$refs.tagRow.childNodes[ind].style = "none"
-					})
-					if (this.allTagIndex == -1) return
-					this.$refs.tagRow.childNodes[this.allTagIndex].style.background = "#fff"
-					this.$refs.tagRow.childNodes[this.allTagIndex].style.color = "#121212"
-					this.$refs.tagRow.childNodes[this.allTagIndex].style.border = "1px solid #121212"
-				}
 			},
 			load() {
 				if (this.$route.path != '/main/recvideo') return
-				if (!this.setOk || this.offset > this.videoList.length) return
+				if (this.offset > this.videoList.length) return
 				this.offset = this.videoList.length
-				this.getVideoLists()
-			},
-			//根据标签名字找到标签下标
-			findIndex(name) {
-				let theIndex = -1
-				this.videoTags.forEach((item, index) => {
-					if (item.name == name) {
-						theIndex = index
-						return
-					}
-				})
-				return theIndex
-			},
-			//改变视频标签
-			changeTag(id, index) {
-				if (this.tagId == id) return
-				this.tagId = id
-				this.offset = 0
-				this.videoList = []
-				this.getVideoLists()
-				this.showTags = false
-				//判断默认标签颜色改变
-				this.defaultTags.forEach((item, ind) => {
-					this.$refs.tagRowPlus.childNodes[ind].style = "none"
-				})
-				if (index == -1) return
-				//判断全部标签颜色改变
-				this.allTagIndex = index
-				this.selectTag = this.videoTags[index].name
-				this.$refs.tagRow.childNodes[index].style.background = "#fff"
-				this.$refs.tagRow.childNodes[index].style.color = "#121212"
-				this.$refs.tagRow.childNodes[index].style.border = "1px solid #121212"
-				if (this.defaultTags.indexOf(this.selectTag) == -1) {
-					this.defaultTags.forEach((item, ind) => {
-						this.$refs.tagRowPlus.childNodes[ind].style = "none"
-					})
-				} else {
-					this.defaultTags.forEach((item, ind) => {
-						this.$refs.tagRowPlus.childNodes[ind].style = "none"
-					})
-					let index = this.defaultTags.indexOf(this.selectTag)
-					this.$refs.tagRowPlus.childNodes[index].style.background = "#fff"
-					this.$refs.tagRowPlus.childNodes[index].style.color = "#121212"
-					this.$refs.tagRowPlus.childNodes[index].style.border = "1px solid #121212"
-				}
-
-			},
-			//改变默认标签视频
-			changeDefaultTag(index) {
-				if (this.defaultTags[index] == this.selectTag) return
-				this.selectTag = this.defaultTags[index]
-				this.allTagIndex = this.defaultTagIndex[index]
-				this.tagId = this.defaultTagId[index]
-				this.defaultTags.forEach((item, ind) => {
-					this.$refs.tagRowPlus.childNodes[ind].style = "none"
-				})
-				this.$refs.tagRowPlus.childNodes[index].style.background = "#fff"
-				this.$refs.tagRowPlus.childNodes[index].style.color = "#121212"
-				this.$refs.tagRowPlus.childNodes[index].style.border = "1px solid #121212"
-				this.offset = 0
-				this.videoList = []
-				this.getVideoLists()
-				if (this.showTags) {
-					this.showTags = false
-				}
-			},
-			getVideoTags() {
-				this.$http.get('/video/group/list').then(res => {
-					this.videoTags = res.data.data
-					this.setVideoDefaultId()
-				})
-			},
-			setVideoDefaultId() {
-				let ids = []
-				let num = 0
-				let counts = this.defaultTags.length
-				for (let num = 0; num < counts; num++) {
-					this.videoTags.forEach((item, index) => {
-						if (item.name == this.defaultTags[num]) {
-							this.defaultTagId.push(item.id)
-							this.defaultTagIndex.push(index)
-						}
-					})
-				}
-				this.allTagIndex = this.defaultTagIndex[0]
-				this.$refs.tagRowPlus.childNodes[0].style.background = "#fff"
-				this.$refs.tagRowPlus.childNodes[0].style.color = "#121212"
-				this.$refs.tagRowPlus.childNodes[0].style.border = "1px solid #121212"
-			},
-			getVideoLists() {
-				if (!this.$store.state.userId || !this.$store.state.hzId) {
-					this.$message('请先登录哦')
-					return
-				}
-				this.setOk = false
 				this.getVideoList()
-				this.offset += 8
-				setTimeout(() => {
-					this.getVideoList()
-					this.offset += 8
-					setTimeout(() => {
-						this.getVideoList()
-						this.offset += 8
-						this.setOk = true
-					}, 200)
-				}, 100)
-
 			},
-			getVideoList() {
-				let offset = this.offset
-				this.$http.get('/video/group', {
+			getVideoList(mode = '') {
+				this.$http.get('/mv/all', {
 					params: {
-						offset,
-						id: this.tagId
+						limit: 30,
+						area: this.area,
+						offset: this.offset,
+						type: this.type,
+						order: this.order
 					}
 				}).then(res => {
-					this.videoList = this.videoList.concat(res.data.datas)
+					if (mode == 'clc') {
+						this.videoList = res.data.data
+					} else {
+						this.videoList = this.videoList.concat(res.data.data)
+					}
 				})
 			}
 		}
@@ -279,12 +200,22 @@
 </script>
 
 <style scoped lang="less">
-	* {
+	.RecVideo {
 		color: rgba(255, 255, 255, 0.9);
 		cursor: default;
 		user-select: none;
 		scroll-behavior: smooth;
+		padding: 20px 20px 20px 18px;
+		height: 100%;
+		box-sizing: border-box;
+		overflow-y: scroll;
+		transform: translate3d(0, 0, 0);
 
+		span,
+		p {
+			color: #fff;
+			opacity: 0.9;
+		}
 
 		p {
 			margin: 0;
@@ -303,7 +234,6 @@
 		&:hover {
 			background-color: #fff;
 			color: #121212;
-			border: 1px solid #121212;
 
 			i {
 				color: #121212;
@@ -313,7 +243,7 @@
 
 	.tagRow {
 		border-radius: 5px;
-		transition: 0.3s ease;
+		transition: 0.2s ease;
 		height: 0;
 		overflow: hidden;
 	}
@@ -364,13 +294,19 @@
 
 		.main-p {
 			font-size: 16px !important;
-			width: auto;
-			display: block;
+			width: 100%;
 			margin-top: 7px;
 			font-size: 20px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			span {
-				display: flex;
+				margin-right: 10px;
+
+				&:hover {
+					color: aquamarine;
+				}
 			}
 		}
 	}
@@ -381,6 +317,5 @@
 		opacity: 0.9;
 		border: none;
 		border-radius: 10px;
-		padding: 15px 20px;
 	}
 </style>
