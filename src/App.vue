@@ -35,6 +35,7 @@
 			}
 		},
 		mounted() {
+			this.setHzIds()
 			this.screenWidth = document.body.clientWidth
 			if(this.screenWidth<850){
 				this.$store.state.mobileMode = true
@@ -60,6 +61,14 @@
 			}
 		},
 		methods: {
+			setHzIds(){
+				let hzIds = localStorage.getItem('hzIds')
+				if (hzIds != null) {
+					this.$store.state.hzIds = hzIds
+				} else {
+					localStorage.setItem('hzIds', '')
+				}
+			},
 			// getLoginStatus() {
 			// 	this.$http.get('/login/status').then(res => {
 			// 		if (res.data.data.code != 200) return
@@ -163,7 +172,6 @@
 			overflow-y: auto;
 			transform: translateY(-15px);
 			-webkit-font-smoothing: subpixel-antialiased;
-			-webkit-transform: translateZ(0) scale(1.0, 1.0);
 			color: #fff;
 			border: 1px solid rgba(0, 0, 0, 0.3);
 			background-color: transparent;

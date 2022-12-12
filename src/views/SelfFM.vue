@@ -62,7 +62,8 @@
 					<div class="center">
 						<div class="funcMobile">
 							<div class="left">
-								<span class="iconfont icon-shixin" style="font-size: 30px;"></span>
+								<span class="iconfont icon-shixin" style="font-size: 30px;" @click="addSong()" v-if="!currentIn"></span>
+								<span class="iconfont icon-shixin" style="font-size: 30px;color:#fea7a7" @click="removeSong()" v-else></span>
 								<span class="iconfont icon-pinglun" style="transform: translateY(3px);"></span>
 								<span class="iconfont icon-a-ziyuan567" style="font-size: 24px;"></span>
 							</div>
@@ -184,6 +185,7 @@
 			next(vc => {
 				vc.judgeModel()
 				vc.setLyric()
+				vc.inHzIds(vc.currentId)
 				vc.$store.state.localTop = 'MyMusic'
 				vc.$store.state.localPage = '音乐'
 			})
@@ -191,6 +193,7 @@
 		watch: {
 			currentMusicInfo() {
 				this.setLyric()
+				this.inHzIds(this.currentId)
 			},
 			currentTime() {
 				this.timeup()
@@ -308,41 +311,51 @@
 				return true
 			},
 			//判断是否被收藏
-			// inIds(id) {
-			// 	let inids = false
-			// 	let ids = this.$store.state.hzPLayListIds
-			// 	ids.forEach(item => {
-			// 		if (id == item) {
-			// 			inids = true
-			// 		}
-			// 	})
-			// 	return inids
-			// },
+			inHzIds(id) {
+				if(this.$store.state.hzIds.split(',').includes(id)){
+					this.currentIn = true
+				}else{
+					this.currentIn = false
+				}
+			},
 			//添加歌曲至歌单
 			addSong() {
-				if (!this.$store.state.hzId) {
-					this.$message.error('请先登录哦')
-					return
-				}
-				if (!this.$store.state.id) {
-					this.$message.warning('这首歌曲不能添加哦')
-					return
-				}
 				this.$store.state.listChange = true
+				if(this.$store.state.hzIds!=''){
+					this.$store.state.hzIds += (','+this.currentId )
+				}else{
+					this.$store.state.hzIds += this.currentId
+				}
+				localStorage.setItem('hzIds',this.$store.state.hzIds)
+				this.inHzIds(this.currentId)
 				this.$message.success('添加成功')
-				this.$store.dispatch('addSong', this.currentMusicInfo.songId)
-				this.judgeCurrentIn()
 			},
 			//取消收藏
 			removeSong() {
+				if(this.$store.state.mobileMode){
+					this.$store.state.listChange = true
+					let hzIds = localStorage.getItem('hzIds')
+					hzIds = hzIds.split(',')
+					let index = hzIds.findIndex((item)=> item==this.currentId)
+					hzIds.splice(index,1)
+					this.$store.state.hzIds = hzIds.join(',')
+					localStorage.setItem('hzIds',this.$store.state.hzIds)
+					this.inHzIds(this.currentId)
+					return
+				}
 				this.$confirm('确定要取消收藏本首歌曲?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
 					this.$store.state.listChange = true
-					this.$store.dispatch('removeSong', this.currentMusicInfo.songId)
-					this.judgeCurrentIn()
+					let hzIds = localStorage.getItem('hzIds')
+					hzIds = hzIds.split(',')
+					let index = hzIds.findIndex((item)=> item==this.currentId)
+					hzIds.splice(index,1)
+					this.$store.state.hzIds = hzIds.join(',')
+					localStorage.setItem('hzIds',this.$store.state.hzIds)
+					this.inHzIds(this.currentId)
 					this.$message({
 						type: 'success',
 						message: '取消成功!'

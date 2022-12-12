@@ -34,6 +34,7 @@ const store = new Vuex.Store({
 	seekTime:0,
 	isPlay:false,//正在播放歌曲标识
 	mobileMode:false,//手机模式
+	hzIds:''
   },
   actions,
   mutations
