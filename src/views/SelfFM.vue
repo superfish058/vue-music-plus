@@ -320,6 +320,10 @@
 			},
 			//添加歌曲至歌单
 			addSong() {
+				if(!this.currentId){
+					this.$message.warning('真调皮')
+					return
+				}
 				this.$store.state.listChange = true
 				if(this.$store.state.hzIds!=''){
 					this.$store.state.hzIds += (','+this.currentId )

@@ -111,6 +111,9 @@
 		<el-row v-if="tagsActive=='歌手MV'">
 			<el-card>
 				<el-row :gutter="30" style="margin-top: 20px;padding: 0 10px;">
+					<div v-show="!videos.length" style="font-size: 22px;margin-top: 20px;">
+						<p>此歌手尚未拍摄相关视频喵</p>
+					</div>
 					<el-col :span="!$store.state.mobileMode?8:12" v-for="item,index in videos" :key="index" class="personalized-image">
 						<el-image style="width: 100%; aspect-ratio: 16/9;" :src="item.imgurl16v9+'?param=568y320'"
 							fit="cover" lazy @click="turnMvPage(item.id)">
@@ -136,7 +139,7 @@
 						</el-row>
 					</div>
 					<el-row v-if="SingerDesc.length == 0">
-						{{singerInfo.artist.briefDesc}}
+						<p>{{singerInfo.artist.briefDesc}}</p>
 					</el-row>
 				</div>
 			</el-card>
@@ -187,6 +190,7 @@
 						vc.$refs.tags.childNodes[ind].style = 'none'
 					})
 					vc.$store.state.localTop = 'Singer'
+					vc.$store.state.localPage = '歌手'
 					vc.$refs.tags.childNodes[0].style = 'background:#ffffff;color:#121212'
 					vc.$refs.singerPage.scrollTop = 0
 				})

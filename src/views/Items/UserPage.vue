@@ -7,7 +7,8 @@
 				<el-image :src="hzPlayList[0].al.picUrl+'?param=500y500'" fit="cover" v-if="hzPlayList.length"
 					style="width: 90%;aspect-ratio: 1;">
 				</el-image>
-				<el-skeleton  v-show="!hzPlayList.length" style="width: 90%;aspect-ratio: 1;">
+				<el-image :src="defaultImg" fit="cover" v-show="!hzIds" style="width: 90%;aspect-ratio: 1;"></el-image>
+				<el-skeleton v-show="!hzPlayList.length&&hzIds" style="width: 90%;aspect-ratio: 1;">
 					<template slot="template">
 						<el-skeleton-item variant="image" style="width: 100%;height: 100%;" />
 					</template>
@@ -29,19 +30,20 @@
 		<el-row style="margin-bottom: 10px;margin-top: 10px;padding-left: 5px;" class="mobile">
 			<el-col :span="7">
 				<el-image :src="hzPlayList[0].al.picUrl+'?param=500y500'" fit="cover" v-if="hzPlayList.length"
-					style="width: 90%;aspect-ratio: 1;">
+					style="width: 25vw;height: 25vw;">
 				</el-image>
-				<el-skeleton  v-show="!hzPlayList.length" style="width: 25vw;height: 25vw;">
+				<el-image :src="defaultImg" fit="cover" v-show="!hzIds" style="width: 25vw;height: 25vw;"></el-image>
+				<el-skeleton v-show="!hzPlayList.length&&hzIds" style="width: 25vw;height: 25vw;">
 					<template slot="template">
 						<el-skeleton-item variant="image" style="width: 100%;height: 100%;" />
 					</template>
 				</el-skeleton>
 			</el-col>
-			<el-col :span="17" >
+			<el-col :span="17">
 				<el-row style="font-size: 14px;margin-top: 5px;">
-					<span class="textIcon" >用户歌单</span>
+					<span class="textIcon">用户歌单</span>
 				</el-row>
-				<el-row >
+				<el-row>
 					<p style="font-size: 22px;margin-top: 10px;">
 						皇子音乐专属歌单
 					</p>
@@ -50,7 +52,8 @@
 		</el-row>
 		<!-- 歌曲信息区 -->
 		<el-row>
-			<songList :songList="hzPlayList"></songList>
+			<div v-if="!hzIds" style="width: 100%;text-align: center;font-size: 22px;margin-top: 20px;">快去添加喜欢的歌曲吧</div>
+			<songList :songList="hzPlayList" v-if="hzIds"></songList>
 		</el-row>
 	</div>
 </template>
@@ -63,6 +66,7 @@
 				hzPlayList: [], //皇子音乐歌单
 				offset: 0,
 				setOffset: false,
+				defaultImg: require('@/assets/logoImg.png')
 			}
 		},
 		components: {
@@ -96,6 +100,10 @@
 		methods: {
 			getListDetail() {
 				let ids = this.$store.state.hzIds
+				if (!ids) {
+					this.hzPlayList = []
+					return
+				}
 				this.$http.get('/song/detail', {
 					params: {
 						ids
@@ -107,7 +115,7 @@
 			//设置hzId
 			setHzIds() {
 				let hzIds = localStorage.getItem('hzIds')
-				if (hzIds != null) {
+				if (hzIds != null && !hzIds.includes('undefined')) {
 					this.$store.state.hzIds = hzIds
 				} else {
 					localStorage.setItem('hzIds', '')
@@ -144,17 +152,16 @@
 </script>
 
 <style scoped lang="less">
-	
 	/deep/.el-skeleton {
 		height: 100%;
 	}
-	
-	@media screen and(max-width:850px){
-		.UserPage{
-			padding: 0!important;
+
+	@media screen and(max-width:850px) {
+		.UserPage {
+			padding: 0 !important;
 		}
 	}
-	
+
 	.UserPage {
 		padding: 20px 20px 20px 18px;
 		height: 100%;
