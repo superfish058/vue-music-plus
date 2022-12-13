@@ -53,11 +53,10 @@
 						</el-autocomplete>
 					</el-col>
 					<!-- 登录功能 -->
-					<el-col :span="4" style="height: 60px;display: flex;align-items: center;">
-						<button class="mini-button" @click="loginVisible=true" v-if="userName==''">登录</button>
-						<el-avatar shape="square" size="medium" :src="userImg" v-if="userName!=''"></el-avatar>
-						<span class="username" v-if="userName!=''">{{userName}}</span>
-						<button class="logout" @click="logout" v-if="userName!=''">退出</button>
+					<el-col :span="4" style="height: 10vh;display: flex;align-items: center;">
+					<!-- 	<button class="mini-button" @click="loginVisible=true" v-if="userName==''">登录</button> -->
+						<el-image :src="require('@/assets/logoImg.png')" style="height: 60%;border-radius: 50%;"></el-image>
+						<span class="username" >黑暗皇子</span>
 					</el-col>
 				</el-row>
 			</el-header>

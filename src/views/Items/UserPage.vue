@@ -104,9 +104,10 @@
 					this.hzPlayList = []
 					return
 				}
+				let ids_reverse = ids.split(',').reverse().join(',')
 				this.$http.get('/song/detail', {
 					params: {
-						ids
+						ids:ids_reverse
 					}
 				}).then(res => {
 					this.hzPlayList = res.data.songs
