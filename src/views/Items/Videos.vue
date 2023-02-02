@@ -283,6 +283,7 @@
 		padding: 0px 20px 20px 18px;
 		height: 100%;
 		box-sizing: border-box;
+		overflow: hidden;
 		overflow-y: scroll;
 		transform: translate3d(0, 0, 0);
 		scroll-behavior: smooth;

@@ -312,7 +312,7 @@
 			},
 			//判断是否被收藏
 			inHzIds(id) {
-				if(this.$store.state.hzIds.split(',').includes(id)){
+				if(this.$store.state.hzIds.split(',').includes(id+'')){
 					this.currentIn = true
 				}else{
 					this.currentIn = false
