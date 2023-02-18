@@ -7,7 +7,7 @@ import '@/assets/reset.css'
 import axios from 'axios'
 import vueTouch from 'kim-vue-touch'
 Vue.use(vueTouch)
-axios.defaults.baseURL = 'https://www.hzmusic.fit/'
+axios.defaults.baseURL = 'https://service-rvgwuo22-1302247591.gz.apigw.tencentcs.com/release/'
 // axios.defaults.baseURL = 'http://localhost:3000'
 axios.defaults.withCredentials = true
 // axios.defaults.timeout = 30000
