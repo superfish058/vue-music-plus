@@ -48,6 +48,7 @@
 		},
 		watch: {
 			reloadNum: function() {
+				this.recordState = 0
 				if (this.reloadNum % 3 == 0) {
 					this.ap.list.clear()
 					this.ap.list.add(this.currentMusic)

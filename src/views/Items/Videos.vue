@@ -15,7 +15,7 @@
 						style="width: 46px;aspect-ratio: 1;border-radius: 50%;"></el-image>
 					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;"
 						v-if="creatorId == 0">{{creatorName}}</span>
-					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;" class="hover"
+					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;cursor: pointer;" class="hover"
 						v-if="creatorId != 0" @click="turnSingerPage(creatorId)">
 						{{creatorName}}
 					</span>
@@ -39,13 +39,6 @@
 					<span style="margin-right: 10px;">发布时间：{{setDate(videoInfo.publishTime)}}</span>
 					<span :style="$store.state.mobileMode?'display:block;margin-top:8px':''">播放次数：{{resetCount(playTime)}}</span>
 				</el-row>
-				<!-- 标签 -->
-				<!-- <el-row style="margin-top: 12px;">
-					<span v-for="item,index in videoInfo.videoGroup" :key="index" class="tagFont"
-						@click="turnRecVideoPage(item)">
-						{{item.name}}
-					</span>
-				</el-row> -->
 			</el-col>
 			<!-- 推荐视频区 -->
 			<el-col :span="!$store.state.mobileMode?9:24" style="height: 100%;" v-if="relatedVideos.length">

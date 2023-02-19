@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1670079564902') format('truetype');
+  src: url('iconfont.ttf?t=1676805250083') format('truetype');
 }
 
 .iconfont {
@@ -29,6 +29,10 @@
 
 .icon-androidgengduo:before {
   content: "\e78d";
+}
+
+.icon-shangyishoushangyige:before {
+  content: "\e78a";
 }
 
 .icon-xiayigexiayishou:before {

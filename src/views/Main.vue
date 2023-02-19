@@ -30,8 +30,8 @@
 									</el-col>
 									<el-col :span="22">
 										<div>{{ item.searchWord }}</div>
-										<div style="height: 28px;color:#919191;transform: translateY(-5px);">
-											{{ item.content }}
+										<div style="height: 28px;color:#919191;transform: translateY(-5px);overflow: hidden;text-overflow: ellipsis;">
+											{{ item.content||'快来收听'+ item.searchWord +'吧'}}
 										</div>
 									</el-col>
 								</el-row>
@@ -61,10 +61,9 @@
 				</el-row>
 			</el-header>
 			<!-- 头部 mobile -->
-			<el-header class="mobile" style="border-bottom: none;height: 6vh;" v-swipeleft="(e) =>{$router.go(-1)}" 
-				v-swiperight="(e)=>{$router.go(1)}">
+			<el-header class="mobile" style="border-bottom: none;height: 6vh;">
 				<div style="display: flex;align-items: center;height: 100%;justify-content: space-between;">
-					<span style="font-size: 20px;letter-spacing: 0.2em;" v-tap="(e)=>{$router.go(-1)}">
+					<span style="font-size: 20px;letter-spacing: 0.2em;" v-tap="(e)=>turnBack()">
 						{{$store.state.localPage}}
 					</span>
 					<i class="el-icon-search" style="font-size: 20px;" @click="turnMobileSearch()"></i>
@@ -86,7 +85,7 @@
 								<router-link to="selfFM">
 									<el-menu-item index="2">
 										<i class="el-icon-s-promotion"></i>
-										<span slot="title">私人FM</span>
+										<span slot="title">我的音乐</span>
 									</el-menu-item>
 								</router-link>
 								<router-link to="recvideo">
@@ -142,7 +141,7 @@
 			</div>
 		</el-container>
 		<!-- 登录对话框 -->
-		<el-dialog title="用户登录" :visible.sync="loginVisible" :modal-append-to-body='false'>
+		<!-- <el-dialog title="用户登录" :visible.sync="loginVisible" :modal-append-to-body='false'>
 			<el-form :model="loginForm" label-position="top" label-width="60px" :rules="loginRules" ref="loginForm"
 				hide-required-asterisk>
 				<el-form-item label="手机号" prop="phone">
@@ -157,7 +156,7 @@
 				<button class="nomal-button" @click="submitLoginForm('loginForm')"
 					style="margin-right: 3px;">确定</button>
 			</div>
-		</el-dialog>
+		</el-dialog> -->
 
 	</div>
 </template>
@@ -212,6 +211,12 @@
 			this.getSearchDefault()
 		},
 		methods: {
+			//返回上一页 mobile
+			turnBack(){
+				if(this.$route.path == '/main/discovery')
+				return
+				this.$router.go(-1)
+			},
 			// 跳转手机搜索页面
 			turnMobileSearch(){
 				this.$router.push({

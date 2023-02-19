@@ -23,7 +23,7 @@
 					<el-col :span="11" class="width90 mobileSize">
 						<div class="songbox index_1">
 							<div class="songImg">
-								<el-image :src="item.al.picUrl+'?param=200y200'" fit="fill" @click="playMusic(item.id)"
+								<el-image :src="item.al.picUrl+'?param=200y200'" fit="fill" @click="playMusic(item.id,0)"
 									lazy>
 								</el-image>
 							</div>
@@ -110,7 +110,8 @@
 				return min + ':' + sec
 			},
 			//播放单曲
-			playMusic(id) {
+			playMusic(id,mode = 1) {
+				if(mode == 0 &&this.$store.state.mobileMode) return
 				this.$store.dispatch('getMusicUrl', id)
 			},
 			//设置播放列表

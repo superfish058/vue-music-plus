@@ -37,7 +37,7 @@
 						</div>
 						<!-- 从列表删除音乐 -->
 						<div class="outbox">
-							<span class="iconfont icon-lajitong hover" @click="deleteMusic()"></span>
+							<span class="iconfont icon-shangyishoushangyige hover" @click="lastSong()"></span>
 						</div>
 						<!-- 下一首 -->
 						<div class="outbox">
@@ -254,7 +254,7 @@
 				}
 				this.showMobileLyric = false
 			},
-			//下一首
+			//上一首
 			lastSong() {
 				if (this.$store.state.musicInfo.length <= 1) {
 					this.$message.warning('切不了歌呢')
@@ -282,27 +282,27 @@
 
 			},
 			//删除音乐
-			deleteMusic() {
-				if (this.$store.state.musicInfo.length <= 1) {
-					this.$message.warning('删除不了啦')
-					return
-				}
-				this.$confirm('确定要从播放列表中删除歌曲?', '提示', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}).then(() => {
-					this.$store.state.deleteIndex = this.$store.state.listIndex
-					this.$store.state.deleteMusic = !this.$store.state.deleteMusic
-					this.$message({
-						type: 'success',
-						message: '删除成功!'
-					});
-				}).catch(() => {
-					return
-				})
+			// deleteMusic() {
+			// 	if (this.$store.state.musicInfo.length <= 1) {
+			// 		this.$message.warning('删除不了啦')
+			// 		return
+			// 	}
+			// 	this.$confirm('确定要从播放列表中删除歌曲?', '提示', {
+			// 		confirmButtonText: '确定',
+			// 		cancelButtonText: '取消',
+			// 		type: 'warning'
+			// 	}).then(() => {
+			// 		this.$store.state.deleteIndex = this.$store.state.listIndex
+			// 		this.$store.state.deleteMusic = !this.$store.state.deleteMusic
+			// 		this.$message({
+			// 			type: 'success',
+			// 			message: '删除成功!'
+			// 		});
+			// 	}).catch(() => {
+			// 		return
+			// 	})
 
-			},
+			// },
 			//判断是否在当前页
 			judgeCurrentIn() {
 				if (this.$route.path != '/main/selfFM'){
