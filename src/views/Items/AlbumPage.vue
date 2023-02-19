@@ -3,9 +3,9 @@
 		<!-- 专辑信息区 -->
 		<el-row class="infoArea PC">
 			<el-col :span="7" style="padding-left: 10px;">
-				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 85%;aspect-ratio: 1;" v-if="albumInfo.picUrl">
+				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 80%;aspect-ratio: 1;" v-if="albumInfo.picUrl">
 				</el-image>
-				<el-skeleton style="width: 85%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
+				<el-skeleton style="width: 80%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
 					v-show="!albumInfo.picUrl">
 					<template slot="template">
 						<el-skeleton-item variant="image" style="width: 100%;height: 100%;" />
