@@ -8,7 +8,7 @@
 				<el-skeleton style="width: 85%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
 					v-show="!albumInfo.picUrl">
 					<template slot="template">
-						<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
+						<el-skeleton-item variant="image" style="width: 100%;height: 100%;" />
 					</template>
 				</el-skeleton>
 			</el-col>

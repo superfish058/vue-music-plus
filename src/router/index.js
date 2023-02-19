@@ -2,16 +2,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Discovery from '@/views/Discovery'
 import Main from '@/views/Main'
-import Search from '@/views/Search'
-import SelfFM from '@/views/SelfFM'
-import RecVideo from '@/views/RecVideo'
-import Album from '@/views/Items/AlbumPage'
-import PlayList from '@/views/Items/PlayList'
-import Singer from '@/views/Items/Singer'
-import Videos from '@/views/Items/Videos'
-import UserPage from '@/views/Items/UserPage'
+// import Search from '@/views/Search'
+// import SelfFM from '@/views/SelfFM'
+// import RecVideo from '@/views/RecVideo'
+// import Album from '@/views/Items/AlbumPage'
+// import PlayList from '@/views/Items/PlayList'
+// import Singer from '@/views/Items/Singer'
+// import Videos from '@/views/Items/Videos'
+// import UserPage from '@/views/Items/UserPage'
 
-import SearchPage from '@/views/mobile/SearchPage'
+// import SearchPage from '@/views/mobile/SearchPage'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -30,7 +30,7 @@ export default new VueRouter({
 		},
 		{
 			path:'/searchPage',
-			component:SearchPage
+			component:()=> import ('@/views/mobile/SearchPage')
 		},
 		{
 			path: '/main',
@@ -41,35 +41,35 @@ export default new VueRouter({
 				},
 				{
 					path: 'search',
-					component: Search
+					component: ()=> import ('@/views/Search')
 				},
 				{
 					path: 'selfFM',
-					component: SelfFM
+					component: ()=> import ('@/views/SelfFM')
 				},
 				{
 					path: 'album',
-					component: Album
+					component: ()=> import ('@/views/Items/AlbumPage')
 				},
 				{
 					path: 'playlist',
-					component: PlayList
+					component: ()=> import ('@/views/Items/PlayList')
 				},
 				{
 					path: 'singer',
-					component: Singer
+					component: ()=> import ('@/views/Items/Singer')
 				},
 				{
 					path: 'recvideo',
-					component: RecVideo
+					component: ()=> import ('@/views/RecVideo')
 				},
 				{
 					path: 'video',
-					component: Videos
+					component: ()=> import ('@/views/Items/Videos')
 				},
 				{
 					path: 'userpage',
-					component: UserPage
+					component: ()=> import ('@/views/Items/UserPage')
 				},
 				
 			]

@@ -6,30 +6,30 @@
 			<el-col :span="!this.$store.state.mobileMode?6:8" >
 				<div class="mobile">
 					<el-image :src="singerInfo.artist.cover+'?param=570y570'" fit="cover" v-if="singerInfo.artist"
-						style="width: 29vw;height: 29vw;border-radius: 50%;transform: translateX(5%);">
+						style="width: 29vw;height: 29vw;border-radius: 50%;">
 					</el-image>
-					<el-skeleton style="width: 29vw;height: 29vw;border-radius: 50%;transform: translateX(5%);" :loading="!singerInfo.artist"
+					<el-skeleton style="width: 29vw;height: 29vw;" :loading="!singerInfo.artist"
 						animated v-show="!singerInfo.artist">
 						<template slot="template">
-							<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
+							<el-skeleton-item variant="image" style="width: 100%;height: 100%;border-radius: 50%;" />
 						</template>
 					</el-skeleton>
 				</div>
 				<div class="PC">
 					<el-image :src="singerInfo.artist.cover+'?param=570y570'" fit="cover" v-if="singerInfo.artist"
-						style="width: 90%;aspect-ratio:1;border-radius:50%;transform: translateX(5%);">
+						style="width: 90%;aspect-ratio:1;border-radius:50%;transform: translateX(5%);"> 
 					</el-image>
 					<el-skeleton style="width: 90%;aspect-ratio:1;;border-radius: 50%;transform: translateX(5%);" :loading="!singerInfo.artist"
 						animated v-show="!singerInfo.artist">
 						<template slot="template">
-							<el-skeleton-item variant="image" style="width: 90%;height: 90%;" />
+							<el-skeleton-item variant="image" style="width: 100%;height: 100%;border-radius:50%;transform: translateX(5%);" />
 						</template>
 					</el-skeleton>
 				</div>
 			</el-col>
-			<el-col :span="!this.$store.state.mobileMode?18:14">
-				<el-skeleton :rows="3" animated :style="!this.$store.state.mobileMode?'transform: translateY(20%)':'transform: translateY(5%)'"
-					v-show="!singerInfo.artist" />
+			<el-col :span="!this.$store.state.mobileMode?18:16">
+				<el-skeleton :rows="3" animated :style="!this.$store.state.mobileMode?'transform: translate(7%,18%);width:90%':'transform: translateY(5%);width:90%'"  
+					v-show="!singerInfo.artist" /> 
 				<div v-if="singerInfo.artist">
 					<div class="PC">
 						<el-row>
