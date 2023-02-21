@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div style="height: 100%;overflow: auto;" ref="scrollBack" class="playListRec">
 		<!-- 头部精品歌单预览区 -->
-		<div class="listBanner" v-if="localBanner">
+		<div class="listBanner" v-if="localBanner"   >
 			<div class="imgArea">
 				<el-image :src="localBanner.coverImgUrl" fit="cover" style="width: 100%;height: 100%;"></el-image>
 			</div>
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<!-- 热门标签 -->
-			<div class="hotTag" ref="hotTag">
+			<div class="hotTag PC" ref="hotTag" >
 				<span v-for="(item,index) in hotTags" :key="index" @click="setSelectStyle(item)">
 					{{item}}
 				</span>
@@ -50,9 +50,17 @@
 		</div>
 		<!-- 分页区域 -->
 		<div class="pagination">
-			<el-pagination :page-size="8" :pager-count="7" layout="prev, pager, next" :total="pageSize"
-				@current-change="pageChange" :current-page="listPage">
-			</el-pagination>
+			<div class="PC">
+				<el-pagination :page-size="8" :pager-count="9" layout="prev, pager, next" :total="pageSize"
+					@current-change="pageChange" :current-page="listPage" >
+				</el-pagination>
+			</div>
+			<div class="mobile">
+				<el-pagination :page-size="8" :pager-count="5" layout="prev, pager, next" :total="pageSize"
+					@current-change="pageChange" :current-page="listPage" >
+				</el-pagination>
+			</div>
+			
 		</div>
 
 	</div>
@@ -97,6 +105,15 @@
 				this.changePageSize()
 			}
 		},
+		beforeRouteEnter(to, from, next) {
+			next(vc => {
+				vc.$nextTick(() => {
+					vc.$store.state.localPage = '推荐歌单'
+					vc.$store.state.localTop = 'playListRec'
+				})
+		
+			})
+		},
 		methods: {
 			//跳转歌单
 			turnPlayListPage(id){
@@ -106,6 +123,7 @@
 			pageChange(pagenum) {
 				this.listPage = pagenum
 				this.getplayListRec()
+				this.$refs.scrollBack.scrollTop = '0px'
 			},
 			//改变页码尺寸
 			changePageSize() {
@@ -202,13 +220,13 @@
 		margin: 10px auto;
 		display: flex;
 		flex-wrap: wrap;
-
+		
+		
 		.imgArea {
 			flex: 2;
 			width: 100%;
 			aspect-ratio: 1;
 			overflow: hidden;
-
 		}
 
 		.infoArea {
@@ -240,6 +258,23 @@
 			flex: 1;
 			margin-left: 3%;
 			font-size: 28px;
+			opacity: 0.9;
+		}
+		
+		
+		@media screen and (max-width:650px) {
+			.imgArea {
+				flex:3;
+				
+			}
+			
+			.infoArea{
+				flex:7;
+			}
+			
+			.infoText{
+				font-size: 20px;
+			}
 		}
 	}
 
@@ -341,7 +376,19 @@
 			.listInner {
 				width: 25%;
 			}
+			@media screen and (max-width:650px) {
+				.listInner {
+					width: 50%;
+				}
+			}
 		}
+		
+		@media screen and (max-width:650px) {
+			.listOut{
+				width: 100%;
+			}
+		}
+		
 	}
 
 	// 分页样式
@@ -350,7 +397,7 @@
 		justify-content: center;
 		width: 100%;
 		margin-top: 15px;
-
+		margin-bottom: 20px;
 		/deep/.el-pager li {
 			background-color: transparent;
 			color: rgba(255, 255, 255, 0.9);

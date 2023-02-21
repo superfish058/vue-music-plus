@@ -201,7 +201,7 @@
 		</el-row>
 		<!-- 歌手界面 -->
 		<el-row v-if="tagsActive=='歌手'">
-			<el-card class="hotResult">
+			<div class="hotResult">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">歌手</p>
 				<el-col :span="!$store.state.mobileMode?4:12" v-for="item,index in singerLists" :key="index" class="recommend">
 					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'"
@@ -211,7 +211,7 @@
 						<p class="main-p">{{item.name}}</p>
 					</div>
 				</el-col>
-			</el-card>
+			</div>
 		</el-row>
 		<!-- 视频界面 -->
 		<el-row v-if="tagsActive=='视频'">
@@ -686,6 +686,14 @@
 	}
 
 	.hotResult {
+		background-color: #121212;
+		display: flex;
+		flex-wrap: wrap;
+		opacity: 0.9;
+		border: none;
+		border-radius: 10px;
+		padding: 15px 20px;
+		
 		/deep/.el-image {
 			box-sizing: border-box;
 			overflow: visible;
@@ -700,7 +708,6 @@
 		/deep/.el-image__inner:hover {
 			cursor: pointer;
 			box-shadow: 1px 1px 3px 1px rgba(55, 55, 55, 0.8), -1px -1px 2px 1px rgba(55, 55, 55, 0.7);
-			transition: 0.2s ease;
 			opacity: 1;
 		}
 	}
@@ -733,7 +740,6 @@
 		justify-content: center;
 		padding: 15px 0;
 		border-radius: 7px;
-		;
 
 		p {
 			display: flex;
