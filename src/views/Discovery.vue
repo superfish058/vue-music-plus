@@ -14,13 +14,13 @@
 			</div>
 			<!-- 轮播图 mobile-->
 			<div class="bannerStyle mobile" style="padding-right: 15px;box-sizing: border-box;">
-				<van-swipe :autoplay="30000" indicator-color="white" >
-					<van-swipe-item v-for="(item,index) in banners" :key="index" >
+				<van-swipe :autoplay="30000" indicator-color="white">
+					<van-swipe-item v-for="(item,index) in banners" :key="index">
 						<div style="position: relative;width: 100%;height: 35vw;">
-							<el-image style="position: absolute;border-radius: 5px;height:100%;width: 100%;" :src="item.imageUrl"
-								fit="cover" @click="turnRelatedPage(item,index)">
+							<el-image style="position: absolute;border-radius: 5px;height:100%;width: 100%;"
+								:src="item.imageUrl" fit="cover" @click="turnRelatedPage(item,index)">
 							</el-image>
-							<span class="banner-text" >{{item.typeTitle}}</span>
+							<span class="banner-text">{{item.typeTitle}}</span>
 						</div>
 					</van-swipe-item>
 				</van-swipe>
@@ -32,8 +32,10 @@
 				<el-row>
 					<p class="textArea">
 						<i class="el-icon-cloudy icon1"></i>
-						推荐歌单
-						<i class="el-icon-arrow-right icon2"></i>
+						<span @click="turnPlayListRec()" class="hover">
+							推荐歌单
+							<i class="el-icon-arrow-right icon2"></i>
+						</span>
 					</p>
 				</el-row>
 				<!-- 歌单 -->
@@ -68,7 +70,10 @@
 				<el-row>
 					<p class="textArea">
 						<i class="el-icon-coffee-cup hover icon1" @click="sendList()"></i>
-						音乐上新
+						<span class="hover" @click="turnNewmusicRec()">
+							音乐上新
+							<i class="el-icon-arrow-right icon2"></i>
+						</span>
 					</p>
 				</el-row>
 				<el-row>
@@ -154,6 +159,18 @@
 			})
 		},
 		methods: {
+			//跳转最新音乐相关页
+			turnNewmusicRec(){
+				this.$router.push({
+					path: '/main/newMusicRec'
+				})
+			},
+			//跳转歌单相关页
+			turnPlayListRec(){
+				this.$router.push({
+					path: '/main/playlistRec'
+				})
+			},
 			//轮播图跳转
 			turnRelatedPage(item, index) {
 				let type = item.targetType
@@ -168,6 +185,8 @@
 					})
 				} else if (type == 1000) {
 					turnPlayListPage.call(this, item.targetId)
+				}else{
+					this.$message.info('暂不支持跳转')
 				}
 
 			},
@@ -262,7 +281,7 @@
 			top: 62% !important;
 			left: 37%;
 		}
-		
+
 
 
 	}

@@ -3,13 +3,15 @@ import VueRouter from 'vue-router'
 import Discovery from '@/views/Discovery'
 import Main from '@/views/Main'
 // import Search from '@/views/Search'
-// import SelfFM from '@/views/SelfFM'
-// import RecVideo from '@/views/RecVideo'
+import SelfFM from '@/views/SelfFM'
+import RecVideo from '@/views/RecVideo'
 // import Album from '@/views/Items/AlbumPage'
 // import PlayList from '@/views/Items/PlayList'
 // import Singer from '@/views/Items/Singer'
 // import Videos from '@/views/Items/Videos'
-// import UserPage from '@/views/Items/UserPage'
+import UserPage from '@/views/Items/UserPage'
+import PlaylistRec from '@/views/Items/PlaylistRec'
+import NewMusicRec from '@/views/Items/NewMusicRec'
 
 // import SearchPage from '@/views/mobile/SearchPage'
 Vue.use(VueRouter)
@@ -45,7 +47,7 @@ export default new VueRouter({
 				},
 				{
 					path: 'selfFM',
-					component: ()=> import ('@/views/SelfFM')
+					component:SelfFM,
 				},
 				{
 					path: 'album',
@@ -61,7 +63,7 @@ export default new VueRouter({
 				},
 				{
 					path: 'recvideo',
-					component: ()=> import ('@/views/RecVideo')
+					component: RecVideo,
 				},
 				{
 					path: 'video',
@@ -69,7 +71,15 @@ export default new VueRouter({
 				},
 				{
 					path: 'userpage',
-					component: ()=> import ('@/views/Items/UserPage')
+					component: UserPage
+				},
+				{
+					path: 'playlistRec',
+					component: PlaylistRec
+				},
+				{
+					path: 'newMusicRec',
+					component: NewMusicRec
 				},
 				
 			]
