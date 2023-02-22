@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<!-- 分页区域 -->
-		<div class="pagination">
+		<div class="pagination" v-show="playListRec.length">
 			<div class="PC">
 				<el-pagination :page-size="8" :pager-count="9" layout="prev, pager, next" :total="pageSize"
 					@current-change="pageChange" :current-page="listPage" >
@@ -108,8 +108,8 @@
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
 				vc.$nextTick(() => {
-					vc.$store.state.localPage = '推荐歌单'
-					vc.$store.state.localTop = 'playListRec'
+					vc.$store.state.localPage = '精选'
+					vc.$store.state.localTop = ''
 				})
 		
 			})

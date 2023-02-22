@@ -48,11 +48,11 @@ export const setDtime = function(dt) {
 }
 
 export const setDuration = function(dt) {
-	if(isNaN(dt)){
+	if (isNaN(dt)) {
 		dt = 0
 	}
-	let min = Math.floor(dt/60) 
-	let sec = Math.floor(dt%60)
+	let min = Math.floor(dt / 60)
+	let sec = Math.floor(dt % 60)
 	if (min == 0) {
 		min = '00'
 	}
@@ -62,4 +62,9 @@ export const setDuration = function(dt) {
 	return min + ':' + sec
 }
 
-
+// export const downloadFile = function(url) {
+// 	let domA = document.createElement('a'); // js创建a标签
+// 	domA.setAttribute('download', ''); // 给a标签设置download属性
+// 	domA.setAttribute('href', url); // 给a标签href属性赋值为要下载文件的路径
+// 	domA.click(); // 点击下载
+// }

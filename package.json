@@ -10,6 +10,7 @@
   "dependencies": {
     "aplayer": "^1.10.1",
     "axios": "^0.27.2",
+    "downloadjs": "^1.4.7",
     "element-ui": "^2.15.10",
     "hls.js": "^1.2.4",
     "kim-vue-touch": "^1.1.5",

@@ -4,7 +4,7 @@ module.exports = defineConfig({
   configureWebpack:{
   	  externals:{
   		  'vue':'Vue',
-  		  'element-ui':'ElementUI'
+  		  'element-ui':'ElementUI',
   	  }
   }
 })

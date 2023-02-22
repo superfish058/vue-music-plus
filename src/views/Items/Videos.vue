@@ -17,7 +17,7 @@
 						v-if="creatorId == 0">{{creatorName}}</span>
 					<span style="font-size: 18px;margin-left: 10px;letter-spacing: 0.2px;cursor: pointer;" class="hover"
 						v-if="creatorId != 0" @click="turnSingerPage(creatorId)">
-						{{creatorName}}
+						{{creatorName}} 
 					</span>
 				</el-row>
 				<!-- 标题和简介 -->

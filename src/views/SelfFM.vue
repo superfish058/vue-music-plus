@@ -25,7 +25,18 @@
 				</el-row>
 				<!-- 图片区 -->
 				<el-row class="imgArea"   v-swipeup="nextSong"  v-swipedown="lastSong">
-					<el-image class="imgStyle" :src="currentMusicInfo.cover" fit="cover"></el-image>
+					<div class="imgStyle">
+						<el-image  :src="currentMusicInfo.cover" fit="cover" style="width: 100%;height: 100%;">
+						</el-image>
+						<div class="PC">
+							<div class="lastSong" @click="lastSong()">
+								<i class="el-icon-arrow-left"  ></i>
+							</div>
+							<div class="nextSong"  @click="nextSong()">
+								<i class="el-icon-arrow-right" ></i>
+							</div>
+						</div>
+					</div>
 				</el-row>
 				<!-- 功能区 PC-->
 				<el-row class="funcArea PC">
@@ -35,16 +46,17 @@
 							<i class="el-icon-folder-add hover" @click="addSong()" v-if="!currentIn"> </i>
 							<i class="el-icon-folder-remove hover" @click="removeSong()" v-else> </i>
 						</div>
-						<!-- 从列表删除音乐 -->
+						<!-- 评论 -->
 						<div class="outbox">
-							<span class="iconfont icon-shangyishoushangyige hover" @click="lastSong()"></span>
+							<i class="el-icon-chat-dot-round hover"></i>
 						</div>
-						<!-- 下一首 -->
+						<!-- 下载 -->
 						<div class="outbox">
-							<span class="iconfont icon-xiayigexiayishou hover" @click="nextSong()"></span>
+							<i class="el-icon-download hover" @click="downLoadMusic"></i>
 						</div>
+						<!-- 更多功能 -->
 						<div class="outbox">
-							<span class="iconfont icon-gengduo"></span>
+							<span class="iconfont icon-gengduo" ></span>
 						</div>
 					</div>
 				</el-row>
@@ -134,8 +146,10 @@
 		turnAlbumPage,
 		turnMvPage,
 		turnSingerPage,
-		setDuration
+		setDuration,
+		downloadFile
 	} from '@/utils'
+	import download from 'downloadjs'
 	export default {
 		data() {
 			return {
@@ -204,6 +218,15 @@
 			}
 		},
 		methods: {
+			//下载音乐
+			downLoadMusic(){
+				let name = this.currentMusicInfo.name+' '+this.currentMusicInfo.artist
+				var x=new XMLHttpRequest();
+				x.open( "GET", this.currentMusicInfo.url , true);
+				x.responseType="blob";
+				x.onload= function(e){download(e.target.response, name, "audio/mpeg");};
+				x.send();
+			},
 			// 格式化时间
 			setDuration(dt){
 				return setDuration(dt)
@@ -666,6 +689,7 @@
 			height:  45vh !important;;
 			max-width: 85vw !important;
 			min-width: 70vw !important;
+			position: relative;
 			.imgStyle {
 				width: 45vh !important;
 				max-width: 85vw !important;
@@ -689,7 +713,37 @@
 			min-width: 280px;
 			aspect-ratio: 1;
 			border-radius: 2%;
+			position: relative;
+			.lastSong{		
+				left: 0%;
+			}
+			.nextSong{
+				right:0%;
+			}
+			.lastSong,.nextSong{
+				position: absolute;
+				top: 0%;
+				height: 100%;
+				width: 15%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				i{
+					opacity: 0;
+					font-size: 24px;
+				}
+				&:hover{
+					background-color: rgba(0,0,0,0.3);
+					cursor: pointer;
+					i{
+						opacity: 0.9;
+					}
+					transition:  0.2s ease;
+					
+				}
+			}
 		}
+		
 	}
 
 	.funcArea {
@@ -705,7 +759,7 @@
 			.outbox {
 				display: flex;
 
-				span,
+				span,a,
 				i {
 					border: 2px solid rgba(255, 255, 255, 0.8);
 					font-size: 20px;

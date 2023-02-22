@@ -62,7 +62,7 @@
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
 				vc.$nextTick(() => {
-					vc.$store.state.localPage = '最新音乐'
+					vc.$store.state.localPage = '最新'
 					vc.$store.state.localTop = 'NewMusicRec'
 				})
 		
