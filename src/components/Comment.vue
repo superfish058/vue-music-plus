@@ -97,7 +97,6 @@
 				comments: '', //评论数据
 				hotComments: [], //热门评论
 				total: 0, //分页总数
-				scrollTop:this.theScrollTop,
 			}
 		},
 		mounted() {
@@ -122,7 +121,11 @@
 		computed:{
 			id(){
 				return this.theId
-			}
+			},
+			scrollTop(){
+				return this.theScrollTop
+			},
+			
 		},
 		watch: {
 			id: function() {
@@ -170,6 +173,7 @@
 				return t;
 			}, //评论时间戳
 			pageChange(page) {
+				console.log(this.scrollTop);
 				this.page = page
 				this.getComments()
 				if(this.parentNode==1){

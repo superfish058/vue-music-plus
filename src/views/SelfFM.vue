@@ -138,9 +138,9 @@
 			</el-col>
 		</el-row>
 		<!-- 评论区 -->
-		<div class="commentArea" v-show="currentId">
+		<div class="commentArea PC" v-show="currentId">
 			<div class="innerArea">
-				<Comment :theId="currentId" :theScrollTop="500" :parentNode="3"></Comment>
+				<Comment :theId="currentId" :theScrollTop="height" :parentNode="3"></Comment>
 			</div>
 		</div>
 	</div>
@@ -176,6 +176,7 @@
 				setStronger:false,//设置更强亮度
 				judgeFilter:false,//判断滤镜
 				filterClass:'filter',//默认滤镜
+				heightOrignal:500,//原始高度
 			}
 		},
 		components:{
@@ -194,6 +195,9 @@
 			currentIndex(){
 				return this.$store.state.listIndex
 			},
+			height(){
+				return this.heightOrignal - 10
+			}
 		},
 		mounted() {
 			this.screenWidth = document.body.clientWidth
@@ -201,8 +205,10 @@
 				return (() => {
 					this.screenWidth = document.body.clientWidth
 				})()
-
 			}
+			this.getHeight()
+			
+			
 		},
 		beforeRouteEnter(to, from, next) {
 			next(vc => {
@@ -227,10 +233,14 @@
 			}
 		},
 		methods: {
+			//获取页面高度
+			getHeight(){
+				this.heightOrignal = parseInt(this.$refs.MyMusic.getBoundingClientRect().height)
+			},
 			//查看评论区
 			turnComment(){
 				if(!this.currentId) return
-				this.$refs.MyMusic.scrollTop = 500
+				this.$refs.MyMusic.scrollTop = this.height
 			},
 			//下载音乐
 			downLoadMusic(){
