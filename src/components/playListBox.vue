@@ -3,8 +3,7 @@
 		<div class="areaSize">
 			<el-row class="imgSize" v-if="item.coverImgUrl">
 				<div class="recImg">
-					<el-image  :src="item.coverImgUrl+'?param=450y450'" fit="cover" @click="turnPlayListPage(item.id)">
-					</el-image>
+					<img  :src="item.coverImgUrl+'?param=450y450'"  @click="turnPlayListPage(item.id)"/>
 				</div>
 			</el-row>
 			<el-row class="textArea">
@@ -68,6 +67,10 @@
 				opacity: 0.9;
 				border-radius: 5px;
 				overflow: hidden;
+				img{
+					width: 100%;
+					object-fit: cover;
+				}
 				&:hover{
 					cursor: pointer;
 					box-shadow: 0px 1px 2px 2px rgba(55, 55, 55, 0.8), -1px -1px 2px 2px rgba(55, 55, 55, 0.8);

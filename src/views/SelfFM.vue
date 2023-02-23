@@ -1,5 +1,5 @@
 <template>
-	<div class="MyMusic">
+	<div class="MyMusic" ref="MyMusic">
 		<el-row style="overflow: hidden;">
 			<!-- 左侧 -->
 			<el-col :span="!showMobileLyric ? 12 :24">
@@ -26,8 +26,7 @@
 				<!-- 图片区 -->
 				<el-row class="imgArea"   v-swipeup="nextSong"  v-swipedown="lastSong">
 					<div class="imgStyle">
-						<el-image  :src="currentMusicInfo.cover" fit="cover" style="width: 100%;height: 100%;">
-						</el-image>
+						<img  :src="currentMusicInfo.cover" style="width: 100%;height: 100%;"/>
 						<div class="PC">
 							<div class="lastSong" @click="lastSong()">
 								<i class="el-icon-arrow-left"  ></i>
@@ -48,7 +47,7 @@
 						</div>
 						<!-- 评论 -->
 						<div class="outbox">
-							<i class="el-icon-chat-dot-round hover"></i>
+							<i class="el-icon-chat-dot-round hover" @click="turnComment"></i>
 						</div>
 						<!-- 下载 -->
 						<div class="outbox">
@@ -138,6 +137,12 @@
 				</el-row>
 			</el-col>
 		</el-row>
+		<!-- 评论区 -->
+		<div class="commentArea" v-show="currentId">
+			<div class="innerArea">
+				<Comment :theId="currentId" :theScrollTop="500" :parentNode="3"></Comment>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -150,6 +155,7 @@
 		downloadFile
 	} from '@/utils'
 	import download from 'downloadjs'
+	import Comment from '@/components/Comment'
 	export default {
 		data() {
 			return {
@@ -171,6 +177,9 @@
 				judgeFilter:false,//判断滤镜
 				filterClass:'filter',//默认滤镜
 			}
+		},
+		components:{
+			Comment
 		},
 		computed: {
 			currentMusicInfo() {
@@ -218,6 +227,11 @@
 			}
 		},
 		methods: {
+			//查看评论区
+			turnComment(){
+				if(!this.currentId) return
+				this.$refs.MyMusic.scrollTop = 500
+			},
 			//下载音乐
 			downLoadMusic(){
 				let name = this.currentMusicInfo.name+' '+this.currentMusicInfo.artist
@@ -538,6 +552,26 @@
 </script>
 
 <style scoped lang="less">
+	
+	.MyMusic{
+		position: relative;
+		height: 100%;	
+		overflow-y: auto;
+	}
+	
+	.commentArea{
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 100%;
+		display: flex;
+		justify-content: center;
+		.innerArea{
+			width:90% ;
+			height: 100%;
+		}
+	}
+	
 	.noWrop{
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -714,6 +748,11 @@
 			aspect-ratio: 1;
 			border-radius: 2%;
 			position: relative;
+			overflow: hidden;
+			opacity: 0.9;
+			img{
+				object-fit: cover;
+			}
 			.lastSong{		
 				left: 0%;
 			}
