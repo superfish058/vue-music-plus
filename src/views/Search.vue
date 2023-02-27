@@ -48,21 +48,24 @@
 								<p>专辑</p>
 							</el-col>
 							<!-- 歌单展示 -->
-							<el-col :span="2" style="opacity: 0;" v-if="JSON.stringify(recommendAlbum)!='{}'">1</el-col>
-							<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendPlaylist)!='{}'">
-								<el-image style="width: 80%; aspect-ratio: 1;"
-									:src="recommendPlaylist.coverImgUrl+'?param=300y300'" lazy
-									@click="turnPlayListPage(recommendPlaylist.id)">
-								</el-image>
-								<p class="main-p">{{recommendPlaylist.name}}</p>
-								<p>歌单</p>
-							</el-col>
+							<div v-if="recommendAlbum^recommendArtist">
+								<el-col :span="2" style="opacity: 0;" v-if="JSON.stringify(recommendAlbum)!='{}'">1</el-col>
+								<el-col :span="11" class="recommend" v-if="JSON.stringify(recommendPlaylist)!='{}'">
+									<el-image style="width: 80%; aspect-ratio: 1;"
+										:src="recommendPlaylist.coverImgUrl+'?param=300y300'" lazy
+										@click="turnPlayListPage(recommendPlaylist.id)">
+									</el-image>
+									<p class="main-p">{{recommendPlaylist.name}}</p>
+									<p>歌单</p>
+								</el-col>
+							</div>
+							
 						</el-row>
 					</el-card>
 				</el-col>
 				<!-- 匹配歌曲展示 -->
-				<el-col :span="14" class="relativeSongs">
-					<el-card style="height: 270px;">
+				<el-col :span="14" >
+					<el-card style="height: 270px;" >
 						<p style="font-size: 22px;font-weight: 700;margin-bottom:10px;margin-left: 3px;">歌曲</p>
 						<el-row v-for="item,index in songLists.slice(0,4)" :key="index" class="song-row"
 							style="padding: 4px;height: 58px;" @dblclick.native="playMusic(item.id)">
@@ -187,7 +190,7 @@
 		<el-row v-if="tagsActive=='专辑'">
 			<el-card  class="hotResult" :style="$store.state.mobileMode?'padding:0!important':''">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: -5px;">专辑</p>
-				<el-col :span="!$store.state.mobileMode?4:8" v-for="item,index in albumLists" :key="index" class="recommend">
+				<el-col :span="!$store.state.mobileMode?4:12" v-for="item,index in albumLists" :key="index" class="recommend">
 					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.blurPicUrl+'?param=300y300'" lazy
 						@click="turnAlbumPage(item.id)"></el-image>
 					<div style="width: 100%;height: 27px;">
@@ -201,7 +204,7 @@
 		</el-row>
 		<!-- 歌手界面 -->
 		<el-row v-if="tagsActive=='歌手'">
-			<div class="hotResult">
+			<el-card class="hotResult">
 				<p style="font-size: 22px;font-weight: 700;margin-left: 15px;margin-bottom: 10px;">歌手</p>
 				<el-col :span="!$store.state.mobileMode?4:12" v-for="item,index in singerLists" :key="index" class="recommend">
 					<el-image style="width: 80%; aspect-ratio: 1;" :src="item.img1v1Url+'?param=300y300'"
@@ -211,7 +214,7 @@
 						<p class="main-p">{{item.name}}</p>
 					</div>
 				</el-col>
-			</div>
+			</el-card>
 		</el-row>
 		<!-- 视频界面 -->
 		<el-row v-if="tagsActive=='视频'">
@@ -692,8 +695,6 @@
 		opacity: 0.9;
 		border: none;
 		border-radius: 10px;
-		padding: 15px 20px;
-		
 		/deep/.el-image {
 			box-sizing: border-box;
 			overflow: visible;
@@ -779,6 +780,7 @@
 
 	/deep/.el-card__body {
 		padding: 0;
+		width: 100%;
 	}
 
 
