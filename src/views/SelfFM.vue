@@ -807,16 +807,16 @@
 
 			.outbox {
 				display: flex;
-
+				justify-content: center;
+				align-items: center;
+				border: 2px solid rgba(255, 255, 255, 0.8);
+				padding: 10px;
+				border-radius: 50%;
+				box-sizing: border-box;
+				aspect-ratio: 1;
 				span,a,
 				i {
-					border: 2px solid rgba(255, 255, 255, 0.8);
 					font-size: 20px;
-					padding: 10px;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					border-radius: 50%;
 					cursor: pointer;
 				}
 			}
