@@ -3,11 +3,11 @@
 	src: url("@/assets/font/霞鹜臻楷.ttf") ;
 	font-display: swap;
 }
-@font-face {
+/* @font-face {
 	font-family: "yezigongchangmiaomiaoti";
 	src: url("@/assets/font/yezigongchangmiaomiaoti.ttf") ;
 	font-display: swap;
-}
+} */
 * {
 	margin: 0;
 	padding: 0;
