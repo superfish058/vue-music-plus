@@ -9,7 +9,7 @@
 					<li v-for="(item,index) in hotComments" :key="index">
 						<!-- 头像 -->
 						<div class="img">
-							<img :src="item.user.avatarUrl">
+							<img :src="item.user.avatarUrl+'?param=200y200'">
 						</div>
 						<!-- 评论主体 -->
 						<div class="content" >
