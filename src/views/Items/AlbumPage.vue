@@ -3,7 +3,7 @@
 		<!-- 专辑信息区 -->
 		<el-row class="infoArea PC">
 			<el-col :span="7" style="padding-left: 10px;">
-				<el-image :src="albumInfo.picUrl" fit="cover" style="width: 80%;aspect-ratio: 1;"
+				<el-image :src="albumInfo.picUrl" fit="fit" style="width: 80%;aspect-ratio: 1;"
 					v-if="albumInfo.picUrl">
 				</el-image>
 				<el-skeleton style="width: 80%;aspect-ratio: 1;" :loading="!albumInfo.picUrl" animated
@@ -162,8 +162,7 @@
 		overflow-y: scroll;
 
 		.infoArea {
-			margin-bottom: 10px;
-			height: 230px;
+			margin-bottom: 20px;
 			position: relative;
 			margin-top: 10px;
 		}

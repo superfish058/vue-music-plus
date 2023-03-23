@@ -217,7 +217,7 @@
 
 		.playlistInfoArea {
 			margin-bottom: 10px;
-			height: 30vh;
+			height: 20vw;
 			margin-top: 10px;
 		}
 
