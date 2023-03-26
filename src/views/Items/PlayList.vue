@@ -4,18 +4,18 @@
 		<!-- 歌单信息区 PC-->
 		<el-row class="playlistInfoArea PC">
 			<!-- 歌单封面 -->
-			<el-col :span="6" style="height: 100%;">
-				<el-image :src="playListInfo.coverImgUrl" fit="cover" style="width: 85%;aspect-ratio: 1;"
+			<el-col :span="6" style="height:16vw">
+				<el-image :src="playListInfo.coverImgUrl" fit="cover" style="height: 92%;aspect-ratio: 1;"
 					v-if="playListInfo.coverImgUrl">
 				</el-image>
-				<el-skeleton style="width: 85%;aspect-ratio: 1" :loading="skeLoading" animated v-show="skeLoading">
+				<el-skeleton style="width: 95%;aspect-ratio: 1" :loading="skeLoading" animated v-show="skeLoading">
 					<template slot="template">
-						<el-skeleton-item variant="image" style="width:100%;height: 100%;"/>  
+						<el-skeleton-item variant="image" style="width:100%;"/>  
 					</template>
 				</el-skeleton>
 			</el-col>
 			<!-- 主要信息区 -->
-			<el-col :span="18" style="position: relative;height: 100%;">
+			<el-col :span="18" style="position: relative;height: 16vw;">
 				<el-row class="mainInfo">
 					<span class="textIcon">歌单</span>
 					<span v-show="showDesc" class="playlistInfoName">
@@ -217,7 +217,7 @@
 
 		.playlistInfoArea {
 			margin-bottom: 10px;
-			height: 20vw;
+			height: 16vw;
 			margin-top: 10px;
 		}
 
