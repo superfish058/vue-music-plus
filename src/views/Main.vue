@@ -39,7 +39,7 @@
 									<span>{{item.name}}</span>
 									<span v-if="item.tag=='单曲'">&nbsp;-&nbsp;{{item.artists}}</span>
 									<span style="margin-left: 10px;" v-if="item.tag=='专辑'">{{item.artists}}</span>
-									<div>
+									<div style="height: 25px;">
 										<el-tag style="position: absolute; right: 0;" size="small" v-if="item.tag=='单曲'"
 											type="success">{{item.tag}}</el-tag>
 										<el-tag style="position: absolute; right: 0;" size="small"
