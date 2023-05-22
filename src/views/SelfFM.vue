@@ -161,6 +161,7 @@ import {
 } from '@/utils'
 import download from 'downloadjs'
 import Comment from '@/components/Comment'
+import { CLOSING } from 'ws'
 export default {
 	data() {
 		return {
@@ -260,8 +261,11 @@ export default {
 		//下载音乐
 		downLoadMusic() {
 			let name = this.currentMusicInfo.name + ' ' + this.currentMusicInfo.artist
-			var x = new XMLHttpRequest();
-			x.open("GET", this.currentMusicInfo.url, true);
+			let x = new XMLHttpRequest();
+			let url = this.currentMusicInfo.url.split('')
+			url.splice(4, 0, 's')
+			url = url.join('')
+			x.open("GET", url, true);
 			x.responseType = "blob";
 			x.onload = function (e) { download(e.target.response, name, "audio/mpeg"); };
 			x.send();
@@ -581,7 +585,6 @@ export default {
 	position: relative;
 	height: 100%;
 	overflow-y: auto;
-	overflow-x: hidden;
 }
 
 .commentArea {
